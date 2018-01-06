@@ -6,4 +6,5 @@ package com.bdqn.huanxun.pojo;
 public class ceshi {
     int a = 0;
     int b = 6;
+    int c= 8;
 }
