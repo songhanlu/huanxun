@@ -1,0 +1,45 @@
+package com.bdqn.huanxun.controller;
+
+import com.bdqn.huanxun.pojo.Employee;
+import com.bdqn.huanxun.pojo.LoginUser;
+import com.bdqn.huanxun.service.EmployeeService;
+import com.bdqn.huanxun.service.LoginUserService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Created by hp on 2018/1/4.
+ */
+@Controller
+@RequestMapping("/common")
+public class LoginController {
+    @Resource
+    private LoginUserService loginUserService;
+    @Resource
+    private EmployeeService employeeService;
+
+    @RequestMapping("/login")
+    public String login(LoginUser loginUser, HttpSession session, Model model) {
+        LoginUser loginUser1 = loginUserService.login(loginUser);
+        if(loginUser1!=null){//在loginUser表中找到用户名密码
+            System.out.println(loginUser1);
+            int userRoleID = loginUser1.getUserRole().getUserRoleID();
+            if(userRoleID==1){//系统管理员身份
+                session.setAttribute("loginUser",loginUser1);
+                //到employee表里，把当前登录用户具体信息找出来
+                Employee currentEmployee = employeeService.findEmployeeByID(loginUser1.getLoginUserID());
+                session.setAttribute("currentEmployee",currentEmployee);
+                return "admin/index";
+            }else{
+                model.addAttribute("loginMessage","用户身份异常！");
+                return "login";
+            }
+        }
+        model.addAttribute("loginMessage","用户名或密码错误！");
+        return "login";
+    }
+}

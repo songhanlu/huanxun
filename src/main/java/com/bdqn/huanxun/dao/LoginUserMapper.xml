@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.huanxun.dao.LoginUserMapper">
+    <resultMap id="loginUserMap" type="LoginUser">
+        <id property="loginUserID" column="loginUserID"/>
+        <association property="userRole" resultMap="userRoleMap"/>
+    </resultMap>
+    <resultMap id="userRoleMap" type="UserRole">
+        <id property="userRoleID" column="userRoleID"/>
+    </resultMap>
+    <select id="login" parameterType="LoginUser" resultMap="loginUserMap">
+        SELECT ls.*, ur.*
+        from loginuser ls, userrole ur
+        WHERE ur.userRoleID = ls.userRoleID
+        and ls.loginName=#{loginName}
+        and ls.loginPassword=#{loginPassword}
+        and ls.visible=1
+    </select>
+</mapper>

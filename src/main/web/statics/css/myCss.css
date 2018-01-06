@@ -1,0 +1,9 @@
+#indexMenu li{
+    list-style: none;
+    text-align: left;
+}
+#indexMenu li a{
+    font-size: 18px;
+    display: block;
+    width: 120px;
+}
