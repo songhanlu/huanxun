@@ -22,7 +22,7 @@
         <div region="west" style="width: 15%;" title="菜单栏">
             <div class="easyui-accordion" style="width: 100%;height: 100%;" data-options="{fit:true,selected:-1}">
                 <div title="用户模块">
-                    <ul id="indexMenu">
+                    <ul class="indexMenu">
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/employee/toEmployee.html">员工信息管理</a></li>
                         <li>&nbsp;</li>
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/student/toStudent.html">学生信息管理</a></li>

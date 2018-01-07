@@ -28,7 +28,7 @@ public class LoginController {
         if(loginUser1!=null){//在loginUser表中找到用户名密码
             System.out.println(loginUser1);
             int userRoleID = loginUser1.getUserRole().getUserRoleID();
-            if(userRoleID==1){//系统管理员身份
+            if(userRoleID==1 || userRoleID==2 || userRoleID==3 || userRoleID==4){//员工
                 session.setAttribute("loginUser",loginUser1);
                 //到employee表里，把当前登录用户具体信息找出来
                 Employee currentEmployee = employeeService.findEmployeeByID(loginUser1.getLoginUserID());
