@@ -22,13 +22,13 @@ public class ClassArrageController {
     @Resource
     private StudentCourseService studentCourseService;
 
-    @RequestMapping("/toClassArrange.html")
+    @RequestMapping("/toClassArrange.do")
     public String toClassArrage(){
         return "admin/classArrange";
     }
 
     //查询未排课的学生购买课程
-    @RequestMapping(value = "/findStudentCourseIsNotArrage.aa",method = RequestMethod.GET,
+    @RequestMapping(value = "/findStudentCourseIsNotArrage.do",method = RequestMethod.GET,
                     produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String findStudentCourseIsNotArrage(Integer page, Integer rows,
@@ -38,7 +38,7 @@ public class ClassArrageController {
         return JSON.toJSONString(new PageUtil<StudentCourse>(pageInfo));
     }
 
-    @RequestMapping("/addClassArrange.html")
+    @RequestMapping("/addClassArrange.do")
     public String addClassArrange(Integer stuCourseID, Model model){
         StudentCourse studentCourse = studentCourseService.findStudentCourseByID(stuCourseID);
         model.addAttribute("studentCourse",studentCourse);

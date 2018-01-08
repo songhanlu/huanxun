@@ -23,9 +23,9 @@
             <div class="easyui-accordion" style="width: 100%;height: 100%;" data-options="{fit:true,selected:-1}">
                 <div title="用户模块">
                     <ul myAttr="indexMenu">
-                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/employee/toEmployee.html">员工信息管理</a></li>
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/employee/toEmployee.do">员工信息管理</a></li>
                         <li>&nbsp;</li>
-                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/student/toStudent.html">学生信息管理</a></li>
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/student/toStudent.do">学生信息管理</a></li>
                     </ul>
                 </div>
                 <div title="外教模块"></div>
@@ -35,7 +35,7 @@
                     <ul myAttr="indexMenu">
                         <li><a class="easyui-linkbutton" url="#">查询课表</a></li>
                         <li>&nbsp;</li>
-                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.html">进入排课功能</a></li>
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入排课功能</a></li>
                     </ul>
                 </div>
                 <div title="校区模块"></div>

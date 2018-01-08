@@ -14,5 +14,6 @@ public interface StudentCourseMapper {
     //根据stuCourseID查询学生课程
     StudentCourse findStudentCourseByID(Integer stuCourseID);
 
-
+    //新增学生课程
+    Integer addStudentCourse(StudentCourse studentCourse);
 }

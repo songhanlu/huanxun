@@ -15,7 +15,7 @@ public class EmployeeController {
     @Resource
     private EmployeeService employeeService;
 
-    @RequestMapping("/toEmployee.html")
+    @RequestMapping("/toEmployee.do")
     public String toEmployee(){
         return "admin/employee";
     }

@@ -13,7 +13,7 @@
     <jsp:include page="../common.jsp"/>
 </head>
 <body>
-    <a href="${pageContext.request.contextPath}/classArrange/toClassArrange.html"
+    <a href="${pageContext.request.contextPath}/classArrange/toClassArrange.do"
             class="easyui-linkbutton" data-options="{iconCls:'icon-undo'}">返回上级</a>
     <div>
         <table>

@@ -19,7 +19,7 @@
 <script type="text/javascript">
     $(function () {
         $("#classArrangeDatagrid").datagrid({
-            url: "${pageContext.request.contextPath}/classArrange/findStudentCourseIsNotArrage.aa",
+            url: "${pageContext.request.contextPath}/classArrange/findStudentCourseIsNotArrage.do",
             method:"get",
             pagination:true,
             rownumbers:true,
@@ -76,7 +76,7 @@
 </script>
 <script type="text/javascript">
     function arrangeClass(stuCourseID) {
-        window.location.href = "${pageContext.request.contextPath}/classArrange/addClassArrange.html?stuCourseID="+stuCourseID;
+        window.location.href = "${pageContext.request.contextPath}/classArrange/addClassArrange.do?stuCourseID="+stuCourseID;
     }
 </script>
 </body>
