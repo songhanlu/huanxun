@@ -14,7 +14,7 @@
         新增学生购买课程
         <button type="button" class="easyui-linkbutton" data-options="{iconCls:'icon-undo'}" onclick="returnUpMenu();">返回上级菜单</button>
     </h3>
-    <form>
+    <form id="newStuCourseForm">
         <table align="center" class="easyui-table">
             <tr>
                 <td>选择学生年级：</td>
@@ -30,33 +30,35 @@
             <tr>
                 <td>选择课程类型：</td>
                 <td>
-                    <input id="courseTypeID" name="courseType.courseTypeID" class="easyui-textbox" style="width: 120px;"/>
+                    <input id="lessonTypeID" name="lessonType.lessonTypeID" class="easyui-textbox" style="width: 120px;"/>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;</td>
                 <td>选择教材类型：</td>
                 <td>
-                    <input id="lessonTypeID" name="lessonType.lessonTypeID" class="easyui-textbox" style="width: 120px;"/>
+                    <input id="courseTypeID" name="courseType.courseTypeID" class="easyui-textbox" style="width: 120px;"/>
                 </td>
             </tr>
             <tr>
                 <td>购买总节数：</td>
                 <td>
-                    <input id="lessonTotalNumber" name="lessonTotalNumber" class="easyui-numberbox" style="width: 120px;"/>
+                    <input id="lessonTotalNumber" name="lessonTotalNumber" class="easyui-numberbox" value="1" data-options="{min:1}" style="width: 120px;"/>
                     <input type="hidden" id="lessonRestNumber" name="lessonRestNumber"/>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;</td>
                 <td>折扣：</td>
                 <td>
-                    <input id="discount" name="discount" class="easyui-numberbox" style="width: 120px;" value="1.0" data-options="{precision:1}"/>
+                    <input id="discount" name="discount" class="easyui-numberbox" style="width: 120px;" value="1.0" data-options="{precision:1,max:1}"/>
                 </td>
             </tr>
-            <tr>
+            <%--<tr>
                 <td colspan="3" align="center">
                     <input type="submit" value="保存" class="easyui-linkbutton"/>
                 </td>
-            </tr>
+            </tr>--%>
         </table>
+
     </form>
+    <h3 align="center"><button id="" onclick="saveNewStuCourse();" class="easyui-linkbutton" data-options="{iconCls:'icon-save'}">保存新课程</button></h3>
 </body>
 <script type="text/javascript">
     $(function () {
@@ -68,6 +70,7 @@
             $("#gradeID").combobox({
                 valueField:"stuGradeID",
                 textField:"stuGradeName",
+                editable:false,
                 data:studentGrades,
                 onLoadSuccess:function () {
                     $(this).combobox("select", -1);
@@ -80,6 +83,7 @@
                         $("#studentID").combobox({
                             valueField:"stuID",
                             textField:"stuName",
+                            editable:false,
                             data:students,
                             onLoadSuccess:function () {
                                 $(this).combobox("select", -1);
@@ -88,7 +92,69 @@
                     });
                 }
             });
-        })
+        });
+
+        //加载页面时显示所有教材类型
+        $.get("${pageContext.request.contextPath}/courseType/findAllCourseType",function (courseTypes) {
+            var ctfo = $.parseJSON('{"courseTypeID":-1,"courseTypeName":"==请选择=="}');
+            courseTypes.push(ctfo);
+            $("#courseTypeID").combobox({
+                valueField:"courseTypeID",
+                textField:"courseTypeName",
+                editable:false,
+                data:courseTypes,
+                onLoadSuccess:function () {
+                    $(this).combobox("select", -1);
+                },
+            });
+        });
+
+        //加载页面时显示所有课程类型
+        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType",function (lessonTypes) {
+            var ptfo = $.parseJSON('{"lessonTypeID":-1,"lessonDesc":"==请选择=="}');
+            lessonTypes.push(ptfo);
+            $("#lessonTypeID").combobox({
+                valueField:"lessonTypeID",
+                textField:"lessonDesc",
+                editable:false,
+                data:lessonTypes,
+                onLoadSuccess:function () {
+                    $(this).combobox("select", -1);
+                },
+            });
+        });
+
+        //改变discount值
+        $("#discount").numberbox({
+            onChange:function (newValue,oldValue) {
+                oldValue = newValue;
+            }
+        });
+
+        //点击保存按钮事件
+
     });
+
+</script>
+<script type="text/javascript">
+    function saveNewStuCourse() {
+        //校验参数
+        var stuID = $("#studentID").combobox("getValue");
+        var courseTypeID = $("#courseTypeID").combobox("getValue");
+        var lessonTypeID = $("#lessonTypeID").combobox("getValue");
+        if(stuID==-1 || courseTypeID==-1 || lessonTypeID==-1) {
+            alert("请选择正确的参数！");
+            return;
+        }
+        //将totalNumber的值赋给restNumber
+        var number = $("#lessonTotalNumber").numberbox("getValue");
+        $("#lessonRestNumber").val(number);
+        var studentCourse = $("#newStuCourseForm").serialize();
+        $.post("${pageContext.request.contextPath}/studentCourse/addStuCourse.do",studentCourse,function (result) {
+            console.log(result);
+            alert(result.msg);
+            window.location.href = "${pageContext.request.contextPath}/classArrange/toClassArrange.do";
+        });
+    }
 </script>
 </html>
