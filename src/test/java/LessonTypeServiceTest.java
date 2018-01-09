@@ -1,5 +1,7 @@
 import com.bdqn.huanxun.dao.LessonTypeMapper;
 import com.bdqn.huanxun.pojo.LessonType;
+import com.bdqn.huanxun.service.LessonTypeService;
+import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -47,11 +49,19 @@ public class LessonTypeServiceTest {
 
     @Resource
     private LessonTypeMapper lessonTypeMapper;
+    @Resource
+    private LessonTypeService lessonTypeService;
     @Test
     public void queryAllLessonType() throws Exception {
-        List<LessonType> list = lessonTypeMapper.queryAllLessonType();
-        for (LessonType type : list) {
-            System.out.println(type);
+        PageInfo<LessonType> pageInfo=lessonTypeService.queryAllLessonType(1,3);
+        if (null != pageInfo) {
+            System.out.println(pageInfo);
+            List<LessonType> list=pageInfo.getList();
+            if (null != list) {
+                for (LessonType lessonType : list) {
+                    System.out.println(lessonType);
+                }
+            }
         }
     }
 

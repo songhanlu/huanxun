@@ -2,6 +2,8 @@ package com.bdqn.huanxun.service;
 
 import com.bdqn.huanxun.dao.LessonTypeMapper;
 import com.bdqn.huanxun.pojo.LessonType;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,8 +17,11 @@ public class LessonTypeServiceImpl implements LessonTypeService {
     @Resource
     private LessonTypeMapper lessonTypeMapper;
 
-    public List<LessonType> queryAllLessonType() {
-        return lessonTypeMapper.queryAllLessonType();
+    public PageInfo<LessonType> queryAllLessonType(Integer pageNum,Integer pageSize) {
+            PageHelper.startPage(pageNum,pageSize);
+            List<LessonType> list=lessonTypeMapper.queryAllLessonType();
+            PageInfo<LessonType> pageInfo = new PageInfo<LessonType>(list);
+            return pageInfo;
     }
 
     public List<LessonType> queryAllLessonTypeByLessonType(LessonType lessonArea) {

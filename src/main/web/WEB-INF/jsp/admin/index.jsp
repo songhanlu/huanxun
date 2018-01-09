@@ -29,7 +29,12 @@
                     </ul>
                 </div>
                 <div title="外教模块"></div>
-                <div title="课程模块"></div>
+                <div title="课程模块">
+                    <ul myAttr="indexMenu">
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/lessonType/toLessonType.do">课程信息管理</a></li>
+                        <li>&nbsp;</li>
+                     </ul>
+                </div>
                 <div title="教材模块"></div>
                 <div title="课表模块">
                     <ul myAttr="indexMenu">
