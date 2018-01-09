@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.LessonTypeMapper">
+    <resultMap id="LessonTypeMap" type="LessonType">
+        <id property="lessonTypeID" column="lessonTypeID"></id>
+        <result property="timePerLesson" column="timePerLesson"></result>
+        <result property="lessonArea" column="lessonArea"></result>
+        <result property="lessonPrice" column="lessonPrice"></result>
+        <result property="isTry" column="isTry"></result>
+        <result property="visible" column="visible"></result>
+        <result property="lessonDesc" column="lessonDesc"></result>
+    </resultMap>
+    <select id="queryAllLessonType" resultMap="LessonTypeMap">
+          SELECT * FROM lessontype
+    </select>
+    <select id="queryAllLessonTypeByLessonType" parameterType="String" resultMap="LessonTypeMap">
+        SELECT * FROM  lessontype
+        <where>
+            visible=1
+            <if test="lessonArea!=null ">
+               AND lessonArea = #{lessonArea}
+            </if>
+            <if test="timePerLesson!=null ">
+              AND  timePerLesson = #{timePerLesson}
+            </if>
+            <if test="lessonPrice!=null ">
+              AND lessonPrice = #{lessonPrice}
+            </if>
+        </where>
+
+    </select>
+    <update id="updateLessonDescAndLessonPriceAndTimePerLessonById" parameterType="LessonType">
+         UPDATE lessontype
+         <trim prefix="set" suffixOverrides="," suffix="where lessonTypeID = #{lessonTypeID}">
+             <if test="lessonDesc!=null">
+                 lessonDesc = #{lessonDesc},
+             </if>
+             <if test="lessonPrice!=null">
+                 lessonPrice = #{lessonPrice},
+             </if>
+             <if test="timePerLesson!=null">
+                 timePerLesson = #{timePerLesson},
+             </if>
+         </trim>
+    </update>
+
+    <insert id="queryAddLessonType" parameterType="LessonType">
+      INSERT INTO lessontype VALUES (NULl,#{timePerLesson},#{lessonArea},#{lessonPrice},
+      <if test="lessonPrice != 0">
+          0,
+      </if>
+      <if test="lessonPrice == 0">
+          1,
+      </if>
+      1,#{lessonDesc})
+    </insert>
+</mapper>

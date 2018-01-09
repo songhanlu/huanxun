@@ -17,15 +17,15 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Resource
     private StudentCourseMapper studentCourseMapper;
 
-    @Override
+
     public PageInfo<StudentCourse> findAllStudentCourse(Integer pageNum, Integer pageSize,
                                                         StudentCourse studentCourse) {
         PageHelper.startPage(pageNum, pageSize);
         List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse);
-        return new PageInfo<>(studentCourses);
+        return new PageInfo<StudentCourse>(studentCourses);
     }
 
-    @Override
+
     public StudentCourse findStudentCourseByID(Integer id) {
         return studentCourseMapper.findStudentCourseByID(id);
     }

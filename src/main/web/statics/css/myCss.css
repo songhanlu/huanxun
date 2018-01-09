@@ -1,4 +1,4 @@
-ul[myAttr]>li{
+ ul[myAttr]>li{
     list-style: none;
     text-align: left;
 }
