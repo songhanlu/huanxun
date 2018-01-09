@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: hp
-  Date: 2018/1/7
-  Time: 13:29
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,7 +6,9 @@
 </head>
 <body>
     <div>
-        <h4>以下学生需要排课</h4>
+        <h3 align="center">
+            学生已购课程列表
+        </h3>
     </div>
     <table id="classArrangeDatagrid"></table>
 <script type="text/javascript">
@@ -28,6 +23,15 @@
                 $("button").linkbutton({iconCls:'icon-edit'});
                 $(this).datagrid("fixRowHeight");
             },
+            toolbar:[
+                {
+                    text:"新增学生购买课程",
+                    iconCls:"icon-add",
+                    handler:function () {
+                        window.location.href = "${pageContext.request.contextPath}/classArrange/toAddStuCourse.do";
+                    }
+                },
+            ],
             columns:[[
                 {field:"student",title:"学生姓名",formatter:function (value, row, index) {
                     return row.student.stuName;

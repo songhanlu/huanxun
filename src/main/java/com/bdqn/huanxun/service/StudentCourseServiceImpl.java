@@ -29,4 +29,9 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     public StudentCourse findStudentCourseByID(Integer id) {
         return studentCourseMapper.findStudentCourseByID(id);
     }
+
+    @Override
+    public Integer addStudentCourse(StudentCourse studentCourse) {
+        return studentCourseMapper.addStudentCourse(studentCourse);
+    }
 }

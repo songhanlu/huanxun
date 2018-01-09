@@ -27,21 +27,27 @@ public class ClassArrageController {
         return "admin/classArrange";
     }
 
-    //查询未排课的学生购买课程
+    //查询所有学生购买课程
     @RequestMapping(value = "/findStudentCourseIsNotArrage.do",method = RequestMethod.GET,
                     produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String findStudentCourseIsNotArrage(Integer page, Integer rows,
                                                StudentCourse studentCourse){
-        studentCourse.setIsArranged(-1);
+        studentCourse.setIsArranged(-1);//-1为所有课程
         PageInfo<StudentCourse> pageInfo = studentCourseService.findAllStudentCourse(page, rows, studentCourse);
         return JSON.toJSONString(new PageUtil<StudentCourse>(pageInfo));
     }
 
+    //进入新增学生购买课程页面
+    @RequestMapping("/toAddStuCourse.do")
+    public String toAddStuCourse(){
+        return "admin/showAddStuCourse";
+    }
+
     @RequestMapping("/addClassArrange.do")
-    public String addClassArrange(Integer stuCourseID, Model model){
+    public String addClassArrange(Integer stuCourseID, Model model) {
         StudentCourse studentCourse = studentCourseService.findStudentCourseByID(stuCourseID);
-        model.addAttribute("studentCourse",studentCourse);
+        model.addAttribute("studentCourse", studentCourse);
         return "admin/addClassArrange";
     }
 }

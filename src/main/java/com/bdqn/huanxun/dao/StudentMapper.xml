@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.StudentMapper">
+    <resultMap id="agencyMap" type="Agency">
+        <id property="agencyID" column="agencyID"/>
+    </resultMap>
+    <resultMap id="studentGradeMap" type="StudentGrade">
+        <id property="stuGradeID" column="stuGradeID"/>
+    </resultMap>
+    <resultMap id="studentMap" type="Student">
+        <id property="stuID" column="stuID"/>
+        <association property="agency" resultMap="agencyMap"/>
+        <association property="studentGrade" resultMap="studentGradeMap"/>
+    </resultMap>
+
+    <select id="findfStudentSByGradeID" parameterType="integer" resultMap="studentMap">
+        SELECT
+          s.*, sg.*
+        from student s, studentgrade sg
+        where s.stuGradeID = sg.stuGradeID
+        and s.stuGradeID = #{stuGradeID}
+    </select>
+</mapper>

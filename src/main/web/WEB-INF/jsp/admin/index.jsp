@@ -33,7 +33,7 @@
                 <div title="教材模块"></div>
                 <div title="课表模块">
                     <ul myAttr="indexMenu">
-                        <li><a class="easyui-linkbutton" url="#">查询课表</a></li>
+                        <li><a class="easyui-linkbutton" url="#">课表查询</a></li>
                         <li>&nbsp;</li>
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入排课功能</a></li>
                     </ul>
