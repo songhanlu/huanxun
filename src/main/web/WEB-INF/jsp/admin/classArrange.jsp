@@ -5,12 +5,35 @@
     <jsp:include page="../common.jsp"/>
 </head>
 <body>
+
     <div>
-        <h3 align="center">
-            学生已购课程列表
-        </h3>
+        <form id="studentCourseForm" style="margin:0;">
+            <table border="1">
+                <tr>
+                    <td><h4 style="margin: 2px;">条件查询</h4></td>
+                </tr>
+                <tr>
+                    <td>学生姓名：<input id="studentName" class="easyui-textbox" name="student.studentName"/></td>
+                </tr>
+            </table>
+        </form>
+        <p align="center">
+            <button id="studentCourseSearchButton" class="easyui-linkbutton" data-options="{iconCls:'icon-search'}">搜索</button>
+        </p>
+        <h3 align="center" style="margin-bottom: 0;">所有学生列表</h3>
     </div>
     <table id="classArrangeDatagrid"></table>
+<script type="text/javascript">
+    $(function () {
+        $("#studentCourseForm").form("clear");
+        $("#studentCourseSearchButton").click(function () {
+            var stuName = $("#studentName").textbox("getValue");
+            $("#classArrangeDatagrid").datagrid("load", {
+                "stuName":stuName,
+            });
+        });
+    });
+</script>
 <script type="text/javascript">
     $(function () {
         $("#classArrangeDatagrid").datagrid({
@@ -45,15 +68,6 @@
                     }
                     return teacherName;
                 }},
-                {field:"agency",title:"学生所属机构",formatter:function (value, row, index) {
-                    var agencyName = "";
-                    if(row.teacher!=null){
-                        agencyName=row.agency.agencyName;
-                    }else{
-                        agencyName = "无";
-                    }
-                    return agencyName;
-                }},
                 {field:"course",title:"课程类型",width:200,formatter:function (value, row, index) {
                     var course = row.courseType.courseTypeName+"/"+
                                 row.lessonType.lessonArea+
@@ -69,8 +83,17 @@
                     }
                     return isTry;
                 }},
-                {field:"lessonTotalNumber",title:"总节数"},
+                {field:"lessonTotalNumber",title:"总节数",sortable:true},
                 {field:"lessonRestNumber",title:"剩余节数"},
+                {field:"isArranged",title:"是否已完成排课",formatter:function (value, row, index) {
+                    var flag = "";
+                    if(value==1){
+                        flag="是";
+                    }else{
+                        flag="否";
+                    }
+                    return flag;
+                }},
                 {field:"stuCourseID",title:"排课",width:200,formatter:function (value, row, index) {
                     return "<button onclick='arrangeClass("+value+")'>排课</button>";
                 }},

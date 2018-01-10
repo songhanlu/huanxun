@@ -19,9 +19,10 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 
     @Override
     public PageInfo<StudentCourse> findAllStudentCourse(Integer pageNum, Integer pageSize,
-                                                        StudentCourse studentCourse) {
+                                                        StudentCourse studentCourse,
+                                                        String stuName) {
         PageHelper.startPage(pageNum, pageSize);
-        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse);
+        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse,stuName);
         return new PageInfo<>(studentCourses);
     }
 
@@ -33,5 +34,10 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Override
     public Integer addStudentCourse(StudentCourse studentCourse) {
         return studentCourseMapper.addStudentCourse(studentCourse);
+    }
+
+    @Override
+    public Integer updateStudentCourse(StudentCourse studentCourse) {
+        return studentCourseMapper.updateStudentCourse(studentCourse);
     }
 }

@@ -39,6 +39,17 @@
                 </td>
             </tr>
             <tr>
+                <td>教师职业类型：</td>
+                <td>
+                    <input id="teacherCareerType" name="teacherCareerType" style="width: 120px;"/>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>教师姓名：</td>
+                <td>
+                    <input id="teacherID" name="teacherID" style="width: 120px;"/>
+                </td>
+            </tr>
+            <tr>
                 <td>购买总节数：</td>
                 <td>
                     <input id="lessonTotalNumber" name="lessonTotalNumber" class="easyui-numberbox" value="1" data-options="{min:1}" style="width: 120px;"/>
@@ -142,7 +153,8 @@
         var stuID = $("#studentID").combobox("getValue");
         var courseTypeID = $("#courseTypeID").combobox("getValue");
         var lessonTypeID = $("#lessonTypeID").combobox("getValue");
-        if(stuID==-1 || courseTypeID==-1 || lessonTypeID==-1) {
+        var teacherID = $("#teacherID").combobox("getValue");
+        if(stuID==-1 || courseTypeID==-1 || lessonTypeID==-1 || teacherID==-1) {
             alert("请选择正确的参数！");
             return;
         }
@@ -156,5 +168,37 @@
             window.location.href = "${pageContext.request.contextPath}/classArrange/toClassArrange.do";
         });
     }
+</script>
+<script type="text/javascript">
+    $(function () {
+        /*教师职业列表*/
+        $("#teacherCareerType").combobox({
+            editable:false,
+            valueField:"careerTypeName",
+            textField:"careerTypeName",
+            data:[
+                {"careerTypeName":"全职"},
+                {"careerTypeName":"兼职"}
+            ],
+            onLoadSuccess:function () {
+                $(this).combobox("select", "全职");
+            },
+            onSelect:function (careerType) {
+                var careerTypeName = careerType.careerTypeName;
+                $.get("${pageContext.request.contextPath}/teacher/findTeacherByCareerType",{"careerType":careerTypeName},function (teachers) {
+                    var tfo = $.parseJSON('{"teacherID":-1,"teacherName":"==请选择=="}');
+                    teachers.push(tfo);
+                    $("#teacherID").combobox({
+                        valueField:"teacherID",
+                        textField:"teacherName",
+                        data:teachers,
+                        onLoadSuccess:function () {
+                            $(this).combobox("select", -1);
+                        },
+                    });
+                })
+            }
+        });
+    });
 </script>
 </html>

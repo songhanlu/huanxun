@@ -32,32 +32,22 @@
     </resultMap>
 
     <!--查询所有学生购买的课程-->
-    <select id="findAllStudentCourse" parameterType="StudentCourse" resultMap="studentCourseMap">
+    <select id="findAllStudentCourse" resultMap="studentCourseMap">
         SELECT *
         from
           studentcourse stco, student st,
-          <if test="teacherID!=null">
-              teacher te,
-          </if>
+          teacher te,
           lessontype lt, coursetype ct,
-          <if test="agencyID!=null">
-            agency ag,
-          </if>
           studentgrade sg
         where
           stco.stuID = st.stuID
           and stco.courseTypeID = ct.courseTypeID
           and stco.lessonTypeID = lt.lessonTypeID
           and st.stuGradeID = sg.stuGradeID
-          <if test="isArranged!=-1">
-              and isArranged=#{isArranged}
+          <if test="stuName!=null and stuName!=''">
+              and st.stuName like concat('%',#{stuName},'%')
           </if>
-          <if test="teacherID!=null">
-              and stco.teacherID = te.teacherID
-          </if>
-          <if test="agencyID!=null">
-              and st.agencyID = ag.agencyID
-          </if>
+          and stco.teacherID = te.teacherID
         order by stuCourseID desc
     </select>
 
@@ -65,7 +55,7 @@
     <select id="findStudentCourseByID" parameterType="integer" resultMap="studentCourseMap">
         SELECT *
         from
-        studentcourse stco, student st,
+        studentcourse stco, student st,teacher te,
         lessontype lt, coursetype ct,
         studentgrade sg
         where
@@ -74,11 +64,27 @@
         and stco.lessonTypeID = lt.lessonTypeID
         and st.stuGradeID = sg.stuGradeID
         and stco.stuCourseID = #{stuCourseID}
+        and stco.teacherID = te.teacherID
     </select>
     
     <!--新增学生课程-->
     <insert id="addStudentCourse" parameterType="StudentCourse">
-        insert into studentcourse (stuID, lessonTypeID, courseTypeID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
-        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
+        insert into studentcourse (stuID, lessonTypeID, courseTypeID,teacherID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
+        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{teacherID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
     </insert>
+
+    <!--修改学生课程-->
+    <update id="updateStudentCourse" parameterType="StudentCourse">
+        update studentcourse
+        SET
+          teacherID=#{teacher.teacherID},
+          lessonTypeID=#{lessonType.lessonTypeID},
+          courseTypeID=#{courseType.courseTypeID},
+          lessonTotalNumber=#{lessonTotalNumber},
+          lessonRestNumber=#{lessonRestNumber},
+          discount=#{discount},
+          isArranged=#{isArranged}
+        where
+          stuCourseID=#{stuCourseID}
+    </update>
 </mapper>
