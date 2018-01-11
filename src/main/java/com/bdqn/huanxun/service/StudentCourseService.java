@@ -10,7 +10,12 @@ public interface StudentCourseService {
     //查询所有学生购买的课程（多条件）
     PageInfo<StudentCourse> findAllStudentCourse(Integer pageNum, Integer pageSize,
                                                  StudentCourse studentCourse,
-                                                 String stuName);
+                                                 String stuName,
+                                                 Integer isArranged,
+                                                 Integer courseTypeID,
+                                                 Integer lessonTypeID,
+                                                 String sort,
+                                                 String order);
 
     //根据stuCourseID查询学生课程
     StudentCourse findStudentCourseByID(Integer id);

@@ -20,9 +20,14 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Override
     public PageInfo<StudentCourse> findAllStudentCourse(Integer pageNum, Integer pageSize,
                                                         StudentCourse studentCourse,
-                                                        String stuName) {
+                                                        String stuName,
+                                                        Integer isArranged,
+                                                        Integer courseTypeID,
+                                                        Integer lessonTypeID,
+                                                        String sort,
+                                                        String order) {
         PageHelper.startPage(pageNum, pageSize);
-        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse,stuName);
+        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse,stuName,isArranged,courseTypeID,lessonTypeID,sort,order);
         return new PageInfo<>(studentCourses);
     }
 

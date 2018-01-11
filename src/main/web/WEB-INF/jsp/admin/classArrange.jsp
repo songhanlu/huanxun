@@ -10,15 +10,23 @@
         <form id="studentCourseForm" style="margin:0;">
             <table border="1">
                 <tr>
-                    <td><h4 style="margin: 2px;">条件查询</h4></td>
-                </tr>
-                <tr>
-                    <td>学生姓名：<input id="studentName" class="easyui-textbox" name="student.studentName"/></td>
+                    <td>
+                        学生姓名：<input id="studentName" class="easyui-textbox"/>
+                    </td>
+                    <td>
+                        课程类型：<input id="courseTypeCombobox"/>
+                    </td>
+                    <td>
+                        教材类型：<input id="lessonTypeCombobox"/>
+                    </td>
+                    <td>
+                        只查询未完成排课的课程：<input id="isArranged" type="checkbox"/>
+                    </td>
                 </tr>
             </table>
         </form>
         <p align="center">
-            <button id="studentCourseSearchButton" class="easyui-linkbutton" data-options="{iconCls:'icon-search'}">搜索</button>
+            <button id="studentCourseSearchButton" class="easyui-linkbutton" data-options="{iconCls:'icon-add'}">搜索</button>
         </p>
         <h3 align="center" style="margin-bottom: 0;">所有学生列表</h3>
     </div>
@@ -26,10 +34,48 @@
 <script type="text/javascript">
     $(function () {
         $("#studentCourseForm").form("clear");
+        $.get("${pageContext.request.contextPath}/courseType/findAllCourseType",function (courses) {
+            var cfo = $.parseJSON('{"courseTypeID":-1,"courseTypeName":"==请选择=="}');
+            courses.push(cfo);
+            //console.log(courses);
+            $("#courseTypeCombobox").combobox({
+                valueField:"courseTypeID",
+                textField:"courseTypeName",
+                editable:false,
+                data:courses,
+                onLoadSuccess:function () {
+                    $(this).combobox("select",-1);
+                }
+            });
+        });
+        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType",function (lessons) {
+            var lfo = $.parseJSON('{"lessonTypeID":-1,"lessonDesc":"==请选择=="}');
+            lessons.push(lfo);
+            $("#lessonTypeCombobox").combobox({
+                valueField:"lessonTypeID",
+                textField:"lessonDesc",
+                editable:false,
+                data:lessons,
+                onLoadSuccess:function () {
+                    $(this).combobox("select",-1);
+                }
+            });
+        });
+
         $("#studentCourseSearchButton").click(function () {
             var stuName = $("#studentName").textbox("getValue");
+            var isArranged = -1;
+            var courseTypeID = $("#courseTypeCombobox").combobox("getValue");
+            var lessonTypeID = $("#lessonTypeCombobox").combobox("getValue");
+            var flag = $("#isArranged").prop("checked");
+            if(flag){
+                isArranged = 0;
+            }
             $("#classArrangeDatagrid").datagrid("load", {
                 "stuName":stuName,
+                "isArranged":isArranged,
+                "courseTypeID":courseTypeID,
+                "lessonTypeID":lessonTypeID,
             });
         });
     });
@@ -40,10 +86,14 @@
             url: "${pageContext.request.contextPath}/classArrange/findStudentCourseIsNotArrage.do",
             method:"get",
             pagination:true,
+            /*pageSize:3,
+            pageList:[3,5,7],*/
             rownumbers:true,
             striped:true,
+            /*remoteSort:false,*/
             onLoadSuccess:function () {
                 $("button").linkbutton({iconCls:'icon-edit'});
+                $("#studentCourseSearchButton").linkbutton({iconCls:'icon-search'});
                 $(this).datagrid("fixRowHeight");
             },
             toolbar:[
@@ -84,8 +134,8 @@
                     return isTry;
                 }},
                 {field:"lessonTotalNumber",title:"总节数",sortable:true},
-                {field:"lessonRestNumber",title:"剩余节数"},
-                {field:"isArranged",title:"是否已完成排课",formatter:function (value, row, index) {
+                {field:"lessonRestNumber",title:"剩余节数",sortable:true},
+                {field:"isArranged",title:"是否已完成排课",sortable:true,formatter:function (value, row, index) {
                     var flag = "";
                     if(value==1){
                         flag="是";

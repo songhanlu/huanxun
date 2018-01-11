@@ -45,12 +45,23 @@ public class ClassArrageController {
     @ResponseBody
     public String findStudentCourseIsNotArrage(Integer page, Integer rows,
                                                StudentCourse studentCourse,
-                                               String stuName) throws UnsupportedEncodingException {
+                                               String stuName,
+                                               Integer isArranged,
+                                               Integer courseTypeID,
+                                               Integer lessonTypeID,
+                                               String sort,
+                                               String order) throws UnsupportedEncodingException {
         //studentCourse.setIsArranged(-1);//-1为所有课程
         if(null!=stuName){
             stuName = new String(stuName.getBytes("ISO8859-1"),"UTF-8");
         }
-        PageInfo<StudentCourse> pageInfo = studentCourseService.findAllStudentCourse(page, rows, studentCourse,stuName);
+        if(null!= courseTypeID && courseTypeID==-1){
+            courseTypeID=null;
+        }
+        if(null!=lessonTypeID && lessonTypeID==-1){
+            lessonTypeID=null;
+        }
+        PageInfo<StudentCourse> pageInfo = studentCourseService.findAllStudentCourse(page, rows, studentCourse,stuName,isArranged,courseTypeID,lessonTypeID,sort,order);
         return JSON.toJSONString(new PageUtil<StudentCourse>(pageInfo));
     }
 

@@ -11,7 +11,12 @@ import java.util.List;
 public interface StudentCourseMapper {
     //查询所有学生购买的课程（多条件）
     List<StudentCourse> findAllStudentCourse(StudentCourse studentCourse,
-                                             @Param("stuName") String stuName);
+                                             @Param("stuName") String stuName,
+                                             @Param("isArranged") Integer isArranged,
+                                             @Param("courseTypeID")Integer courseTypeID,
+                                             @Param("lessonTypeID")Integer lessonTypeID,
+                                             @Param("sort")String sort,
+                                             @Param("order")String order);
 
     //根据stuCourseID查询学生课程
     StudentCourse findStudentCourseByID(Integer stuCourseID);

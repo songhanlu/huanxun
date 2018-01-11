@@ -47,8 +47,24 @@
           <if test="stuName!=null and stuName!=''">
               and st.stuName like concat('%',#{stuName},'%')
           </if>
+          <if test="isArranged==0">
+              and stco.isArranged = #{isArranged}
+          </if>
+          <if test="courseTypeID!=null">
+              and stco.courseTypeID = #{courseTypeID}
+          </if>
+          <if test="lessonTypeID!=null">
+              and stco.lessonTypeID = #{lessonTypeID}
+          </if>
           and stco.teacherID = te.teacherID
-        order by stuCourseID desc
+        <choose>
+            <when test="sort!=null and sort!=''">
+                order by stco.${sort} ${order}
+            </when>
+            <otherwise>
+                order by stco.stuCourseID desc
+            </otherwise>
+        </choose>
     </select>
 
     <!--根据stuCourseID查询学生课程-->

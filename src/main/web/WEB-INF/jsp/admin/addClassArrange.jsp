@@ -69,7 +69,7 @@
                 </div>
                 <div>
                     <br/>
-                    本次排课：<input name="lessonNumber" class="easyui-numberbox" data-options="{min:1,value:1,required:true}"/>节
+                    本次要排课：<input name="lessonNumber" class="easyui-numberbox" data-options="{min:1,value:1,required:true}"/>节
                     <input type="hidden" name="times" value="1"/>
                 </div>
             </form>
@@ -97,6 +97,14 @@
 </body>
 <script type="text/javascript">
     $(function () {
+        <c:choose>
+            <c:when test="${!empty classArrangeTotal}">
+                $("#haveArrangeNumber").textbox("setValue",${classArrangeTotal});
+            </c:when>
+            <c:otherwise>
+                $("#haveArrangeNumber").textbox("setValue",0);
+            </c:otherwise>
+        </c:choose>
         /*表格*/
         $("#classArrangeDatagrid").datagrid({
             url:"${pageContext.request.contextPath}/classArrange/findArrangesByCourseID.do?stuCourseID=${studentCourse.stuCourseID}",
@@ -108,14 +116,7 @@
                 $("button").linkbutton();
                 $(this).datagrid("fixRowHeight");
                 var total = $(this).get()
-                <c:choose>
-                    <c:when test="${!empty classArrangeTotal}">
-                        $("#haveArrangeNumber").textbox("setValue",${classArrangeTotal});
-                    </c:when>
-                    <c:otherwise>
-                        $("#haveArrangeNumber").textbox("setValue",0);
-                    </c:otherwise>
-                </c:choose>
+
             },
             toolbar:[
                 {
@@ -197,6 +198,11 @@
                         $.post("${pageContext.request.contextPath}/classArrange/deleteArrange.do",{"IDs":IDs,"stuCourseID":${studentCourse.stuCourseID}},function (result) {
                             alert(result.msg);
                             $("#classArrangeDatagrid").datagrid("reload");
+                            //更新当前课程的排课总数
+                            $.get("${pageContext.request.contextPath}/classArrange/countClassArrange.do",{"stuCourseID":${studentCourse.stuCourseID}},function (data) {
+                                var count = data.count;
+                                $("#haveArrangeNumber").textbox("setValue", count);
+                            });
                         });
 
                     }
@@ -240,12 +246,18 @@
     $(function () {
         $("#saveNewClassArrangeButton").click(function () {
             var studentClassArrange = $("#addClassArrangeForm").serialize();
-            console.log(studentClassArrange);
+            //console.log(studentClassArrange);
             $.post("${pageContext.request.contextPath}/classArrange/addArrange.do",studentClassArrange,function (result) {
                 alert(result.msg);
                 $("#classArrangeDatagrid").datagrid("reload");
                 $("#addClassArrangeWindow").window("close");
-            })
+                //更新当前课程的排课总数
+                $.get("${pageContext.request.contextPath}/classArrange/countClassArrange.do",{"stuCourseID":${studentCourse.stuCourseID}},function (data) {
+                    var count = data.count;
+                    $("#haveArrangeNumber").textbox("setValue", count);
+                });
+            });
+
 
         });
         $("#updateNewClassArrangeButton").click(function () {
@@ -290,6 +302,11 @@
                 alert(result.msg);
                 $("#classArrangeDatagrid").datagrid("reload");
                 $("#updateClassArrangeWindow").window("close");
+                //更新当前课程的排课总数
+                $.get("${pageContext.request.contextPath}/classArrange/countClassArrange.do",{"stuCourseID":${studentCourse.stuCourseID}},function (data) {
+                    var count = data.count;
+                    $("#haveArrangeNumber").textbox("setValue", count);
+                });
             });
         }
     }
