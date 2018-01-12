@@ -103,4 +103,16 @@
         where
           stuCourseID=#{stuCourseID}
     </update>
+
+    <!--根据课程LessonTypeID查询课程数量-->
+    <select id="countStuCourseByLessonTypeID" parameterType="integer" resultType="integer">
+        SELECT count(1) FROM studentcourse
+        where lessonTypeID = #{lessonTypeID}
+    </select>
+
+    <!--根据课程CourseTypeID查询课程数量-->
+    <select id="countStuCourseByCourseTypeID" parameterType="integer" resultType="integer">
+        SELECT count(1) FROM studentcourse
+        where courseTypeID = #{courseTypeID}
+    </select>
 </mapper>

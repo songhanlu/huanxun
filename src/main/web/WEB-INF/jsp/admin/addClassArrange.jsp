@@ -70,7 +70,9 @@
                 <div>
                     <br/>
                     本次要排课：<input name="lessonNumber" class="easyui-numberbox" data-options="{min:1,value:1,required:true}"/>节
-                    <input type="hidden" name="times" value="1"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    是否启用自动排课:<input id="autoArrangeButton" type="checkbox"/>
+                    自动排课<input type="text" id="times" name="times" style="width: 50px;" class="easyui-textbox" readonly/>节
                 </div>
             </form>
             <button id="saveNewClassArrangeButton" class="easyui-linkbutton" data-options="{iconCls:'icon-save'}">确定排课</button>
@@ -127,6 +129,20 @@
                         $("input[name=stuCourseID]").val(${studentCourse.stuCourseID});
                         $("input[name=times]").val(1);
                         $("#addClassArrangeWindow").window("open");
+                        /*启用自动排课的javascript*/
+                        $("#times").textbox("setValue", 1);
+                        $("#autoArrangeButton").click(function () {
+                            if($(this).prop("checked")){
+                                $("#times").textbox({
+                                    readonly:false,
+                                });
+                            }else{
+                                $("#times").textbox({
+                                    readonly:true,
+                                });
+                                $("#times").textbox("setValue", 1);
+                            }
+                        });
                         /*教师职业列表*/
                         $("#teacherCareer").combobox({
                             editable:false,
@@ -245,6 +261,7 @@
 <script type="text/javascript">
     $(function () {
         $("#saveNewClassArrangeButton").click(function () {
+
             var studentClassArrange = $("#addClassArrangeForm").serialize();
             //console.log(studentClassArrange);
             $.post("${pageContext.request.contextPath}/classArrange/addArrange.do",studentClassArrange,function (result) {
@@ -276,6 +293,7 @@
                 function (result) {
                     alert(result.msg);
                     $("#classArrangeDatagrid").datagrid("reload");
+                    $("#updateClassArrangeWindow").window("close");
                 });
         });
     });

@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,6 +104,11 @@ public class ClassArrageController {
         teacher.setTeacherID(teacherID);
         Date sTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
         Date eTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(endTime);
+        //判断外教时间是否冲突
+        boolean isDupe = studentClassArrangeService.teacherTimeIsNotDupe(times, teacherID, sTime, eTime,-1);
+        if(!isDupe){
+            return JSON.toJSONString(Message.teacherTimeDupeError());
+        }
         StudentClassArrange studentClassArrange = new StudentClassArrange();
         studentClassArrange.setStuCourseID(stuCourseID);
         studentClassArrange.setStartTime(sTime);
@@ -111,17 +117,46 @@ public class ClassArrageController {
         studentClassArrange.setTeacher(teacher);
 
         StudentCourse studentCourse = studentCourseService.findStudentCourseByID(stuCourseID);
-        int result = studentClassArrangeService.addStuClassArrange(studentClassArrange);
-        if(result>0){
-            Integer countArrange = studentClassArrangeService.countClassArrange(stuCourseID);
-            int totalLessonNumber = studentCourse.getLessonTotalNumber();
-            if(null!=countArrange && countArrange>=totalLessonNumber){
-                studentCourse.setIsArranged(1);
-                studentCourseService.updateStudentCourse(studentCourse);
+
+        //开始排课
+        boolean success = true;
+        Date dateSSS = sTime;
+        Date dateEEE = eTime;
+        for(int i = 0; i < times; i++){
+            studentClassArrange.setStartTime(dateSSS);
+            studentClassArrange.setEndTime(dateEEE);
+            int result = studentClassArrangeService.addStuClassArrange(studentClassArrange);
+            if(result>0){
+                //判断是否完成排课
+                Integer countArrange = studentClassArrangeService.countClassArrange(stuCourseID);
+                int totalLessonNumber = studentCourse.getLessonTotalNumber();
+                if(null!=countArrange && countArrange>=totalLessonNumber){
+                    studentCourse.setIsArranged(1);
+                    studentCourseService.updateStudentCourse(studentCourse);
+                }
+                //时间推算到下一周
+                Calendar calendarSSS = Calendar.getInstance();
+                //calendarSSS.set(dateSSS.getYear(), dateSSS.getMonth(), dateSSS.getDate(), dateSSS.getHours(), dateSSS.getMinutes(), dateSSS.getSeconds());
+                calendarSSS.setTime(dateSSS);
+                calendarSSS.add(Calendar.DAY_OF_WEEK,7);
+                dateSSS = calendarSSS.getTime();
+
+                Calendar calendarEEE = Calendar.getInstance();
+                //calendarEEE.set(dateEEE.getYear(), dateEEE.getMonth(), dateEEE.getDate(), dateEEE.getHours(), dateEEE.getMinutes(), dateEEE.getSeconds());
+                calendarEEE.setTime(dateEEE);
+                calendarEEE.add(Calendar.DAY_OF_WEEK,7);
+                dateEEE = calendarEEE.getTime();
+
+            }else{
+                success = false;
+                break;
             }
+        }
+        if(success){
             return JSON.toJSONString(Message.success());
         }
         return JSON.toJSONString(Message.failed());
+
     }
 
     //删除studentClassArrange
@@ -165,6 +200,12 @@ public class ClassArrageController {
                                 Integer lesssonNumber) throws ParseException {
         Date sTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
         Date eTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(endTime);
+        //判断外教时间是否冲突
+        int teacherID = studentClassArrangeService.findStuClassArrangeByID(stuClassArrangeID).getTeacher().getTeacherID();
+        boolean isDupe = studentClassArrangeService.teacherTimeIsNotDupe(1, teacherID, sTime, eTime, stuClassArrangeID);
+        if(!isDupe){
+            return JSON.toJSONString(Message.teacherTimeDupeError());
+        }
         StudentClassArrange studentClassArrange = new StudentClassArrange();
         studentClassArrange.setStuClassArrangeID(stuClassArrangeID);
         studentClassArrange.setLessonNumber(lesssonNumber);

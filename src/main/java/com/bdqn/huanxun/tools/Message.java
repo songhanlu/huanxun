@@ -33,4 +33,7 @@ public class Message {
     public static Message failed(){
         return new Message("1001", "操作失败");
     }
+    public static Message teacherTimeDupeError(){
+        return new Message("1002", "操作失败，教师排课时间冲突");
+    }
 }

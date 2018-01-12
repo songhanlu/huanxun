@@ -40,4 +40,8 @@
           startTime=#{startTime},endTime=#{endTime},lessonNumber=#{lessonNumber}
         where stuClassArrangeID=#{stuClassArrangeID}
     </update>
+
+    <select id="findStuClassArrangeByTeaherID" parameterType="integer" resultMap="classArrangeMap">
+        select * from studentclassarrange where teacherID = #{teacherID}
+    </select>
 </mapper>

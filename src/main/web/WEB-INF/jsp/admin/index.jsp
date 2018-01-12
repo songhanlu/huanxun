@@ -37,7 +37,9 @@
                     </ul>
                 </div>
                 <div title="校区模块"></div>
-                <div title="数据统计模块"></div>
+                <div title="数据统计模块">
+                    <div id="tree"></div>
+                </div>
             </div>
         </div>
         <div region="center">
@@ -66,6 +68,70 @@
                     $("#indexTabs").tabs("select", title);
                 }
             });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            //加载数据统计菜单
+            $("#tree").tree({
+                data:[
+                    {
+                        id:1,
+                        text:"员工",
+                        children:[
+                            {
+                                id:11,
+                                text:"员工二级菜单"
+                            },
+                        ],
+                    },
+                    {
+                        id:2,
+                        text:"课程统计",
+                        children:[
+                            {
+                                id:21,
+                                text:"课程分类统计(按种类)",
+                                attribute:[
+                                    {
+                                        url:"${pageContext.request.contextPath}/data/toDataStuCourse.do",
+                                        title:"课程分类统计(按种类)",
+                                    }
+                                ],
+                            },
+                            {
+                                id:22,
+                                text:"课程分类统计(按教材)",
+                                attribute:[
+                                    {
+                                        url:"${pageContext.request.contextPath}/data/toDataStuCourse1.do",
+                                        title:"课程分类统计(按教材)",
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                lines:true,
+                onSelect:function (node) {
+
+                    if(null!=node.attribute && node.attribute.url != ''){
+                        var url = node.attribute[0].url;
+                        var title = node.attribute[0].title;
+                        var content = "<iframe style='height: 99%;width: 99%;' src='"+url+"'></iframe>";
+                        if(!$("#indexTabs").tabs("exists",title)){
+                            $("#indexTabs").tabs("add",{
+                                title:title,
+                                closable:true,
+                                content:content,
+                            })
+                        }else{
+                            $("#indexTabs").tabs("select", title);
+                        }
+                    }
+                }
+            });
+            $("#tree").tree("collapseAll");
         });
     </script>
 </body>

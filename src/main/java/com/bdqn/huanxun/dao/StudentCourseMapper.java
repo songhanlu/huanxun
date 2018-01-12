@@ -26,4 +26,10 @@ public interface StudentCourseMapper {
 
     //修改学生课程
     Integer updateStudentCourse(StudentCourse studentCourse);
+
+    //根据课程LessonTypeID查询课程数量
+    Integer countStuCourseByLessonTypeID(Integer lessonTypeID);
+
+    //根据课程CourseTypeID查询课程数量
+    Integer countStuCourseByCourseTypeID(Integer courseTypeID);
 }

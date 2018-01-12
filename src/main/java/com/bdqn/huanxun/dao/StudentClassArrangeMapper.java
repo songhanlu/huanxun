@@ -21,4 +21,7 @@ public interface StudentClassArrangeMapper {
     StudentClassArrange findStuClassArrangeByID(Integer id);
     //修改课表
     Integer updateArrange(StudentClassArrange studentClassArrange);
+
+    //根据teacherID查询该外教课程表
+    List<StudentClassArrange> findStuClassArrangeByTeaherID(Integer teacherID);
 }

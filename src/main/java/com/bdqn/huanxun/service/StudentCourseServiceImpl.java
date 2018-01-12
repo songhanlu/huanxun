@@ -45,4 +45,15 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     public Integer updateStudentCourse(StudentCourse studentCourse) {
         return studentCourseMapper.updateStudentCourse(studentCourse);
     }
+
+    @Override
+    public Integer countStuCourseByLessonTypeID(Integer lessonTypeID) {
+        return studentCourseMapper.countStuCourseByLessonTypeID(lessonTypeID);
+    }
+
+    @Override
+    public Integer countStuCourseByCourseTypeID(Integer courseTypeID) {
+        return studentCourseMapper.countStuCourseByCourseTypeID(courseTypeID);
+    }
+
 }

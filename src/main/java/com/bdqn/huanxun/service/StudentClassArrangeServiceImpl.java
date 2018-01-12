@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,5 +55,34 @@ public class StudentClassArrangeServiceImpl implements StudentClassArrangeServic
     @Override
     public Integer updateArrange(StudentClassArrange studentClassArrange) {
         return studentClassArrangeMapper.updateArrange(studentClassArrange);
+    }
+
+    @Override
+    public Boolean teacherTimeIsNotDupe(Integer times, Integer teacherID,
+                                     Date startTimeInput, Date endTimeInput,Integer currentArrangeID) {
+        boolean flag = true;
+        List<StudentClassArrange> arranges = studentClassArrangeMapper.findStuClassArrangeByTeaherID(teacherID);
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        outter:for(int i = 0; i < times; i++){
+            for (StudentClassArrange arrange : arranges) {
+                if(currentArrangeID==arrange.getStuClassArrangeID()){
+                    continue;
+                }
+                if(null==arrange){
+                    continue;
+                }else{
+                    Date startTime = arrange.getStartTime();
+                    Date endTime = arrange.getEndTime();
+                    if(endTimeInput.getTime()<=startTime.getTime() || startTimeInput.getTime()>=endTime.getTime()){
+                        continue;
+                    }else{
+                        flag = false;
+                        break outter;
+                    }
+                }
+            }
+
+        }
+        return flag;
     }
 }
