@@ -38,7 +38,7 @@ public class ClassArrageController {
         return "admin/classArrange";
     }
 
-    //查询所有学生购买课程
+    //查询所有学生购买课程h
     @RequestMapping(value = "/findStudentCourseIsNotArrage.do",method = RequestMethod.GET,
                     produces = {"application/json;charset=UTF-8"})
     @ResponseBody
