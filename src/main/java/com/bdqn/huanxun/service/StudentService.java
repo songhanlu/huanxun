@@ -12,4 +12,13 @@ public interface StudentService {
     public PageInfo<Student> queryStudentByNameAndAgencyAndAge(Integer pageNum, Integer pageSize,
                                                                String stuName, String agencyName,
                                                                Integer stuAgeMin, Integer stuAgeMax);
+
+
+/**
+ * Created by hp on 2018/1/9.
+ */
+public interface StudentService {
+    //根据学生年级编号选择学生列表
+    List<Student> findfStudentSByGradeID(Integer stuGradeID);
+
 }

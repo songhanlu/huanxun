@@ -3,6 +3,7 @@ package com.bdqn.huanxun.controller;
 import com.alibaba.fastjson.JSON;
 import com.bdqn.huanxun.pojo.Student;
 import com.bdqn.huanxun.service.StudentService;
+
 import com.bdqn.huanxun.tools.PageUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 /**
  * Created by hp on 2018/1/5.
  */
@@ -20,10 +23,12 @@ import javax.annotation.Resource;
 public class StudentController {
     @Resource
     private StudentService studentService;
+
     @RequestMapping("/toStudent.do")
     public String toStudent(){
         return "admin/student";
     }
+
 
     @ResponseBody
     @RequestMapping(value = "queryStudent.do",method = RequestMethod.GET,
@@ -45,4 +50,5 @@ public class StudentController {
         PageUtil<Student> pageUtil = new PageUtil<>(pageInfo);
         return JSON.toJSONString(pageUtil);
     }
+
 }

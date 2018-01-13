@@ -1,6 +1,8 @@
 package com.bdqn.huanxun.service;
 
 import com.bdqn.huanxun.dao.StudentCourseMapper;
+
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentCourse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,9 +21,15 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 
     @Override
     public PageInfo<StudentCourse> findAllStudentCourse(Integer pageNum, Integer pageSize,
-                                                        StudentCourse studentCourse) {
+                                                        StudentCourse studentCourse,
+                                                        String stuName,
+                                                        Integer isArranged,
+                                                        Integer courseTypeID,
+                                                        Integer lessonTypeID,
+                                                        String sort,
+                                                        String order) {
         PageHelper.startPage(pageNum, pageSize);
-        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse);
+        List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse,stuName,isArranged,courseTypeID,lessonTypeID,sort,order);
         return new PageInfo<>(studentCourses);
     }
 
@@ -29,4 +37,31 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     public StudentCourse findStudentCourseByID(Integer id) {
         return studentCourseMapper.findStudentCourseByID(id);
     }
+
+
+    @Override
+    public Integer addStudentCourse(StudentCourse studentCourse) {
+        return studentCourseMapper.addStudentCourse(studentCourse);
+    }
+
+    @Override
+    public Integer updateStudentCourse(StudentCourse studentCourse) {
+        return studentCourseMapper.updateStudentCourse(studentCourse);
+    }
+
+    @Override
+    public Integer countStuCourseByLessonTypeID(Integer lessonTypeID) {
+        return studentCourseMapper.countStuCourseByLessonTypeID(lessonTypeID);
+    }
+
+    @Override
+    public Integer countStuCourseByCourseTypeID(Integer courseTypeID) {
+        return studentCourseMapper.countStuCourseByCourseTypeID(courseTypeID);
+    }
+
+    @Override
+    public CourseType findLessonTypeByStuCourseID(Integer stuCourseID) {
+        return studentCourseMapper.findCourseTypeByStuCourseID(stuCourseID);
+    }
+
 }

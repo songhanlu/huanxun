@@ -9,6 +9,10 @@
         <id property="stuGradeID" column="stuGradeID"/>
         <result property="stuGradeName" column="stuGradeName"/>
     </resultMap>
+    <resultMap id="studentGradeMap" type="StudentGrade">
+        <id property="stuGradeID" column="stuGradeID"/>
+
+    </resultMap>
     <resultMap id="studentMap" type="Student">
         <id property="stuID" column="stuID"/>
         <association property="agency" resultMap="agencyMap"/>
@@ -28,6 +32,7 @@
         s.`visible` = 1
          ORDER BY `stuID` DESC
     </select>
+  
     <select id="queryStudentByNameAndAgencyAndAge" resultMap="studentMap">
         SELECT
         *
@@ -65,5 +70,15 @@
             </otherwise>
         </choose>
         ORDER BY `stuID` DESC
+     </select>
+        
+
+    <select id="findfStudentSByGradeID" parameterType="integer" resultMap="studentMap">
+        SELECT
+          s.*, sg.*
+        from student s, studentgrade sg
+        where s.stuGradeID = sg.stuGradeID
+        and s.stuGradeID = #{stuGradeID}
+
     </select>
 </mapper>

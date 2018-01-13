@@ -1,7 +1,6 @@
 package com.bdqn.huanxun.tools;
 
 /**
- * Created by 佳 on 2017/12/13.
  */
 public class Message {
     private String code;
@@ -21,6 +20,7 @@ public class Message {
         return message;
     }
 
+
     public String getCode() {
         return code;
     }
@@ -35,5 +35,18 @@ public class Message {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+
+    private Message(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public static Message failed(){
+        return new Message("1001", "操作失败");
+    }
+    public static Message teacherTimeDupeError(){
+        return new Message("1002", "操作失败，教师排课时间冲突");
     }
 }

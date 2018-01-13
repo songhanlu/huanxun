@@ -12,6 +12,7 @@ public interface EmployeeMapper {
     //通过EmployeeID查找员工
     Employee findEmployeeByID(Integer employeeID);
 
+
     /**
      * 查询所有员工信息
      * @return
