@@ -8,8 +8,10 @@ public class Agency {
     private String agencyName;
     private LoginUser loginUser;
     private String contactPhone;
+
     private String contactEmail;
     private String contactQQ;
+
     private Integer stuNumber;
     private Integer visible;
 
@@ -45,6 +47,8 @@ public class Agency {
         this.contactPhone = contactPhone;
     }
 
+
+
     public String getContactEmail() {
         return contactEmail;
     }
@@ -59,6 +63,7 @@ public class Agency {
 
     public void setContactQQ(String contactQQ) {
         this.contactQQ = contactQQ;
+
     }
 
     public Integer getStuNumber() {
@@ -86,6 +91,7 @@ public class Agency {
                 ", contactPhone='" + contactPhone + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", contactQQ='" + contactQQ + '\'' +
+
                 ", stuNumber=" + stuNumber +
                 ", visible=" + visible +
                 '}';

@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -6,7 +7,6 @@
     <jsp:include page="../common.jsp"/>
 </head>
 <body>
-
     <div>
         <form id="studentCourseForm" style="margin:0;">
             <table border="1">

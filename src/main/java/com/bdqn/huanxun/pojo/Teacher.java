@@ -36,6 +36,7 @@ public class Teacher {
         this.teacherName = teacherName;
     }
 
+
     public String getTeacherPhotoAddress() {
         return teacherPhotoAddress;
     }

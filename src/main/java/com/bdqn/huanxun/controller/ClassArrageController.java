@@ -1,6 +1,9 @@
 package com.bdqn.huanxun.controller;
 
 import com.alibaba.fastjson.JSON;
+
+import com.bdqn.huanxun.pojo.StudentCourse;
+import com.bdqn.huanxun.service.StudentCourseService;
 import com.bdqn.huanxun.pojo.*;
 import com.bdqn.huanxun.service.ClassBookService;
 import com.bdqn.huanxun.service.StudentClassArrangeService;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
