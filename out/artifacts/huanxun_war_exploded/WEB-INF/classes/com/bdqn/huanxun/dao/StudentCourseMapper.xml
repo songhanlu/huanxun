@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.huanxun.dao.StudentCourseMapper">
+    <resultMap id="studentMap" type="Student">
+        <id property="stuID" column="stuID"/>
+        <association property="studentGrade" resultMap="studentGradeMap"/>
+        <association property="agency" resultMap="agencyMap"/>
+    </resultMap>
+    <resultMap id="studentGradeMap" type="StudentGrade">
+        <id property="stuGradeID" column="stuGradeID"/>
+    </resultMap>
+    <resultMap id="agencyMap" type="Agency">
+        <id property="agencyID" column="agencyID"/>
+    </resultMap>
+    <resultMap id="teacherMap" type="Teacher">
+        <id property="teacherID" column="teacherID"/>
+    </resultMap>
+    <resultMap id="lessonTypeMap" type="LessonType">
+        <id property="lessonTypeID" column="lessonTypeID"/>
+    </resultMap>
+    <resultMap id="courseTypeMap" type="CourseType">
+        <id property="courseTypeID" column="courseTypeID"/>
+    </resultMap>
+    <resultMap id="studentCourseMap" type="StudentCourse">
+        <id property="stuCourseID" column="stuCourseID"/>
+        <association property="student" resultMap="studentMap"/>
+        <association property="teacher" resultMap="teacherMap"/>
+        <association property="lessonType" resultMap="lessonTypeMap"/>
+        <association property="courseType" resultMap="courseTypeMap"/>
+    </resultMap>
+
+    <!--查询所有学生购买的课程-->
+    <select id="findAllStudentCourse" parameterType="StudentCourse" resultMap="studentCourseMap">
+        SELECT *
+        from
+          studentcourse stco, student st,
+          <if test="teacherID!=null">
+              teacher te,
+          </if>
+          lessontype lt, coursetype ct,
+          <if test="agencyID!=null">
+            agency ag,
+          </if>
+          studentgrade sg
+        where
+          stco.stuID = st.stuID
+          and stco.courseTypeID = ct.courseTypeID
+          and stco.lessonTypeID = lt.lessonTypeID
+          and st.stuGradeID = sg.stuGradeID
+          <if test="isArranged!=-1">
+              and isArranged=#{isArranged}
+          </if>
+          <if test="teacherID!=null">
+              and stco.teacherID = te.teacherID
+          </if>
+          <if test="agencyID!=null">
+              and st.agencyID = ag.agencyID
+          </if>
+        order by stuCourseID desc
+    </select>
+
+    <!--根据stuCourseID查询学生课程-->
+    <select id="findStudentCourseByID" parameterType="integer" resultMap="studentCourseMap">
+        SELECT *
+        from
+        studentcourse stco, student st,
+        lessontype lt, coursetype ct,
+        studentgrade sg
+        where
+        stco.stuID = st.stuID
+        and stco.courseTypeID = ct.courseTypeID
+        and stco.lessonTypeID = lt.lessonTypeID
+        and st.stuGradeID = sg.stuGradeID
+        and stco.stuCourseID = #{stuCourseID}
+    </select>
+    
+    <!--新增学生课程-->
+    <insert id="addStudentCourse" parameterType="StudentCourse">
+        insert into studentcourse (stuID, lessonTypeID, courseTypeID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
+        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
+    </insert>
+</mapper>

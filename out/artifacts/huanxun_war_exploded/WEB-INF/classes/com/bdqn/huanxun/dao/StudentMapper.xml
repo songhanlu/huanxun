@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.StudentMapper">
+    <resultMap id="agencyMap" type="Agency">
+        <id property="agencyID" column="agencyID"/>
+        <result property="agencyName" column="agencyName"/>
+    </resultMap>
+    <resultMap id="stuGradeMap" type="StudentGrade">
+        <id property="stuGradeID" column="stuGradeID"/>
+        <result property="stuGradeName" column="stuGradeName"/>
+    </resultMap>
+    <resultMap id="studentMap" type="Student">
+        <id property="stuID" column="stuID"/>
+        <association property="agency" resultMap="agencyMap"/>
+        <association property="studentGrade" resultMap="stuGradeMap"/>
+    </resultMap>
+    <select id="queryStudent" resultMap="studentMap">
+         SELECT
+          *
+        FROM
+          `student` s,
+          `agency` a,
+          `studentgrade` sg
+        WHERE s.`agencyID` = a.`agencyID`
+        AND
+        s.`stuGradeID` = sg.`stuGradeID`
+        AND
+        s.`visible` = 1
+         ORDER BY `stuID` DESC
+    </select>
+    <select id="queryStudentByNameAndAgencyAndAge" resultMap="studentMap">
+        SELECT
+        *
+        FROM
+        `student` s,
+        `agency` a,
+        `studentgrade` sg
+        WHERE s.`agencyID` = a.`agencyID`
+        AND
+        s.`stuGradeID` = sg.`stuGradeID`
+        AND
+        s.`visible` = 1
+        <if test="stuName!='' and stuName!=null">
+            AND
+            s.`stuName` LIKE CONCAT('%',#{stuName},'%')
+        </if>
+        <if test="agencyName!=null and agencyName!=''">
+            AND
+            a.`agencyName` LIKE CONCAT('%',#{agencyName},'%')
+        </if>
+        AND
+        s.`stuAge` BETWEEN
+        <choose>
+            <when test="stuAgeMin==null and stuAgeMax !=null">
+                0 AND #{stuAgeMax}
+            </when>
+            <when test="stuAgeMin!=null and stuAgeMax == null">
+               #{stuAgeMin} AND 100
+            </when>
+            <when test="stuAgeMin == null and stuAgeMax == null">
+                0 AND 100
+            </when>
+            <otherwise>
+                #{stuAgeMin}  AND #{stuAgeMax}
+            </otherwise>
+        </choose>
+        ORDER BY `stuID` DESC
+    </select>
+</mapper>
