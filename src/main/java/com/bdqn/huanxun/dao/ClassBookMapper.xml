@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.ClassBookMapper">
+    <select id="findBooksByArrangeID" parameterType="integer" resultType="Book">
+        SELECT b.*
+        FROM book b, classbook cb
+        where b.bookID = cb.bookID
+        and cb.stuClassArrangeID=#{stuClassArrangeID}
+        order by cb.bookID
+    </select>
+    <insert id="addClassBook" parameterType="ClassBook">
+        insert into classbook (stuClassArrangeID, bookID)
+        VALUES (#{stuClassArrangeID}, #{book.bookID})
+    </insert>
+    <select id="findBooksByCourseTypeID" parameterType="integer" resultType="Book">
+        SELECT b.*
+        from book b, coursetype ct
+        where b.courseTypeID = ct.courseTypeID
+        AND b.courseTypeID = #{courseTypeID}
+        order by b.bookID
+    </select>
+    <delete id="deleteClassBook" parameterType="integer">
+        delete from classbook
+        where bookID = #{stuClassArrangeID}
+    </delete>
+</mapper>

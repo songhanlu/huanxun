@@ -42,4 +42,9 @@ public class LoginController {
         model.addAttribute("loginMessage","用户名或密码错误！");
         return "login";
     }
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("currentEmployee");
+        return "login";
+    }
 }

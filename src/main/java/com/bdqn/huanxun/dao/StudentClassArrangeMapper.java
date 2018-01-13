@@ -24,4 +24,8 @@ public interface StudentClassArrangeMapper {
 
     //根据teacherID查询该外教课程表
     List<StudentClassArrange> findStuClassArrangeByTeaherID(Integer teacherID);
+
+    //根据stuClassArrangeID查询stuCourseID
+    Integer findStuCourseIDByArrangeID(Integer stuClassArrangeID);
+
 }

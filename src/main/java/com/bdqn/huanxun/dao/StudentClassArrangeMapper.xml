@@ -44,4 +44,11 @@
     <select id="findStuClassArrangeByTeaherID" parameterType="integer" resultMap="classArrangeMap">
         select * from studentclassarrange where teacherID = #{teacherID}
     </select>
+
+    <!--根据stuClassArrangeID查询stuCourseID-->
+    <select id="findStuCourseIDByArrangeID" parameterType="integer" resultType="integer">
+        SELECT a.stuCourseID
+        FROM studentclassarrange a
+        where a.stuClassArrangeID = #{stuClassArrangeID}
+    </select>
 </mapper>

@@ -1,9 +1,11 @@
 package com.bdqn.huanxun.service;
 
+import com.bdqn.huanxun.pojo.Book;
 import com.bdqn.huanxun.pojo.StudentClassArrange;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by hp on 2018/1/9.
@@ -29,4 +31,7 @@ public interface StudentClassArrangeService {
      * @return
      */
     Boolean teacherTimeIsNotDupe(Integer times, Integer teacherID, Date startTimeInput, Date endTimeInput, Integer currentArrangeID);
+
+    //根据stuClassArrangeID查询该课程下可选的教材列表(为课表上传教材时使用！！)
+    List<Book> findBooksCanChooseByArrangeID(Integer arrangeID);
 }

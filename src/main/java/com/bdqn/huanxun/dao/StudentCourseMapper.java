@@ -1,5 +1,6 @@
 package com.bdqn.huanxun.dao;
 
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentCourse;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,4 +33,7 @@ public interface StudentCourseMapper {
 
     //根据课程CourseTypeID查询课程数量
     Integer countStuCourseByCourseTypeID(Integer courseTypeID);
+
+    //根据stuCourseID查询学生课程查询LessonType
+    CourseType findCourseTypeByStuCourseID(Integer stuCourseID);
 }

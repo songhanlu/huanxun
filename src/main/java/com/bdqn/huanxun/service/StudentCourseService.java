@@ -1,5 +1,6 @@
 package com.bdqn.huanxun.service;
 
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentCourse;
 import com.github.pagehelper.PageInfo;
 
@@ -30,4 +31,7 @@ public interface StudentCourseService {
 
     //根据课程CourseTypeID查询课程数量
     Integer countStuCourseByCourseTypeID(Integer courseTypeID);
+
+    //根据stuCourseID查询学生课程查询LessonType集合
+    CourseType findLessonTypeByStuCourseID(Integer stuCourseID);
 }

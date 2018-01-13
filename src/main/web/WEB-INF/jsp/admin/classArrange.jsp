@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -144,8 +145,9 @@
                     }
                     return flag;
                 }},
-                {field:"stuCourseID",title:"排课",width:200,formatter:function (value, row, index) {
-                    return "<button onclick='arrangeClass("+value+")'>排课</button>";
+                {field:"stuCourseID",title:"操作",width:200,formatter:function (value, row, index) {
+
+                    return "<button onclick='arrangeClass("+value+")' <c:if test="${sessionScope.loginUser.userRole.userRoleID eq 5 ||}">disabled</c:if>>我要排课</button>";
                 }},
             ]],
         });

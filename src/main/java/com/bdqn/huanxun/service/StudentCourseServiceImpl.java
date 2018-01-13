@@ -1,6 +1,7 @@
 package com.bdqn.huanxun.service;
 
 import com.bdqn.huanxun.dao.StudentCourseMapper;
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentCourse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,6 +55,11 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Override
     public Integer countStuCourseByCourseTypeID(Integer courseTypeID) {
         return studentCourseMapper.countStuCourseByCourseTypeID(courseTypeID);
+    }
+
+    @Override
+    public CourseType findLessonTypeByStuCourseID(Integer stuCourseID) {
+        return studentCourseMapper.findCourseTypeByStuCourseID(stuCourseID);
     }
 
 }

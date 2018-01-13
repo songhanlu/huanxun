@@ -115,4 +115,11 @@
         SELECT count(1) FROM studentcourse
         where courseTypeID = #{courseTypeID}
     </select>
+
+    <select id="findCourseTypeByStuCourseID" parameterType="integer" resultType="CourseType">
+        SELECT ct.*
+        from coursetype ct, studentcourse sc
+        where sc.courseTypeID = ct.courseTypeID
+        and sc.stuCourseID = #{stuCourseID}
+    </select>
 </mapper>

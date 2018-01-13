@@ -1,6 +1,10 @@
 package com.bdqn.huanxun.service;
 
+import com.bdqn.huanxun.dao.ClassBookMapper;
 import com.bdqn.huanxun.dao.StudentClassArrangeMapper;
+import com.bdqn.huanxun.dao.StudentCourseMapper;
+import com.bdqn.huanxun.pojo.Book;
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentClassArrange;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +22,10 @@ import java.util.List;
 public class StudentClassArrangeServiceImpl implements StudentClassArrangeService {
     @Resource
     private StudentClassArrangeMapper studentClassArrangeMapper;
+    @Resource
+    private ClassBookMapper classBookMapper;
+    @Resource
+    private StudentCourseMapper studentCourseMapper;
 
     @Override
     public PageInfo<StudentClassArrange> findstuClassArranges(Integer pageNum, Integer pageSize, Integer stuCourseID) {
@@ -84,5 +92,16 @@ public class StudentClassArrangeServiceImpl implements StudentClassArrangeServic
 
         }
         return flag;
+    }
+
+    @Override
+    public List<Book> findBooksCanChooseByArrangeID(Integer arrangeID) {
+        //第一步：根据arrangeID查出当前课表所属的stuCourseID
+        Integer stuCourseID = studentClassArrangeMapper.findStuCourseIDByArrangeID(arrangeID);
+        //第二步：根据stuCourseID查出CourseType
+        CourseType courseType = studentCourseMapper.findCourseTypeByStuCourseID(stuCourseID);
+        //第三步：根据courseTypeID查出可选择的教材列表
+        List<Book> books = classBookMapper.findBooksByCourseTypeID(courseType.getCourseTypeID());
+        return books;
     }
 }

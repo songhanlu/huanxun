@@ -95,8 +95,67 @@
             </form>
             <button id="updateNewClassArrangeButton" class="easyui-linkbutton" data-options="{iconCls:'icon-save'}">确定排课</button>
         </div>
+
+        <%--为课表上传教材窗口--%>
+        <div id="uploadBookForArrange" class="easyui-window" title="上传教材" style="width: 700px;height: 400px;top:50px;left:50px;padding: 20px;" data-options="{closed:true}">
+            <button id="addUploadBook" data-options="{iconCls:'icon-add'}">添加教材</button>
+            <form style="display: inline" id="classBookForm">
+                <input id="book" name="book.bookID" class="easyui-combobox"/>
+                <input type="hidden" id="stuClassArrangeID" name="stuClassArrangeID"/>
+            </form>
+            <table id="haveBooksTable" border="1"></table>
+        </div>
     </div>
 </body>
+<%--添加上传教材有关的事件--%>
+<script type="text/javascript">
+    $(function () {
+        $("#addUploadBook").click(function () {
+            var bookIDtest = $("#book").combobox("getValue");
+            if(bookIDtest==-1){
+                alert("请选择！");
+                return;
+            }
+            if(confirm("确定上传该教材？")){
+
+
+                var stuArrangeID = $("#stuClassArrangeID").val();
+                var bookID = $("#book").combobox("getValue");
+                var isError = false;
+                //检查当前课程是否已上传
+                $.get("${pageContext.request.contextPath}/classArrange/findClassBookByArrangeID.do",{"arrangeID":stuArrangeID},function (books) {
+                    $.each(books,function (index, item) {
+                        if(item.bookID==bookID){
+                            alert("已添加过该教材，不能重复上传！");
+                            isError = true;
+                            return;
+                        }
+                    });
+                    if(!isError){
+                        var classBook = $("#classBookForm").serialize();
+                        console.log(classBook);
+                        $.post("${pageContext.request.contextPath}/classArrange/addClassBook.do",classBook,function (result) {
+                            alert(result.msg);
+                            //刷新表格
+                            $("#haveBooksTable").text("");
+                            $("#haveBooksTable").append("<tr><td>序号</td><td>教材名称</td><td>教材版本</td><td>下载附件</td><td>操作</td></tr>");
+                            $.get("${pageContext.request.contextPath}/classArrange/findBooksByArrangeID.do",{"arrangeID":stuArrangeID},function (books) {
+                                $.each(books,function (index, item) {
+                                    $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
+                                        "<td>"+item.bookTitle+"</td>" +
+                                        "<td>"+item.bookVersion+"</td>" +
+                                        "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
+                                        "<td><button onclick='delBook("+item.bookID+","+stuArrangeID+")'>删除教材</button></td></tr>");
+                                });
+                            });
+                        });
+                    }
+                });
+
+            }
+        });
+    });
+</script>
 <script type="text/javascript">
     $(function () {
         <c:choose>
@@ -250,7 +309,8 @@
                 {title:"排课节数",field:"lessonNumber"},
                 {title:"操作",field:"stuClassArrangeID",formatter:function (value, row, index) {
                     return "<button onclick='updateStuClassArrange("+value+");'>修改</button>"+
-                        "<button onclick='deleteStuClassArrange("+value+");'>删除</button>";
+                        "<button onclick='deleteStuClassArrange("+value+");'>删除</button>"+
+                        "<button onclick='uploadBook("+value+");'>上传教材</button>";
                 }}
             ]],
         });
@@ -324,6 +384,55 @@
                 $.get("${pageContext.request.contextPath}/classArrange/countClassArrange.do",{"stuCourseID":${studentCourse.stuCourseID}},function (data) {
                     var count = data.count;
                     $("#haveArrangeNumber").textbox("setValue", count);
+                });
+            });
+        }
+    }
+    //点击上传教材按钮方法
+    function uploadBook(id) {
+        $("#stuClassArrangeID").val(id);
+        $("#haveBooksTable").text("");
+        $("#haveBooksTable").append("<tr><td>序号</td><td>教材名称</td><td>教材版本</td><td>下载附件</td><td>操作</td></tr>");
+        $.get("${pageContext.request.contextPath}/classArrange/findBooksByArrangeID.do",{"arrangeID":id},function (books) {
+            $.each(books,function (index, item) {
+                $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
+                    "<td>"+item.bookTitle+"</td>" +
+                    "<td>"+item.bookVersion+"</td>" +
+                    "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
+                    "<td><button onclick='delBook("+item.bookID+","+id+")'>删除教材</button></td></tr>");
+            });
+            $.get("${pageContext.request.contextPath}/classArrange/findBooksByCourseTypeID.do",{"courseTypeID":${studentCourse.courseType.courseTypeID}},function (books) {
+                var bfo = $.parseJSON('{"id":-1,"text":"==请选择=="}');
+                books.push(bfo);
+                $("#book").combobox({
+                    editable:false,
+                    valueField:"id",
+                    textField:"text",
+                    data:books,
+                    onLoadSuccess:function () {
+                        $(this).combobox("select", -1);
+                    }
+                });
+            });
+        });
+        $("#uploadBookForArrange").window("open");
+    }
+    //删除教材
+    function delBook(id,arrangeID) {
+        if(confirm("确定删除？")){
+            $.post("${pageContext.request.contextPath}/classArrange/deleteClassBookByArrangeID.do",{"arrangeID":id},function (result) {
+                alert(result.msg);
+                //刷新表格
+                $("#haveBooksTable").text("");
+                $("#haveBooksTable").append("<tr><td>序号</td><td>教材名称</td><td>教材版本</td><td>下载附件</td><td>操作</td></tr>");
+                $.get("${pageContext.request.contextPath}/classArrange/findBooksByArrangeID.do",{"arrangeID":arrangeID},function (books) {
+                    $.each(books,function (index, item) {
+                        $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
+                            "<td>"+item.bookTitle+"</td>" +
+                            "<td>"+item.bookVersion+"</td>" +
+                            "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
+                            "<td><button onclick='delBook("+item.bookID+","+arrangeID+")'>删除教材</button></td></tr>");
+                    });
                 });
             });
         }

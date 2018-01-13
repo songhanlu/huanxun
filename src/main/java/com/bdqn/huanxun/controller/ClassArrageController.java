@@ -1,9 +1,8 @@
 package com.bdqn.huanxun.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bdqn.huanxun.pojo.StudentClassArrange;
-import com.bdqn.huanxun.pojo.StudentCourse;
-import com.bdqn.huanxun.pojo.Teacher;
+import com.bdqn.huanxun.pojo.*;
+import com.bdqn.huanxun.service.ClassBookService;
 import com.bdqn.huanxun.service.StudentClassArrangeService;
 import com.bdqn.huanxun.service.StudentCourseService;
 import com.bdqn.huanxun.tools.Message;
@@ -19,10 +18,7 @@ import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hp on 2018/1/7.
@@ -34,6 +30,8 @@ public class ClassArrageController {
     private StudentCourseService studentCourseService;
     @Resource
     private StudentClassArrangeService studentClassArrangeService;
+    @Resource
+    private ClassBookService classBookService;
 
     @RequestMapping("/toClassArrange.do")
     public String toClassArrage(){
@@ -231,6 +229,66 @@ public class ClassArrageController {
             map.put("count", 0);
         }
         return JSON.toJSONString(map);
+    }
+
+    //打开上传教材窗口，该课程已有教材
+    @RequestMapping(value = "/findBooksByArrangeID.do", method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String findBooksByArrangeID(Integer arrangeID){
+        List<Book> books = classBookService.findBooksByArrangeID(arrangeID);
+        return JSON.toJSONString(books);
+    }
+
+    //新增上传教材窗口，显示可增加的教材列表
+    @RequestMapping(value = "/findBooksByCourseTypeID.do", method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String findBooksByCourseTypeID(Integer courseTypeID) {
+        List<Book> books = classBookService.findBooksByCourseTypeID(courseTypeID);
+        List<Map<String, Object>> list = new ArrayList<>();
+        if(null!=books){
+            for (Book book : books) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id",book.getBookID());
+                map.put("text", book.getBookTitle());
+                list.add(map);
+            }
+        }
+        return JSON.toJSONString(list);
+    }
+
+    //删除课表的教材
+    @RequestMapping(value = "/deleteClassBookByArrangeID.do", method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String deleteClassBookByArrangeID(Integer arrangeID) {
+        int result = classBookService.deleteClassBook(arrangeID);
+        if(result>0){
+            return JSON.toJSONString(Message.success());
+        }
+        return JSON.toJSONString(Message.failed());
+    }
+
+    //为本条课表添加教材
+    @RequestMapping(value = "/addClassBook.do", method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String addClassBook(ClassBook classBook){
+        int result = classBookService.addClassBook(classBook);
+        if(result>0){
+            return JSON.toJSONString(Message.success());
+        }
+        return JSON.toJSONString(Message.failed());
+    }
+
+    //根据课表查询教材已有列表
+    @RequestMapping(value = "/findClassBookByArrangeID.do", method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String findClassBookByArrangeID(Integer arrangeID){
+        List<Book> books = classBookService.findBooksByArrangeID(arrangeID);
+        return JSON.toJSONString(books);
     }
 
 }
