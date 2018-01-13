@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Integer deleteEmployeeByIds(List<Integer> list) {
-        return employeeMapper.deleteEmployeeByIds(list);
+        return employeeMapper.deleteEmployeeByIds(list);//1
     }
 
     @Override
