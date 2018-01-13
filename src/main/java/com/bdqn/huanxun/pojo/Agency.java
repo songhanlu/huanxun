@@ -8,8 +8,8 @@ public class Agency {
     private String agencyName;
     private LoginUser loginUser;
     private String contactPhone;
-    private String contextEmail;
-    private String contextQQ;
+    private String contactEmail;
+    private String contactQQ;
     private Integer stuNumber;
     private Integer visible;
 
@@ -45,20 +45,21 @@ public class Agency {
         this.contactPhone = contactPhone;
     }
 
-    public String getContextEmail() {
-        return contextEmail;
+
+    public String getContactEmail() {
+        return contactEmail;
     }
 
-    public void setContextEmail(String contextEmail) {
-        this.contextEmail = contextEmail;
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
-    public String getContextQQ() {
-        return contextQQ;
+    public String getContactQQ() {
+        return contactQQ;
     }
 
-    public void setContextQQ(String contextQQ) {
-        this.contextQQ = contextQQ;
+    public void setContactQQ(String contactQQ) {
+        this.contactQQ = contactQQ;
     }
 
     public Integer getStuNumber() {
@@ -86,6 +87,8 @@ public class Agency {
                 ", contactPhone='" + contactPhone + '\'' +
                 ", contextEmail='" + contextEmail + '\'' +
                 ", contextQQ='" + contextQQ + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", contactQQ='" + contactQQ + '\'' +
                 ", stuNumber=" + stuNumber +
                 ", visible=" + visible +
                 '}';

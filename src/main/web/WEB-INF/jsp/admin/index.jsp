@@ -15,8 +15,13 @@
 <body>
     <div class="easyui-layout" style="width: 100%;height: 100%;">
         <div region="north" style="height: 15%;">
-            <h2>
-                环迅后台管理系统-主页,欢迎你${sessionScope.currentEmployee.employeeName},身份:${sessionScope.loginUser.userRole.userRoleName}
+            <h2 style="float: left;">
+                环迅后台管理系统-主页,欢迎你:<span style="font-size: 16px;">${sessionScope.loginUser.userRole.userRoleName}</span>
+            </h2>
+            <h2 style="float: right;">
+                用户名：${sessionScope.currentEmployee.employeeName}
+                <a href="${pageContext.request.contextPath}/common/logout">注销</a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </h2>
         </div>
         <div region="west" style="width: 15%;" title="菜单栏">
@@ -33,20 +38,25 @@
                 <div title="教材模块"></div>
                 <div title="课表模块">
                     <ul myAttr="indexMenu">
+
                         <li><a class="easyui-linkbutton" url="#">查询课表</a></li>
                         <li>&nbsp;</li>
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入排课功能</a></li>
+
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入课表管理</a></li>
                     </ul>
                 </div>
                 <div title="校区模块"></div>
-                <div title="数据统计模块"></div>
+                <div title="数据统计模块">
+                    <div id="tree"></div>
+                </div>
             </div>
         </div>
         <div region="center">
             <div id="indexTabs" class="easyui-tabs" style="width: 100%;height: 100%;">
-                <div title="欢迎界面">
+                <%--<div title="欢迎界面">
                     欢迎
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -68,6 +78,70 @@
                     $("#indexTabs").tabs("select", title);
                 }
             });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            //加载数据统计菜单
+            $("#tree").tree({
+                data:[
+                    {
+                        id:1,
+                        text:"员工",
+                        children:[
+                            {
+                                id:11,
+                                text:"员工二级菜单"
+                            },
+                        ],
+                    },
+                    {
+                        id:2,
+                        text:"课程统计",
+                        children:[
+                            {
+                                id:21,
+                                text:"课程分类统计(按种类)",
+                                attribute:[
+                                    {
+                                        url:"${pageContext.request.contextPath}/data/toDataStuCourse.do",
+                                        title:"课程分类统计(按种类)",
+                                    }
+                                ],
+                            },
+                            {
+                                id:22,
+                                text:"课程分类统计(按教材)",
+                                attribute:[
+                                    {
+                                        url:"${pageContext.request.contextPath}/data/toDataStuCourse1.do",
+                                        title:"课程分类统计(按教材)",
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                lines:true,
+                onSelect:function (node) {
+
+                    if(null!=node.attribute && node.attribute.url != ''){
+                        var url = node.attribute[0].url;
+                        var title = node.attribute[0].title;
+                        var content = "<iframe style='height: 99%;width: 99%;' src='"+url+"'></iframe>";
+                        if(!$("#indexTabs").tabs("exists",title)){
+                            $("#indexTabs").tabs("add",{
+                                title:title,
+                                closable:true,
+                                content:content,
+                            })
+                        }else{
+                            $("#indexTabs").tabs("select", title);
+                        }
+                    }
+                }
+            });
+            $("#tree").tree("collapseAll");
         });
     </script>
 </body>

@@ -10,6 +10,15 @@ public class LessonType {
     private Integer lessonPrice;
     private Integer isTry;
     private Integer visible;
+    private String lessonDesc;
+
+    public String getLessonDesc() {
+        return lessonDesc;
+    }
+
+    public void setLessonDesc(String lessonDesc) {
+        this.lessonDesc = lessonDesc;
+    }
 
     public Integer getLessonTypeID() {
         return lessonTypeID;
@@ -68,6 +77,7 @@ public class LessonType {
                 ", lessonPrice=" + lessonPrice +
                 ", isTry=" + isTry +
                 ", visible=" + visible +
+                ", lessonDesc='" + lessonDesc + '\'' +
                 '}';
     }
 }

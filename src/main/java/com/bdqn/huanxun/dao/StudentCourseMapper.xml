@@ -32,7 +32,8 @@
     </resultMap>
 
     <!--查询所有学生购买的课程-->
-    <select id="findAllStudentCourse" parameterType="StudentCourse" resultMap="studentCourseMap">
+
+    <select id="findAllStudentCourse_liyujia" parameterType="StudentCourse" resultMap="studentCourseMap">
         SELECT *
         from
           studentcourse stco, student st,
@@ -43,12 +44,6 @@
           <if test="agencyID!=null">
             agency ag,
           </if>
-          studentgrade sg
-        where
-          stco.stuID = st.stuID
-          and stco.courseTypeID = ct.courseTypeID
-          and stco.lessonTypeID = lt.lessonTypeID
-          and st.stuGradeID = sg.stuGradeID
           <if test="isArranged!=-1">
               and isArranged=#{isArranged}
           </if>
@@ -61,11 +56,48 @@
         order by stuCourseID desc
     </select>
 
+    <select id="findAllStudentCourse" resultMap="studentCourseMap">
+        SELECT *
+        from
+          studentcourse stco, student st,
+          teacher te,
+          lessontype lt, coursetype ct,
+
+          studentgrade sg
+        where
+          stco.stuID = st.stuID
+          and stco.courseTypeID = ct.courseTypeID
+          and stco.lessonTypeID = lt.lessonTypeID
+          and st.stuGradeID = sg.stuGradeID
+
+          <if test="stuName!=null and stuName!=''">
+              and st.stuName like concat('%',#{stuName},'%')
+          </if>
+          <if test="isArranged==0">
+              and stco.isArranged = #{isArranged}
+          </if>
+          <if test="courseTypeID!=null">
+              and stco.courseTypeID = #{courseTypeID}
+          </if>
+          <if test="lessonTypeID!=null">
+              and stco.lessonTypeID = #{lessonTypeID}
+          </if>
+          and stco.teacherID = te.teacherID
+        <choose>
+            <when test="sort!=null and sort!=''">
+                order by stco.${sort} ${order}
+            </when>
+            <otherwise>
+                order by stco.stuCourseID desc
+            </otherwise>
+        </choose>
+    </select>
+
     <!--根据stuCourseID查询学生课程-->
     <select id="findStudentCourseByID" parameterType="integer" resultMap="studentCourseMap">
         SELECT *
         from
-        studentcourse stco, student st,
+        studentcourse stco, student st,teacher te,
         lessontype lt, coursetype ct,
         studentgrade sg
         where
@@ -74,11 +106,47 @@
         and stco.lessonTypeID = lt.lessonTypeID
         and st.stuGradeID = sg.stuGradeID
         and stco.stuCourseID = #{stuCourseID}
+        and stco.teacherID = te.teacherID
+
     </select>
     
     <!--新增学生课程-->
     <insert id="addStudentCourse" parameterType="StudentCourse">
-        insert into studentcourse (stuID, lessonTypeID, courseTypeID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
-        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
+        insert into studentcourse (stuID, lessonTypeID, courseTypeID,teacherID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
+        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{teacherID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
     </insert>
+
+    <!--修改学生课程-->
+    <update id="updateStudentCourse" parameterType="StudentCourse">
+        update studentcourse
+        SET
+          teacherID=#{teacher.teacherID},
+          lessonTypeID=#{lessonType.lessonTypeID},
+          courseTypeID=#{courseType.courseTypeID},
+          lessonTotalNumber=#{lessonTotalNumber},
+          lessonRestNumber=#{lessonRestNumber},
+          discount=#{discount},
+          isArranged=#{isArranged}
+        where
+          stuCourseID=#{stuCourseID}
+    </update>
+
+    <!--根据课程LessonTypeID查询课程数量-->
+    <select id="countStuCourseByLessonTypeID" parameterType="integer" resultType="integer">
+        SELECT count(1) FROM studentcourse
+        where lessonTypeID = #{lessonTypeID}
+    </select>
+
+    <!--根据课程CourseTypeID查询课程数量-->
+    <select id="countStuCourseByCourseTypeID" parameterType="integer" resultType="integer">
+        SELECT count(1) FROM studentcourse
+        where courseTypeID = #{courseTypeID}
+    </select>
+
+    <select id="findCourseTypeByStuCourseID" parameterType="integer" resultType="CourseType">
+        SELECT ct.*
+        from coursetype ct, studentcourse sc
+        where sc.courseTypeID = ct.courseTypeID
+        and sc.stuCourseID = #{stuCourseID}
+    </select>
 </mapper>

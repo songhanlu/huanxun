@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.StudentClassArrangeMapper">
+    <resultMap id="teacherMap" type="Teacher">
+        <id property="teacherID" column="teacherID"/>
+    </resultMap>
+    <resultMap id="classArrangeMap" type="StudentClassArrange">
+        <id property="stuClassArrangeID" column="stuClassArrangeID"/>
+        <association property="teacher" resultMap="teacherMap"/>
+    </resultMap>
+    <select id="findstuClassArranges" resultMap="classArrangeMap">
+        SELECT cr.*, t.teacherID, t.teacherName
+        from studentclassarrange cr, teacher t
+        where cr.teacherID = t.teacherID
+        <if test="stuCourseID!=null">
+            and stuCourseID = #{stuCourseID}
+        </if>
+        order by startTime DESC
+    </select>
+    <insert id="addStuClassArrange" parameterType="StudentClassArrange">
+        insert into studentclassarrange (stuCourseID, startTime, endTime, lessonNumber, teacherID)
+        VALUES (#{stuCourseID},#{startTime},#{endTime},#{lessonNumber},#{teacher.teacherID})
+    </insert>
+    <select id="countClassArrange" parameterType="integer" resultType="integer">
+        SELECT SUM(`lessonNumber`) FROM studentclassarrange where stuCourseID = #{stuCourseID}
+    </select>
+    <delete id="deleteClassArrange" parameterType="list">
+        DELETE from studentclassarrange
+        where stuClassArrangeID IN
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findStuClassArrangeByID" parameterType="integer" resultMap="classArrangeMap">
+        SELECT * FROM studentclassarrange where stuClassArrangeID= #{id}
+    </select>
+    <update id="updateArrange" parameterType="StudentClassArrange">
+        UPDATE studentclassarrange
+        set
+          startTime=#{startTime},endTime=#{endTime},lessonNumber=#{lessonNumber}
+        where stuClassArrangeID=#{stuClassArrangeID}
+    </update>
+
+    <select id="findStuClassArrangeByTeaherID" parameterType="integer" resultMap="classArrangeMap">
+        select * from studentclassarrange where teacherID = #{teacherID}
+    </select>
+
+    <!--根据stuClassArrangeID查询stuCourseID-->
+    <select id="findStuCourseIDByArrangeID" parameterType="integer" resultType="integer">
+        SELECT a.stuCourseID
+        FROM studentclassarrange a
+        where a.stuClassArrangeID = #{stuClassArrangeID}
+    </select>
+</mapper>
