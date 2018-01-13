@@ -8,10 +8,26 @@ public class Agency {
     private String agencyName;
     private LoginUser loginUser;
     private String contactPhone;
-    private String contextEmail;
-    private String contextQQ;
+    private String contactEmail;
+    private String contactQQ;
     private Integer stuNumber;
     private Integer visible;
+    private String contactName;
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "agencyID=" + agencyID +
+                ", agencyName='" + agencyName + '\'' +
+                ", loginUser=" + loginUser +
+                ", contactPhone='" + contactPhone + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", contactQQ='" + contactQQ + '\'' +
+                ", stuNumber=" + stuNumber +
+                ", visible=" + visible +
+                ", contactName='" + contactName + '\'' +
+                '}';
+    }
 
     public Integer getAgencyID() {
         return agencyID;
@@ -45,20 +61,20 @@ public class Agency {
         this.contactPhone = contactPhone;
     }
 
-    public String getContextEmail() {
-        return contextEmail;
+    public String getContactEmail() {
+        return contactEmail;
     }
 
-    public void setContextEmail(String contextEmail) {
-        this.contextEmail = contextEmail;
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
-    public String getContextQQ() {
-        return contextQQ;
+    public String getContactQQ() {
+        return contactQQ;
     }
 
-    public void setContextQQ(String contextQQ) {
-        this.contextQQ = contextQQ;
+    public void setContactQQ(String contactQQ) {
+        this.contactQQ = contactQQ;
     }
 
     public Integer getStuNumber() {
@@ -77,17 +93,11 @@ public class Agency {
         this.visible = visible;
     }
 
-    @Override
-    public String toString() {
-        return "Agency{" +
-                "agencyID=" + agencyID +
-                ", agencyName='" + agencyName + '\'' +
-                ", loginUser=" + loginUser +
-                ", contactPhone='" + contactPhone + '\'' +
-                ", contextEmail='" + contextEmail + '\'' +
-                ", contextQQ='" + contextQQ + '\'' +
-                ", stuNumber=" + stuNumber +
-                ", visible=" + visible +
-                '}';
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }

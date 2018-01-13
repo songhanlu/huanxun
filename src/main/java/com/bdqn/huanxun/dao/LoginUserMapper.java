@@ -8,4 +8,9 @@ import com.bdqn.huanxun.pojo.LoginUser;
 public interface LoginUserMapper {
     //登录
     LoginUser login(LoginUser loginUser);
+    //添加一个登录者
+    Integer addLoginUser(LoginUser loginUser);
+
+    //修改登录
+    Integer updateLoginUser(LoginUser loginUser);
 }

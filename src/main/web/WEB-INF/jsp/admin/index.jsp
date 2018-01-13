@@ -38,7 +38,11 @@
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入排课功能</a></li>
                     </ul>
                 </div>
-                <div title="校区模块"></div>
+                <div title="校区模块">
+                    <ul myAttr="indexMenu">
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/agency/toAgency">查询校区</a></li>
+                    </ul>
+                </div>
                 <div title="数据统计模块"></div>
             </div>
         </div>

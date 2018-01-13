@@ -22,7 +22,7 @@ public class StudentCourseServiceImpl implements StudentCourseService {
                                                         StudentCourse studentCourse) {
         PageHelper.startPage(pageNum, pageSize);
         List<StudentCourse> studentCourses = studentCourseMapper.findAllStudentCourse(studentCourse);
-        return new PageInfo<>(studentCourses);
+        return new PageInfo<StudentCourse>(studentCourses);
     }
 
     @Override
