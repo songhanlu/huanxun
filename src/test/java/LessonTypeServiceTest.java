@@ -1,7 +1,6 @@
 import com.bdqn.huanxun.dao.LessonTypeMapper;
 import com.bdqn.huanxun.pojo.LessonType;
 import com.bdqn.huanxun.service.LessonTypeService;
-import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,10 +37,7 @@ public class LessonTypeServiceTest {
 
     @Test
     public void queryAllLessonTypeBylessonArea() throws Exception {
-        LessonType lessonType = new LessonType();
-    /*    lessonType.setLessonArea("欧美");*/
-        lessonType.setLessonPrice(350);
-        List<LessonType> list = lessonTypeMapper.queryAllLessonTypeByLessonType(lessonType);
+        List<LessonType> list = lessonTypeMapper.queryAllLessonTypeByLessonType(null,100,300,null,null);
         for (LessonType type : list) {
             System.out.println(type);
         }
@@ -51,8 +47,10 @@ public class LessonTypeServiceTest {
     private LessonTypeMapper lessonTypeMapper;
     @Resource
     private LessonTypeService lessonTypeService;
-    @Test
+  /* @Test
     public void queryAllLessonType() throws Exception {
+       LessonType lessonType= new LessonType();
+       lessonType.setLessonPrice();
         PageInfo<LessonType> pageInfo=lessonTypeService.queryAllLessonType(1,3);
         if (null != pageInfo) {
             System.out.println(pageInfo);
@@ -63,6 +61,6 @@ public class LessonTypeServiceTest {
                 }
             }
         }
-    }
+    }*/
 
 }

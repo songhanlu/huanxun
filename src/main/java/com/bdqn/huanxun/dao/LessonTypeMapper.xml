@@ -13,20 +13,26 @@
     <select id="queryAllLessonType" resultMap="LessonTypeMap">
           SELECT * FROM lessontype
     </select>
-    <select id="queryAllLessonTypeByLessonType" parameterType="String" resultMap="LessonTypeMap">
+    <select id="queryAllLessonTypeByLessonType"  resultMap="LessonTypeMap">
         SELECT * FROM  lessontype
-        <where>
+        　　<trim prefix="WHERE" prefixOverrides="AND|OR">
             visible=1
-            <if test="lessonArea!=null ">
+            <if test="lessonArea!=null and lessonArea!=''">
                AND lessonArea = #{lessonArea}
             </if>
-            <if test="timePerLesson!=null ">
+            <if test="timePerLesson!=null and timePerLesson!=''">
               AND  timePerLesson = #{timePerLesson}
             </if>
-            <if test="lessonPrice!=null ">
-              AND lessonPrice = #{lessonPrice}
+            <if test="lessonPrice1!=null and lessonPrice1!='' ">
+              AND lessonPrice >= #{lessonPrice1}
             </if>
-        </where>
+            <if test="lessonPrice2!=null and lessonPrice2!='' ">
+              AND lessonPrice &lt;= #{lessonPrice2}
+            </if>
+            <if test="lessonDesc!=null and lessonDesc!=''">
+                AND lessonDesc like concat('%',#{lessonDesc},'%')
+            </if>
+        </trim>
 
     </select>
     <update id="updateLessonDescAndLessonPriceAndTimePerLessonById" parameterType="LessonType">
