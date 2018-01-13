@@ -18,4 +18,21 @@
         and ls.loginPassword=#{loginPassword}
         and ls.visible=1
     </select>
+    <insert id="addLoginUser" parameterType="LoginUser"
+            keyProperty="loginUserID" useGeneratedKeys="true">
+        INSERT INTO `loginuser`
+        VALUES (NULL,
+                #{loginName},
+                #{loginPassword},
+                #{userRole.userRoleID},
+                1);
+    </insert>
+    <update id="updateLoginUser" parameterType="LoginUser">
+        UPDATE `loginuser`
+        SET
+          `loginName` = #{loginName},
+          `loginPassword` = #{loginPassword},
+          `userRoleID` = #{userRole.userRoleID}
+        WHERE `loginUserID` = #{loginUserID}
+    </update>
 </mapper>

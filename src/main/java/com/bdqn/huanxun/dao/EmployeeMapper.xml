@@ -3,9 +3,122 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdqn.huanxun.dao.EmployeeMapper">
+    <resultMap id="employeeMap" type="Employee">
+        <id property="employeeID" column="employeeID"/>
+        <association property="loginUser" resultMap="loginMap"></association>
+    </resultMap>
+    <resultMap id="loginMap" type="LoginUser">
+        <id property="loginUserID" column="loginUserID"/>
+        <result property="loginName" column="loginName"/>
+        <association property="userRole" resultMap="userRolMap"/>
+    </resultMap>
+    <resultMap id="userRolMap" type="UserRole">
+        <id property="userRoleID" column="userRoleId"/>
+    </resultMap>
     <select id="findEmployeeByID" parameterType="integer" resultType="Employee">
         SELECT * from employee
         where employeeID=#{employeeID}
         and visible=1
     </select>
+    <select id="queryEmployee" resultMap="employeeMap">
+        SELECT
+          *
+        FROM
+          `employee` em,
+          `loginuser` l,
+          `userrole` ur
+        WHERE em.`loginUserID` = l.`loginUserID`
+        AND
+        l.`userRoleID` = ur.`userRoleID`
+    </select>
+    <select id="queryEmployeeByUserRoleId" resultMap="employeeMap">
+        SELECT
+          *
+        FROM
+          `employee` e,
+          `loginuser` l,
+          `userrole` u
+        WHERE e.`loginUserID` = l.`loginUserID`
+          AND l.`userRoleID` = u.`userRoleID`
+          AND u.`userRoleID` = #{userRoleId}
+          AND
+          e.visible = 1
+          ORDER BY `employeeID` DESC
+    </select>
+    <select id="queryEmployeeByUserRoleIdAndEmployeeId" resultMap="employeeMap">
+        SELECT
+          *
+        FROM
+          `employee` e,
+          `loginuser` l,
+          `userrole` u
+        WHERE e.`loginUserID` = l.`loginUserID`
+          AND
+        l.`userRoleID` = u.`userRoleID`
+         AND
+         e.visible = 1
+          <if test="userRoleId!=null">
+              AND u.`userRoleID` = #{userRoleId}
+          </if>
+        <if test="employeeId!=null">
+            and e.`employeeID` = #{employeeId}
+        </if>
+        ORDER BY `employeeID` DESC
+
+    </select>
+    <select id="queryEmployeeByEmployeeId" resultMap="employeeMap">
+          SELECT
+          *
+        FROM
+          `employee` e,
+          `loginuser` l,
+          `userrole` ur
+        WHERE e.`loginUserID` = l.`loginUserID`
+        AND
+        l.`userRoleID` = ur.`userRoleID`
+        AND
+        e.visible = 1
+        AND
+        e.`employeeID` = #{employeeId}
+        ORDER BY `employeeID` DESC
+    </select>
+    <delete id="deleteEmployeeById" parameterType="Integer">
+       UPDATE `employee`
+        SET
+          `visible` = 0
+        WHERE `employeeID` = #{employeeId}
+    </delete>
+    <delete id="deleteEmployeeByIds">
+        UPDATE `employee`
+        SET
+        `visible` = 0
+        WHERE `employeeID` IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="addEmployee" parameterType="Employee">
+        INSERT INTO `employee`
+        VALUES (NULL,
+                #{employeeName},
+                #{loginUserID},
+                #{phone},
+                #{email},
+                #{employeeAge},
+                #{employeeGender},
+                #{employeeQQ},
+                1);
+    </insert>
+    <update id="updateEmployee" parameterType="Employee">
+        UPDATE `employee`
+        SET
+          `employeeName` = #{employeeName},
+          `phone` = #{phone},
+          `email` = #{email},
+          `employeeAge` = #{employeeAge},
+          `employeeGender` = #{employeeGender},
+          `employeeQQ` = #{employeeQQ}
+        WHERE `employeeID` = #{employeeID};
+    </update>
+
 </mapper>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/test")
 public class TestController {
-    @RequestMapping("/test.html")
+    @RequestMapping("/test.do")
     public String test() {
         return "admin/index";
     }

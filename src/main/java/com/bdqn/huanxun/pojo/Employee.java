@@ -13,6 +13,7 @@ public class Employee {
     private String employeeGender;
     private String employeeQQ;
     private Integer visible;
+    private LoginUser loginUser;
 
     @Override
     public String toString() {
@@ -26,7 +27,16 @@ public class Employee {
                 ", employeeGender='" + employeeGender + '\'' +
                 ", employeeQQ='" + employeeQQ + '\'' +
                 ", visible=" + visible +
+                ", loginUser=" + loginUser +
                 '}';
+    }
+
+    public LoginUser getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
     }
 
     public Integer getEmployeeID() {
