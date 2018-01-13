@@ -191,7 +191,7 @@
     <table id="employeeDataGrid"></table>
     <%--详情--%>
     <div class="easyui-window" id="queryEmployeeByIdWindow"
-         style="width: 600px;height: 500px; padding: 60px 120px;"
+         style="width: 600px;height: 500px; padding: 60px 120px;top: 10px;left:20px;"
          title="员工详情" closed="true">
         <form>
             <table>

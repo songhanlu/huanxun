@@ -37,7 +37,7 @@ public class Message {
         this.msg = msg;
     }
 
-
+    private Message(){}
     private Message(String code, String msg) {
         this.code = code;
         this.msg = msg;
