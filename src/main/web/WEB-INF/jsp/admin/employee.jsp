@@ -126,7 +126,7 @@
                     $("#addEmployeeWindow").window('close');
                 })
             })
-            //修改
+            //修改2
             $("#saveUpdateEmployeeButton").click(function () {
                 var employee = $("#updateEmployeeForm").serialize();
                 $.post("${pageContext.request.contextPath}/employee/updateEmployee.do",employee,
