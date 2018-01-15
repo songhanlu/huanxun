@@ -10,13 +10,13 @@
         <result property="visible" column="visible"></result>
         <result property="lessonDesc" column="lessonDesc"></result>
     </resultMap>
-    <select id="queryAllLessonType" resultMap="LessonTypeMap">
-          SELECT * FROM lessontype
+    <select id="queryLessonTypeById" parameterType="Integer" resultMap="LessonTypeMap">
+          SELECT * FROM lessontype WHERE lessonTypeID = #{lessonTypeID}
     </select>
     <select id="queryAllLessonTypeByLessonType"  resultMap="LessonTypeMap">
         SELECT * FROM  lessontype
         　　<trim prefix="WHERE" prefixOverrides="AND|OR">
-            visible=1
+
             <if test="lessonArea!=null and lessonArea!=''">
                AND lessonArea = #{lessonArea}
             </if>

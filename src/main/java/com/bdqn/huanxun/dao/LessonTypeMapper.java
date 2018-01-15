@@ -9,14 +9,14 @@ import java.util.List;
  * Created by lenovo on 2018/1/8.
  */
 public interface LessonTypeMapper {
-    //查找全部
-    public List<LessonType> queryAllLessonType();
+    //ID查找
+    public LessonType queryLessonTypeById(Integer lessonTypeID);
     //通过条件查找全部
     public List<LessonType> queryAllLessonTypeByLessonType(@Param("lessonArea") String lessonArea ,
                                                            @Param("lessonPrice1") Integer lessonPrice1,
                                                            @Param("lessonPrice2") Integer lessonPrice2,
                                                            @Param("timePerLesson") Integer timePerLesson,
-                                                           @Param("lessonDesc") Integer lessonDesc);
+                                                           @Param("lessonDesc") String lessonDesc);
     //修改 名称 时间 金额
     public Integer updateLessonDescAndLessonPriceAndTimePerLessonById(LessonType lessonType);
     //添加课程

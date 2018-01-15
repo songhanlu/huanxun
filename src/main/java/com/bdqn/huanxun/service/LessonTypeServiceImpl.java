@@ -17,20 +17,16 @@ public class LessonTypeServiceImpl implements LessonTypeService {
     @Resource
     private LessonTypeMapper lessonTypeMapper;
 
-    public PageInfo<LessonType> queryAllLessonType(Integer pageNum,Integer pageSize,String lessonArea, Integer lessonPrice1, Integer lessonPrice2, Integer timePerLesson, Integer lessonDesc) {
+    public PageInfo<LessonType> queryAllLessonTypeByLessonType(Integer pageNum, Integer pageSize,String lessonArea, Integer lessonPrice1, Integer lessonPrice2, Integer timePerLesson, String lessonDesc) {
             PageHelper.startPage(pageNum,pageSize);
             List<LessonType> list=lessonTypeMapper.queryAllLessonTypeByLessonType(lessonArea,lessonPrice1,lessonPrice2,timePerLesson,lessonDesc);
             PageInfo<LessonType> pageInfo = new PageInfo<LessonType>(list);
             return pageInfo;
     }
 
-
-    @Override
-    public List<LessonType> queryAllLessonTypeByLessonType(String lessonArea, Integer lessonPrice1, Integer lessonPrice2, Integer timePerLesson, Integer lessonDesc) {
-        return lessonTypeMapper.queryAllLessonTypeByLessonType(lessonArea,lessonPrice1,lessonPrice2,timePerLesson,lessonDesc);
+    public LessonType queryLessonTypeById(Integer lessonTypeID){
+        return lessonTypeMapper.queryLessonTypeById(lessonTypeID);
     }
-
-
     public Integer updateLessonDescAndLessonPriceAndTimePerLessonById(LessonType lessonType) {
         return lessonTypeMapper.updateLessonDescAndLessonPriceAndTimePerLessonById(lessonType);
     }
