@@ -1,18 +1,20 @@
 package com.bdqn.huanxun.pojo;
 
+import java.net.PortUnreachableException;
 import java.util.Date;
 
 /**
- * Created by hp on 2018/1/12.
+ * Created by wangheng on 2018/1/9.
  */
 public class Book {
-    private Integer bookID;
-    private String bookTitle;
-    private String bookAddress;
-    private Integer courseTypeID;
-    private Date uplodTime;
+    private Integer bookID;     //教材Id号
+    private String bookTitle;   //教材的标题名称
+    private String bookAddress;   //教材的上传地址
+    private Date uploadTime;       //教材的上传时间
     private String bookVersion;
-    private Integer visible;
+    private CourseType courseType;  //教材表里面嵌套一个课程类型courseTypeId,作为外键
+    //教材版本
+    private Integer visible;//工具列
 
     @Override
     public String toString() {
@@ -20,9 +22,9 @@ public class Book {
                 "bookID=" + bookID +
                 ", bookTitle='" + bookTitle + '\'' +
                 ", bookAddress='" + bookAddress + '\'' +
-                ", courseTypeID=" + courseTypeID +
-                ", uplodTime=" + uplodTime +
+                ", uploadTime=" + uploadTime +
                 ", bookVersion='" + bookVersion + '\'' +
+                ", courseType=" + courseType +
                 ", visible=" + visible +
                 '}';
     }
@@ -51,20 +53,12 @@ public class Book {
         this.bookAddress = bookAddress;
     }
 
-    public Integer getCourseTypeID() {
-        return courseTypeID;
+    public Date getUploadTime() {
+        return uploadTime;
     }
 
-    public void setCourseTypeID(Integer courseTypeID) {
-        this.courseTypeID = courseTypeID;
-    }
-
-    public Date getUplodTime() {
-        return uplodTime;
-    }
-
-    public void setUplodTime(Date uplodTime) {
-        this.uplodTime = uplodTime;
+    public void setUploadTime(Date uploadTime) {
+        this.uploadTime = uploadTime;
     }
 
     public String getBookVersion() {
@@ -75,6 +69,14 @@ public class Book {
         this.bookVersion = bookVersion;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
     public Integer getVisible() {
         return visible;
     }
@@ -82,4 +84,6 @@ public class Book {
     public void setVisible(Integer visible) {
         this.visible = visible;
     }
+
+
 }

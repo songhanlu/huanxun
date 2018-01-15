@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.BookMapper">
+    <resultMap id="bookMap" type="Book">
+        <id property="bookID" column="bookID"></id>
+        <association property="courseType" resultMap="courseMap"></association>
+    </resultMap>
+    <resultMap id="courseMap" type="CourseType">
+        <id property="courseTypeID" column="courseTypeID"></id>
+        <result property="courseTypeName" column="courseTypeName"></result>
+    </resultMap>
+    <!--查询所有，分页-->
+    <select id="queryAll" resultMap="bookMap">
+         SELECT
+         b.*,c.`courseTypeName`
+        FROM book b,`coursetype` c
+        WHERE
+        b.`courseTypeID`=c.`courseTypeID`
+        AND b.visible=1
+          ORDER BY bookId DESC
+   </select>
+    <!--模糊查询,根据教材名称-->
+    <select id="queryBookTitle" resultMap="bookMap" parameterType="String">
+        SELECT
+        b.*,c.`courseTypeName`
+        FROM book b,`coursetype` c
+        WHERE
+        b.`courseTypeID`=c.`courseTypeID`
+        AND b.visible=1
+
+        <if test="bookTitle!=null and bookTitle!=''">
+                AND b.bookTitle LIKE CONCAT('%',#{bookTitle},'%')
+        </if>
+            <if test="courseTypeName!=null and courseTypeName!=''">
+                AND c.courseTypeName LIKE CONCAT('%',#{courseTypeName},'%')
+            </if>
+        ORDER BY bookId DESC
+
+    </select>
+    <!--删除一条-->
+    <update id="deleteBookById" parameterType="Integer">
+        UPDATE book SET visible=0 WHERE bookID=#{bookID}
+    </update>
+    <!--批量删除-->
+    <update id="deleteBookByIdList">
+          UPDATE book SET visible=0 WHERE bookID IN
+          <foreach collection="list" item="bookID" open="(" separator="," close=")">
+              #{bookID}
+          </foreach>
+    </update>
+    <!--详情-->
+    <select id="queryBookById" parameterType="Integer" resultMap="bookMap">
+          SELECT
+         b.*,c.`courseTypeName`
+        FROM book b,`coursetype` c
+        WHERE
+        b.`courseTypeID`=c.`courseTypeID`
+        AND b.visible=1
+        and
+        bookID=#{bookID}
+    </select>
+</mapper>
