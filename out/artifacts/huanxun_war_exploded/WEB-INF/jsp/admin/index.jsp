@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: hp
@@ -16,13 +17,22 @@
     <div class="easyui-layout" style="width: 100%;height: 100%;">
         <div region="north" style="height: 15%;">
             <h2 style="float: left;">
-                环迅后台管理系统-主页,欢迎你:<span style="font-size: 16px;">${sessionScope.loginUser.userRole.userRoleName}</span>
+                环迅后台管理系统-主页,欢迎您:<span style="font-size: 16px;">${sessionScope.loginUser.userRole.userRoleName}</span>
             </h2>
-            <h2 style="float: right;">
-                用户名：${sessionScope.currentEmployee.employeeName}
-                <a href="${pageContext.request.contextPath}/common/logout">注销</a>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </h2>
+            <c:if test="${sessionScope.loginUser.userRole.userRoleID eq 1 || sessionScope.loginUser.userRole.userRoleID eq 2 || sessionScope.loginUser.userRole.userRoleID eq 3 || sessionScope.loginUser.userRole.userRoleID eq 4}">
+                <h2 style="float: right;">
+                    用户名：${sessionScope.currentEmployee.employeeName}
+                    <a href="${pageContext.request.contextPath}/common/logout">注销</a>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </h2>
+            </c:if>
+            <c:if test="${sessionScope.loginUser.userRole.userRoleID eq 6 || sessionScope.loginUser.userRole.userRoleID eq 7}">
+                <h2 style="float: right;">
+                    用户名：${sessionScope.currentAgencyEmployee.aeName}（${sessionScope.currentAgencyEmployee.agency.agencyName}）
+                    <a href="${pageContext.request.contextPath}/common/logout">注销</a>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </h2>
+            </c:if>
         </div>
         <div region="west" style="width: 15%;" title="菜单栏">
             <div class="easyui-accordion" style="width: 100%;height: 100%;" data-options="{fit:true,selected:-1}">
@@ -41,7 +51,12 @@
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入课表管理</a></li>
                     </ul>
                 </div>
-                <div title="校区模块"></div>
+                <div title="校区模块">
+                    <ul myAttr="indexMenu">
+                        <li><a url="${pageContext.request.contextPath}/ae/toAE.do">校区员工管理</a></li>
+                    </ul>
+
+                </div>
                 <div title="数据统计模块">
                     <div id="tree"></div>
                 </div>

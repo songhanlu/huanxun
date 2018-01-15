@@ -1,7 +1,9 @@
 package com.bdqn.huanxun.controller;
 
+import com.bdqn.huanxun.pojo.AgencyEmployee;
 import com.bdqn.huanxun.pojo.Employee;
 import com.bdqn.huanxun.pojo.LoginUser;
+import com.bdqn.huanxun.service.AgencyEmployeeService;
 import com.bdqn.huanxun.service.EmployeeService;
 import com.bdqn.huanxun.service.LoginUserService;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class LoginController {
     private LoginUserService loginUserService;
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private AgencyEmployeeService agencyEmployeeService;
 
     @RequestMapping("/login")
     public String login(LoginUser loginUser, HttpSession session, Model model) {
@@ -33,6 +37,12 @@ public class LoginController {
                 //到employee表里，把当前登录用户具体信息找出来
                 Employee currentEmployee = employeeService.findEmployeeByID(loginUser1.getLoginUserID());
                 session.setAttribute("currentEmployee",currentEmployee);
+                return "admin/index";
+            }else if(userRoleID==6 || userRoleID==7){
+                session.setAttribute("loginUser",loginUser1);
+                AgencyEmployee agencyEmployee = agencyEmployeeService.findAgencyEmployeeByLoginUserID(loginUser1.getLoginUserID());
+                System.out.println(agencyEmployee);
+                session.setAttribute("currentAgencyEmployee",agencyEmployee);
                 return "admin/index";
             }else{
                 model.addAttribute("loginMessage","用户身份异常！");

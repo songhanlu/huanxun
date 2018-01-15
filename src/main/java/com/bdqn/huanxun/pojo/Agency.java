@@ -6,14 +6,20 @@ package com.bdqn.huanxun.pojo;
 public class Agency {
     private Integer agencyID;
     private String agencyName;
-    private LoginUser loginUser;
     private String contactPhone;
-
     private String contactEmail;
     private String contactQQ;
-
+    private String contactName;
     private Integer stuNumber;
     private Integer visible;
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
 
     public Integer getAgencyID() {
         return agencyID;
@@ -29,14 +35,6 @@ public class Agency {
 
     public void setAgencyName(String agencyName) {
         this.agencyName = agencyName;
-    }
-
-    public LoginUser getLoginUser() {
-        return loginUser;
-    }
-
-    public void setLoginUser(LoginUser loginUser) {
-        this.loginUser = loginUser;
     }
 
     public String getContactPhone() {
@@ -87,11 +85,10 @@ public class Agency {
         return "Agency{" +
                 "agencyID=" + agencyID +
                 ", agencyName='" + agencyName + '\'' +
-                ", loginUser=" + loginUser +
                 ", contactPhone='" + contactPhone + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", contactQQ='" + contactQQ + '\'' +
-
+                ", contactName='" + contactName + '\'' +
                 ", stuNumber=" + stuNumber +
                 ", visible=" + visible +
                 '}';

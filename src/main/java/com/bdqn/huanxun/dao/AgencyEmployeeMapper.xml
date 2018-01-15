@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.huanxun.dao.AgencyEmployeeMapper">
+    <resultMap id="userRoleMap" type="UserRole">
+        <id property="userRoleID" column="userRoleID"/>
+    </resultMap>
+    <resultMap id="loginUserMap" type="LoginUser">
+        <id property="loginUserID" column="loginUserID"/>
+        <association property="userRole" resultMap="userRoleMap"/>
+    </resultMap>
+    <resultMap id="agencyMap" type="Agency">
+        <id property="agencyID" column="agencyID"/>
+    </resultMap>
+    <resultMap id="aeMap" type="AgencyEmployee">
+        <id property="agencyEmployeeID" column="agencyEmployeeID"/>
+        <association property="agency" resultMap="agencyMap"/>
+        <association property="loginUser" resultMap="loginUserMap"/>
+    </resultMap>
+
+    <select id="findAgencyEmployeeByLoginUserID" parameterType="integer" resultMap="aeMap">
+      select *
+      from agencyemployee ae, agency a, loginuser l, userrole ur
+      where ae.agencyID = a.agencyID
+      and ae.loginUserID = l.loginUserID
+      and l.userRoleID = ur.userRoleID
+      and ae.loginUserID = #{loginUserID}
+    </select>
+
+    <select id="findAEByAgencyID" parameterType="integer" resultMap="aeMap">
+      select *
+      from agencyemployee ae, agency a, loginuser l, userrole ur
+      where ae.agencyID = a.agencyID
+      and ae.loginUserID = l.loginUserID
+      and l.userRoleID = ur.userRoleID
+      and ae.agencyID = #{agencyID}
+    </select>
+</mapper>
