@@ -20,4 +20,8 @@ public interface BookMapper {
     public Integer deleteBookById(Integer id);
     //批量删除
     public Integer deleteBookByIdList(List<Integer> list);
+    //修改
+    Integer updateBook(Book book);
+    //添加
+    Integer addBook(Book book);
 }

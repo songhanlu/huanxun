@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bdqn.huanxun.dao.BookMapper">
-    <resultMap id="bookMap" type="Book">
+  <resultMap id="bookMap" type="Book">
         <id property="bookID" column="bookID"></id>
         <association property="courseType" resultMap="courseMap"></association>
     </resultMap>
@@ -9,7 +9,11 @@
         <id property="courseTypeID" column="courseTypeID"></id>
         <result property="courseTypeName" column="courseTypeName"></result>
     </resultMap>
-    <!--查询所有，分页-->
+
+
+
+
+    <!--&lt;!&ndash;查询所有，分页&ndash;&gt;-->
     <select id="queryAll" resultMap="bookMap">
          SELECT
          b.*,c.`courseTypeName`
@@ -19,7 +23,7 @@
         AND b.visible=1
           ORDER BY bookId DESC
    </select>
-    <!--模糊查询,根据教材名称-->
+    <!--&lt;!&ndash;模糊查询,根据教材名称&ndash;&gt;-->
     <select id="queryBookTitle" resultMap="bookMap" parameterType="String">
         SELECT
         b.*,c.`courseTypeName`
@@ -37,18 +41,18 @@
         ORDER BY bookId DESC
 
     </select>
-    <!--删除一条-->
+    <!--&lt;!&ndash;删除一条&ndash;&gt;-->
     <update id="deleteBookById" parameterType="Integer">
         UPDATE book SET visible=0 WHERE bookID=#{bookID}
     </update>
-    <!--批量删除-->
+    <!--&lt;!&ndash;批量删除&ndash;&gt;-->
     <update id="deleteBookByIdList">
           UPDATE book SET visible=0 WHERE bookID IN
           <foreach collection="list" item="bookID" open="(" separator="," close=")">
               #{bookID}
           </foreach>
     </update>
-    <!--详情-->
+    <!--&lt;!&ndash;详情&ndash;&gt;-->
     <select id="queryBookById" parameterType="Integer" resultMap="bookMap">
           SELECT
          b.*,c.`courseTypeName`
@@ -59,4 +63,15 @@
         and
         bookID=#{bookID}
     </select>
+    <!--&lt;!&ndash;修改&ndash;&gt;-->
+    <update id="updateBook" parameterType="Book">
+        UPDATE book SET `bookTitle`=#{bookTitle},
+        `courseTypeID`=#{courseType.courseTypeID},
+        `bookVersion`=#{bookVersion}
+        WHERE bookID=#{bookID}
+    </update>
+    <!--添加-->
+    <insert id="addBook" parameterType="Book">
+        INSERT INTO book VALUES(NULL,#{bookTitle},#{bookAddress},#{courseType.courseTypeID},NOW(),#{bookVersion},1)
+    </insert>
 </mapper>

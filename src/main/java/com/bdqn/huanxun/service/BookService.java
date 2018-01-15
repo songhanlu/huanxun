@@ -10,7 +10,7 @@ import java.util.List;
  * Created by wangheng on 2018/1/9.
  */
 public interface BookService {
-    //分页
+//    //分页
     PageInfo<Book> queryAll(Integer pageNum,Integer pageSize);
     //模糊查询教材名称
    // public List<Book> queryBookTitle(Integer pageNum,Integer pageSize,String bookTitle, String courseTypeName );
@@ -21,6 +21,10 @@ public interface BookService {
     public Integer deleteBookByIdList(List<Integer> list);
     //详情
     public Book queryBookById(Integer id);
+    //修改
+    Integer updateBook(Book book);
+    //添加
+    Integer addBook(Book book);
 
 
 
