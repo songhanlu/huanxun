@@ -51,9 +51,8 @@ public class AgencyController {
     @ResponseBody
     @RequestMapping(value = "addAgency.do",method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
-    public String addAgency(Agency agency,Integer loginUserId,String loginName,
-                              String loginPassword) {
-        int n = agencyService.addAgency(agency,loginUserId,loginName, loginPassword);
+    public String addAgency(Agency agency) {
+        int n = agencyService.addAgency(agency);
         if (n > 0) {
             return JSON.toJSONString(Message.success());
         }
@@ -63,9 +62,8 @@ public class AgencyController {
     @ResponseBody
     @RequestMapping(value = "updateAgency.do",method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
-    public String updateAgency(Agency agency,Integer loginUserId,String loginName,
-                            String loginPassword) {
-        int n = agencyService.updateAgency(agency,loginUserId,loginName, loginPassword);
+    public String updateAgency(Agency agency) {
+        int n = agencyService.updateAgency(agency);
         if (n > 0) {
             return JSON.toJSONString(Message.success());
         }

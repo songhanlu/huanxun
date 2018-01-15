@@ -4,13 +4,8 @@
 
     <resultMap id="agencyMap" type="Agency">
         <id property="agencyID" column="agencyID"></id>
-        <association property="loginUser" resultMap="loginUserMap"></association>
     </resultMap>
-    <resultMap id="loginUserMap" type="LoginUser">
-        <id property="loginUserID" column="loginUserID"></id>
-        <result property="loginName" column="loginName"/>
-        <result property="loginPassword" column="loginPassword"/>
-    </resultMap>
+
 
     <select id="findAgencyById" resultMap="agencyMap" parameterType="Integer">
         select * from `agency` where agencyID = #{agencyId} and visible = 1
@@ -18,68 +13,54 @@
 
     <select id="findAll" resultMap="agencyMap">
         SELECT
-          a.`agencyID`,
-          a.`agencyName`,
-          a.`contactName`,
-          a.`contactPhone`,
-          a.`contactEmail`,
-          a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName`
+          `agencyID`,
+          `agencyName`,
+          `contactName`,
+          `contactPhone`,
+          `contactEmail`,
+          `contactQQ`,
+          `stuNumber`
         FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-          AND a.`visible` = 1
+          `agency`
+        WHERE visible = 1
     </select>
 
     <select id="findAgencyByLikeAgencyName" resultMap="agencyMap">
   SELECT
-          a.`agencyID`,
-          a.`agencyName`,
-          a.`contactName`,
-          a.`contactPhone`,
-          a.`contactEmail`,
-          a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName`
+          `agencyID`,
+          `agencyName`,
+          `contactName`,
+          `contactPhone`,
+          `contactEmail`,
+          `contactQQ`,
+          `stuNumber`
         FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-          AND a.`visible` = 1
+          `agency`
+        WHERE `visible` = 1
           <if test="agencyName!=null and agencyName!=''">
-              AND a.`agencyName` LIKE CONCAT('%',#{agencyName},'%')
+              AND `agencyName` LIKE CONCAT('%',#{agencyName},'%')
           </if>
     </select>
 
     <select id="queryAgencyById" resultMap="agencyMap" parameterType="Integer">
         SELECT
-          a.`agencyID`,
-          a.`agencyName`,
-          a.`contactName`,
-          a.`contactPhone`,
-          a.`contactEmail`,
-          a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName` ,
-          l.`loginPassword`
+          `agencyID`,
+          `agencyName`,
+          `contactName`,
+          `contactPhone`,
+          `contactEmail`,
+          `contactQQ`,
+          `stuNumber`
         FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-        AND a.`agencyID` = #{agencyId}
-          AND a.`visible` = 1
+          `agency`
+        WHERE `agencyID` = #{agencyId}
+          AND `visible` = 1
     </select>
 
     <insert id="addAgency" parameterType="Agency">
         INSERT INTO `agency`
         VALUES (NULL,
                 #{agencyName},
-                #{loginUser.loginUserID},
                 #{contactPhone},
                 #{contactEmail},
                 #{contactQQ},
@@ -91,13 +72,12 @@
     <update id="updateAgency" parameterType="Agency">
         update `agency`
         set `agencyName` = #{agencyName},
-          `loginUserID` = #{loginUser.loginUserID},
           `contactPhone` = #{contactPhone},
           `contactEmail` = #{contactEmail},
           `contactQQ` = #{contactQQ},
           `stuNumber` = #{stuNumber},
           `visible` = 1,
           `contactName` = #{contactName}
-        where `agencyID` = #{agencyID};
+        where `agencyID` = #{agencyID}
     </update>
 </mapper>

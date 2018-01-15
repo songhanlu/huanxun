@@ -21,8 +21,8 @@ public interface AgencyService {
     Agency queryAgencyById(Integer agencyId);
 
     //添加
-    Integer addAgency(Agency agency,Integer loginUserID,String loginName,String loginPassword);
+    Integer addAgency(Agency agency);
 
     //修改
-    Integer updateAgency(Agency agency,Integer loginUserID,String loginName,String loginPassword);
+    Integer updateAgency(Agency agency);
 }
