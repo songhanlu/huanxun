@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: hp
@@ -7,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>环迅后台管理系统-主页</title>
@@ -53,9 +53,8 @@
                 </div>
                 <div title="校区模块">
                     <ul myAttr="indexMenu">
-                        <li><a url="${pageContext.request.contextPath}/ae/toAE.do">校区员工管理</a></li>
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/agency/toAgency">查询校区</a></li>
                     </ul>
-
                 </div>
                 <div title="数据统计模块">
                     <div id="tree"></div>

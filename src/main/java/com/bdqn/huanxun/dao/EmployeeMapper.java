@@ -1,6 +1,9 @@
 package com.bdqn.huanxun.dao;
 
 import com.bdqn.huanxun.pojo.Employee;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Created by hp on 2018/1/5.

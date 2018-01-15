@@ -4,12 +4,6 @@
 
     <resultMap id="agencyMap" type="Agency">
         <id property="agencyID" column="agencyID"></id>
-        <association property="loginUser" resultMap="loginUserMap"></association>
-    </resultMap>
-    <resultMap id="loginUserMap" type="LoginUser">
-        <id property="loginUserID" column="loginUserID"></id>
-        <result property="loginName" column="loginName"/>
-        <result property="loginPassword" column="loginPassword"/>
     </resultMap>
 
     <select id="findAgencyById" resultMap="agencyMap" parameterType="Integer">
@@ -17,21 +11,14 @@
     </select>
 
     <select id="findAll" resultMap="agencyMap">
-        SELECT
-          a.`agencyID`,
-          a.`agencyName`,
-          a.`contactName`,
-          a.`contactPhone`,
-          a.`contactEmail`,
-          a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName`
-        FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-          AND a.`visible` = 1
+        SELECT `agencyID`,
+          `agencyName`,
+          `contactName`,
+          `contactPhone`,
+          `contactEmail`,
+          `contactQQ`,
+          `stuNumber`
+          FROM `agency` WHERE `visible` = 1 ORDER BY `agencyID` DESC
     </select>
 
     <select id="findAgencyByLikeAgencyName" resultMap="agencyMap">
@@ -42,17 +29,15 @@
           a.`contactPhone`,
           a.`contactEmail`,
           a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName`
+          a.`stuNumber`
         FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-          AND a.`visible` = 1
+          `agency` a
+        WHERE
+         a.`visible` = 1
           <if test="agencyName!=null and agencyName!=''">
               AND a.`agencyName` LIKE CONCAT('%',#{agencyName},'%')
           </if>
+        ORDER BY a.`agencyID` DESC
     </select>
 
     <select id="queryAgencyById" resultMap="agencyMap" parameterType="Integer">
@@ -63,15 +48,11 @@
           a.`contactPhone`,
           a.`contactEmail`,
           a.`contactQQ`,
-          a.`stuNumber`,
-          l.`loginUserID`,
-          l.`loginName` ,
-          l.`loginPassword`
+          a.`stuNumber`
         FROM
-          `agency` a,
-          `loginuser` l
-        WHERE a.`loginUserID` = l.`loginUserID`
-        AND a.`agencyID` = #{agencyId}
+          `agency` a
+        WHERE
+         a.`agencyID` = #{agencyId}
           AND a.`visible` = 1
     </select>
 
@@ -79,7 +60,6 @@
         INSERT INTO `agency`
         VALUES (NULL,
                 #{agencyName},
-                #{loginUser.loginUserID},
                 #{contactPhone},
                 #{contactEmail},
                 #{contactQQ},
@@ -91,7 +71,6 @@
     <update id="updateAgency" parameterType="Agency">
         update `agency`
         set `agencyName` = #{agencyName},
-          `loginUserID` = #{loginUser.loginUserID},
           `contactPhone` = #{contactPhone},
           `contactEmail` = #{contactEmail},
           `contactQQ` = #{contactQQ},

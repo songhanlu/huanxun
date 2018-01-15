@@ -28,13 +28,6 @@
                             $("#addAgencyForm").form("clear");
                             $("#addAgencyWindow").window("open");
                         }
-                    },
-                    {
-                        text:'删除',
-                        iconCls:'icon-remove',
-                        handler:function () {
-                            alert("删除");
-                        }
                     }
                 ],
                 columns:[[
@@ -44,15 +37,12 @@
                     {field:'contactPhone',title:'联系人电话'},
                     {field:'contactEmail',title:'联系人邮箱'},
                     {field:'stuNumber',title:'学生人数'},
-                    {field:'contactQQ',title:'联系人QQ'},
-                    {field:'loginUser',title:'登录名',formatter:function (value,row,index) {
-                        return value.loginName;
-                    }},
+                    {field:'contactQQ',title:'联系人QQ'
+                    },
                     {field:'agencyID',title:'操作列',formatter:function (value,row,index) {
                         var queryAgencyById="<button onclick='queryAgencyById("+value+")'>详情</button>";
                         var updateAgency="<button onclick='updateAgency("+value+")'>修改</button>";
-                        var deleteAgency="<button onclick='deleteAgency("+value+")'>删除</button>";
-                        return queryAgencyById+" "+updateAgency+" "+deleteAgency;
+                        return queryAgencyById+" "+updateAgency;
                     }}
                 ]]
             });
@@ -90,8 +80,6 @@
                     $("#contactEmail").textbox("setValue",data.contactEmail);
                     $("#stuNumber").textbox("setValue",data.stuNumber);
                     $("#contactQQ").textbox("setValue",data.contactQQ);
-                    $("#loginName").textbox("setValue",data.loginUser.loginName);
-                    $("#loginPassword").textbox("setValue",data.loginUser.loginPassword);
                 })
             $("#queryAgencyByIdWindow").window("open");
 
@@ -106,14 +94,8 @@
                     $("#updateContactEmail").textbox("setValue",data.contactEmail);
                     $("#updateStuNumber").textbox("setValue",data.stuNumber);
                     $("#updateContactQQ").textbox("setValue",data.contactQQ);
-                    $("#updateLoginName").textbox("setValue",data.loginUser.loginName);
-                    $("#updateLoginUserId").val(data.loginUser.loginUserID)
-                    $("#updateLoginPassword").textbox("setValue",data.loginUser.loginPassword);
                 })
             $("#updateAgencyWindow").window("open");
-        }
-        function deleteAgency(id) {
-            alert("删除 id=" + id);
         }
     </script>
 </head>
@@ -130,30 +112,56 @@
          style="width: 600px;height: 400px;padding: 60px 120px;top: 10%;left: 20%;"
          title="校区详情" closed="true">
         <form id="queryAgencyByIdForm">
-            <div>
-                机构&nbsp;&nbsp;&nbsp;名称：<input id="agencyName" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                联系人姓名：<input id="contactName" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                联系人电话：<input id="contactPhone" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                联系人邮箱：<input id="contactEmail" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                学生&nbsp;&nbsp;&nbsp;人数：<input id="stuNumber" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                联系人&nbsp;QQ：<input id="contactQQ" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                登&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;名&nbsp;：<input id="loginName" class="easyui-textbox" readonly/>
-            </div>
-            <div>
-                密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input id="loginPassword" class="easyui-textbox" readonly/>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        机构名称：
+                    </td>
+                    <td>
+                        <input id="agencyName" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人姓名：
+                    </td>
+                    <td>
+                        <input id="contactName" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人电话：
+                    </td>
+                    <td>
+                        <input id="contactPhone" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人邮箱：
+                    </td>
+                    <td>
+                        <input id="contactEmail" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        学生人数：
+                    </td>
+                    <td>
+                        <input id="stuNumber" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人&nbsp;QQ：
+                    </td>
+                    <td>
+                        <input id="contactQQ" class="easyui-textbox" readonly/>
+                    </td>
+                </tr>
+            </table>
         </form>
     </div>
     <!--添加window框-->
@@ -161,86 +169,121 @@
          style="width: 600px;height: 400px;padding: 60px 120px;top: 10%;left: 20%;"
          title="校区添加" closed="true">
         <form id="addAgencyForm">
-            <div>
-                机构&nbsp;&nbsp;&nbsp;名称：<input id="addAgencyName" name="agencyName" class="easyui-textbox"/>
-            </div>
-            <tr>
-                <td>用户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;角色:</td>
-                <td>
-                    <select  name="loginUser.userRole.userRoleID" style="width: 170px;">
-                        <option value="1">校区经理</option>
-                        <option value="2">校区员工</option>
-                    </select>
-                </td>
-            </tr>
-            <div>
-                联系人姓名：<input id="addContactName" name="contactName" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人电话：<input id="addContactPhone" name="contactPhone" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人邮箱：<input id="addContactEmail" name="contactEmail" class="easyui-textbox"/>
-            </div>
-            <div>
-                学生&nbsp;&nbsp;&nbsp;人数：<input id="addStuNumber" name="stuNumber" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人&nbsp;QQ：<input id="addContactQQ" name="contactQQ" class="easyui-textbox"/>
-            </div>
-            <div>
-                登&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;名&nbsp;：<input id="addLoginName" name="loginName" class="easyui-textbox"/>
-            </div>
-            <div>
-                密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input id="addLoginPassword" name="loginPassword" class="easyui-textbox"/>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        机构&nbsp;&nbsp;&nbsp;名称：
+                    </td>
+                    <td>
+                        <input id="addAgencyName" name="agencyName" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人姓名：
+                    </td>
+                    <td>
+                        <input id="addContactName" name="contactName" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人电话：
+                    </td>
+                    <td>
+                        <input id="addContactPhone" name="contactPhone" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人邮箱：
+                    </td>
+                    <td>
+                        <input id="addContactEmail" name="contactEmail" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        学生&nbsp;&nbsp;&nbsp;人数：
+                    </td>
+                    <td>
+                        <input id="addStuNumber" name="stuNumber" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人&nbsp;QQ：
+                    </td>
+                    <td>
+                        <input id="addContactQQ" name="contactQQ" class="easyui-textbox"/>
+                    </td>
+                </tr>
+            </table>
         </form>
-        <button id="saveAddAgencyButton">保存</button>
+        <div align="center">
+            <button id="saveAddAgencyButton">保存</button>
+        </div>
     </div>
     <!--修改window框-->
     <div id="updateAgencyWindow" class="easyui-window"
          style="width: 600px;height: 400px;padding: 60px 120px;top: 10%;left: 20%;"
          title="校区修改" closed="true">
         <form id="updateAgencyForm">
-            <div>
-                机构&nbsp;&nbsp;&nbsp;名称：
-                <input id="updateAgencyName" name="agencyName" class="easyui-textbox" readonly/>
-                <input type="hidden" name="agencyID" id="updateAgencyId" />
-            </div>
-            <tr>
-                <td>用户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;角色:</td>
-                <td>
-                    <select  name="loginUser.userRole.userRoleID" style="width: 170px;">
-                        <option value="6">校区经理</option>
-                        <option value="7">校区员工</option>
-                    </select>
-                </td>
-            </tr>
-            <div>
-                联系人姓名：<input id="updateContactName" name="contactName" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人电话：<input id="updateContactPhone" name="contactPhone" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人邮箱：<input id="updateContactEmail" name="contactEmail" class="easyui-textbox"/>
-            </div>
-            <div>
-                学生&nbsp;&nbsp;&nbsp;人数：<input id="updateStuNumber" name="stuNumber" class="easyui-textbox"/>
-            </div>
-            <div>
-                联系人&nbsp;QQ：<input id="updateContactQQ" name="contactQQ" class="easyui-textbox"/>
-            </div>
-            <div>
-                登&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;名&nbsp;：
-                <input id="updateLoginName" name="loginName" class="easyui-textbox"/>
-                <input type="hidden" name="loginUserId" id="updateLoginUserId" />
-            </div>
-            <div>
-                密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input id="updateLoginPassword" name="loginPassword" class="easyui-textbox"/>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        机构&nbsp;&nbsp;&nbsp;名称：
+                    </td>
+                    <td>
+                        <input id="updateAgencyName" name="agencyName" class="easyui-textbox" readonly/>
+                        <input type="hidden" name="agencyID" id="updateAgencyId" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人姓名：
+                    </td>
+                    <td>
+                        <input id="updateContactName" name="contactName" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人电话：
+                    </td>
+                    <td>
+                        <input id="updateContactPhone" name="contactPhone" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人邮箱：
+                    </td>
+                    <td>
+                        <input id="updateContactEmail" name="contactEmail" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        学生&nbsp;&nbsp;&nbsp;人数：
+                    </td>
+                    <td>
+                        <input id="updateStuNumber" name="stuNumber" class="easyui-textbox"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人&nbsp;QQ：
+                    </td>
+                    <td>
+                        <input id="updateContactQQ" name="contactQQ" class="easyui-textbox"/>
+                    </td>
+                </tr>
+            </table>
         </form>
-        <button id="saveUpdateAgencyButton">保存</button>
+        <div align="center">
+            <button id="saveUpdateAgencyButton">保存</button>
+        </div>
     </div>
 </body>
 </html>
