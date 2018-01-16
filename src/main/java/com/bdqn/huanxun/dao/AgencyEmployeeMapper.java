@@ -14,4 +14,5 @@ public interface AgencyEmployeeMapper {
     //根据agencyID查询所有该校区员工
     List<AgencyEmployee> findAEByAgencyID(Integer agencyID);
 
+    //添加agencyEmployee
 }
