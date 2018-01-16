@@ -16,14 +16,14 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     @Resource
     private BookMapper bookMapper;
-    @Override
+
     public PageInfo<Book> queryAll(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<Book> list=bookMapper.queryAll();
         PageInfo<Book> pageInfo=new PageInfo<Book>(list);
         return pageInfo;
     }
-
+//
     @Override
     public PageInfo<Book> queryBookTitle(Integer pageNum, Integer pageSize, String bookTitle, String courseTypeName) {
         PageHelper.startPage(pageNum,pageSize);
@@ -46,5 +46,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book queryBookById(Integer id) {
         return bookMapper.queryBookById(id);
+    }
+
+    @Override
+    public Integer updateBook(Book book) {
+        return bookMapper.updateBook(book);
+    }
+
+    @Override
+    public Integer addBook(Book book) {
+        return bookMapper.addBook(book);
     }
 }

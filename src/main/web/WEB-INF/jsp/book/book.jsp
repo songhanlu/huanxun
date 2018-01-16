@@ -28,7 +28,8 @@
                         text:'添加',
                         iconCls:'icon-add',
                         handler:function () {
-                            alert("添加");
+
+                           $("#addBookWindow").window('open');
                         }
                     },
                     {
@@ -88,6 +89,49 @@
                 ]],
 
             })//datagrid
+
+        })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            //修改保存按钮单击事件
+            $("#saveUpdateBookButton").click(function () {
+                var book=$("#updateBookForm").serialize();
+                alert(book);
+                $.post("${pageContext.request.contextPath}/book/updateBook.do",book,function (data) {
+                    alert("ddd");
+                    alert(data.msg);
+                    $("#updateBookWindow").window('close');
+                    $("#bookDatagrid").datagrid('reload');
+                })
+            });
+        })
+    </script>
+    <%--添加--%>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#saveAddBookButton").click(function () {
+               var book=$("#addBookForm");
+               //通过传统的from表单
+               var formData=new  FormData(book[0]);
+               //alert(formData);
+               console.info(formData);
+               $.ajax({
+                   url:"${pageContext.request.contextPath}/book/addBook.do",
+                   data:formData,
+                   catch:false, //布尔值，表示浏览器是否缓存被请求页面 默认是true
+                   contentType:false,//发送数据到服务器时所使用的内容类型
+                   processData:false,//布尔值，规定通过请求发送的数据是否转换为查询字符串 默认是true
+                   type:"post",
+                   dataType:"JSON",
+                   success:function (data,status) {
+                       alert(data.msg);
+                       $("#addBookWindow").window('close');
+                       $("#bookDatagrid").datagrid('reload');
+                   }
+               })
+            });
         })
     </script>
     <%--条件模糊查询--%>
@@ -130,7 +174,23 @@
     <%--修改按钮单击事件--%>
     <script type="text/javascript">
         function updateBook(id) {
-            alert("修改"+id);
+            $.get("${pageContext.request.contextPath}/book/queryBookById.do",{"id":id},
+                function (data) {
+                    $("#updateBookByIdTitle").textbox('setValue',data.bookTitle);
+                    $("#updateBookVersion").textbox('setValue',data.bookVersion);
+                    $("#updateCourseName").textbox('setValue',data.courseType.courseTypeName);
+                    var date=new Date(data.uploadTime);
+                    var Y=date.getFullYear();
+                    var M=date.getMonth()+1;
+                    var D=date.getDate();
+                    var h=date.getHours();
+                    var m=date.getMinutes();
+                    var s=date.getSeconds();
+                    data.uploadTime=Y+"-"+M+"-"+D+" "+h+":"+m+":"+s;
+                    $("#updateBookTime").textbox('setValue',data.uploadTime);
+                    $("#updateBookID").val(data.bookID);
+                })
+            $("#updateBookWindow").window('open');
         }
     </script>
 
@@ -157,6 +217,7 @@
             教材名称:<input id="queryBookTitle" name="bookTitle">
             教材类型:<input id="queryCourseTypeName" name="courseType.courseTypeName">
             <a id="queryBookButton" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+            <input class="easyui-linkbutton" type="reset" value="重置" style="width: 50px;"/>
         </div>
     </form>
 </div>
@@ -178,6 +239,47 @@ style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" close
             上传时间:<input class="easyui-textbox" id="queryBookTime" >
         </div>
     </form>
+</div>
+<%--修改--%>
+<div id="updateBookWindow" class="easyui-window" title="修改教材"
+     style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" closed="true">
+    <form id="updateBookForm">
+        <div>
+            教材名称:<input class="easyui-textbox" id="updateBookByIdTitle" name="bookTitle">
+                  <input type="hidden" id="updateBookID" name="bookID">
+        </div>
+        <div>
+            教材版本:<input class="easyui-textbox" id="updateBookVersion" name="bookVersion">
+        </div>
+        <div>
+            教材类型:<input class="easyui-textbox" id="updateCourseName" name="courseType.courseTypeName">
+        </div>
+        <div>
+            上传时间:<input class="easyui-textbox" id="updateBookTime" readonly>
+        </div>
+    </form>
+    <button id="saveUpdateBookButton" class="easyui-linkbutton">保存</button>
+</div>
+<%--添加--%>
+<div id="addBookWindow" class="easyui-window" title="添加教材"
+     style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" closed="true">
+    <form id="addBookForm" enctype="multipart/form-data" method="post">
+        <div>
+            教材名称:<input class="easyui-textbox" id="addBookByIdTitle" name="bookTitle">
+
+        </div>
+        <div>
+            教材版本:<input class="easyui-textbox" id="addBookVersion" name="bookVersion">
+        </div>
+        <div>
+            教材类型:<input class="easyui-textbox" id="addCourseName" name="courseType.courseTypeName">
+        </div>
+        <div>
+            上传教材: <input type="file" name="bookAddress_file" id="bookAddress_file"/>
+        </div>
+    </form>
+    <button id="saveAddBookButton" class="easyui-linkbutton">保存</button>
+
 </div>
 </body>
 </html>
