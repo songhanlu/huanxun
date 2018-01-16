@@ -33,8 +33,6 @@
                 <div title="教材模块">
                     <ul myAttr="indexMenu">
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/book/tobook.do">教材信息管理</a></li>
-                       <%-- <li>&nbsp;</li>
-                        <li><a class="easyui-linkbutton" url="#">进入排课功能</a></li>--%>
                     </ul>
                 </div>
                 <div title="课表模块">

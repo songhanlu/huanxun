@@ -9,10 +9,6 @@
         <id property="courseTypeID" column="courseTypeID"></id>
         <result property="courseTypeName" column="courseTypeName"></result>
     </resultMap>
-
-
-
-
     <!--&lt;!&ndash;查询所有，分页&ndash;&gt;-->
     <select id="queryAll" resultMap="bookMap">
          SELECT

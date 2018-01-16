@@ -125,12 +125,12 @@ public class BookController {
         if(null!=attach && !attach[0].isEmpty()){
             String path = request.getSession().getServletContext().getRealPath("statics/upload");
             String oldFileName = attach[0].getOriginalFilename();//原文件名
-            String prefix = FilenameUtils.getExtension(oldFileName);
+            String prefix = FilenameUtils.getExtension(oldFileName);//文件名后缀
             //判断文件大小。。todo
             //判断文件格式。。todo
-            String fileName = System.currentTimeMillis()+ RandomUtils.nextInt(1000000)+"_product.pdf";
-            File targetFile = new File(path, fileName);
-            if(!targetFile.exists()){
+            String fileName = System.currentTimeMillis()+ RandomUtils.nextInt(1000000)+"_product.pdf";//定义文件名上传格式
+            File targetFile = new File(path, fileName);//传文件路径和文件名
+            if(!targetFile.exists()){      //判断文件时否存在
                 targetFile.mkdirs();
             }
             try {
