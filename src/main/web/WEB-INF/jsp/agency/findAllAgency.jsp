@@ -47,15 +47,106 @@
                 ]]
             });
             $("#saveAddAgencyButton").click(function () {
-                var agency = $("#addAgencyForm").serialize();
-                $.post("${pageContext.request.contextPath}/agency/addAgency.do",
-                    agency,function (data) {
-                        alert(data.msg);
-                        $("#addAgencyWindow").window("close");
-                        $("#dg").datagrid("reload");
-                    })
+                //
+                var agency1 = true;
+
+                var agencyName = $("#addAgencyName").val();
+                if(agencyName==null || agencyName==''){
+                    alert("用户名不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var addContactName=$("#addContactName").val();
+                if(addContactName==null || addContactName==''){
+                    alert("联系人姓名不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var addContactPhone=$("#addContactPhone").val();
+                if(addContactPhone==null || addContactPhone==''){
+                    alert("联系人电话不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var addContactEmail=$("#addContactEmail").val();
+                if(addContactEmail==null || addContactEmail==''){
+                    alert("联系人邮箱不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var addStuNumber=$("#addStuNumber").val();
+                if(addStuNumber==null || addStuNumber==''){
+                    alert("学生人数不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var addContactQQ=$("#addContactQQ").val();
+                if(addContactQQ==null || addContactQQ==''){
+                    alert("联系人QQ不能为空");
+                    agency1 = false;
+                    return;
+                }
+                $.ajax({
+                    url:"${pageContext.request.contextPath}/agency/deExists",
+                    type:"GET",
+                    data:{"agencyName":agencyName},
+                    dataType:"text",
+                    success:function (data) {
+                        if(data=="success"){
+                            alert("名称重复！");
+                        }else{
+                            if(agency1){
+                                var agency = $("#addAgencyForm").serialize();
+                                $.post("${pageContext.request.contextPath}/agency/addAgency.do",
+                                    agency,function (data) {
+                                        alert(data.msg);
+                                        $("#addAgencyWindow").window("close");
+                                        $("#dg").datagrid("reload");
+                                    })
+                            }
+                        }
+                    }
+                });
+
+
+                //
+
             })
             $("#saveUpdateAgencyButton").click(function () {
+
+                var agency1 = true;
+
+                var updateContactName=$("#updateContactName").val();
+                if(updateContactName==null || updateContactName==''){
+                    alert("联系人姓名不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var updateContactPhone=$("#updateContactPhone").val();
+                if(updateContactPhone==null || updateContactPhone==''){
+                    alert("联系人电话不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var updateContactEmail=$("#updateContactEmail").val();
+                if(updateContactEmail==null || updateContactEmail==''){
+                    alert("联系人邮箱不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var updateStuNumber=$("#updateStuNumber").val();
+                if(updateStuNumber==null || updateStuNumber==''){
+                    alert("学生人数不能为空");
+                    agency1 = false;
+                    return;
+                }
+                var updateContactQQ=$("#updateContactQQ").val();
+                if(updateContactQQ==null || updateContactQQ==''){
+                    alert("联系人QQ不能为空");
+                    agency1 = false;
+                    return;
+                }
+
                 var agency = $("#updateAgencyForm").serialize();
                 $.post("${pageContext.request.contextPath}/agency/updateAgency.do",
                     agency,function (data) {
@@ -97,6 +188,7 @@
                 })
             $("#updateAgencyWindow").window("open");
         }
+
     </script>
 </head>
 <body>

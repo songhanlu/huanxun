@@ -54,5 +54,10 @@ public class AgencyServiceImpl implements AgencyService {
         return agencyMapper.updateAgency(agency);
     }
 
+    @Override
+    public Agency queryAgencyName(String agencyName) {
+        return agencyMapper.queryAgencyName(agencyName);
+    }
+
 
 }

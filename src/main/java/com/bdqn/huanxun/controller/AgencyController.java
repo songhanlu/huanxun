@@ -69,4 +69,18 @@ public class AgencyController {
         }
         return JSON.toJSONString(Message.error());
     }
+    //ajax判断机构名称是否存在
+    @ResponseBody
+    @RequestMapping(value = "deExists",method = RequestMethod.GET,
+                    produces = "application/json;charset=UTF-8")
+    public String deExists(String agencyName) throws UnsupportedEncodingException {
+        if(null!=agencyName){
+            agencyName = new String(agencyName.getBytes("ISO8859-1"),"UTF-8");
+        }
+        Agency agency = agencyService.queryAgencyName(agencyName);
+        if (agency!=null){
+            return "success";
+        }
+        return "error";
+    }
 }

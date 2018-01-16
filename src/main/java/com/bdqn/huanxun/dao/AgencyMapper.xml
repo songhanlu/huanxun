@@ -80,4 +80,8 @@
           `contactName` = #{contactName}
         where `agencyID` = #{agencyID}
     </update>
+
+    <select id="queryAgencyName" resultMap="agencyMap" parameterType="String">
+        SELECT * FROM `agency` WHERE `agencyName` = #{agencyName}
+    </select>
 </mapper>

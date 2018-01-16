@@ -25,4 +25,7 @@ public interface AgencyService {
 
     //修改
     Integer updateAgency(Agency agency);
+
+    //ajax判断机构名称是否存在
+    Agency queryAgencyName(String agencyName);
 }
