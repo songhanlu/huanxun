@@ -70,6 +70,7 @@ public class AgencyController {
         return JSON.toJSONString(Message.error());
     }
     //ajax判断机构名称是否存在
+    //
     @ResponseBody
     @RequestMapping(value = "deExists",method = RequestMethod.GET,
                     produces = "application/json;charset=UTF-8")
