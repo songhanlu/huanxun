@@ -36,4 +36,9 @@
       and l.userRoleID = ur.userRoleID
       and ae.agencyID = #{agencyID}
     </select>
+
+    <insert id="addAE" parameterType="AgencyEmployee">
+        INSERT into agencyemployee (loginUserID, agencyID, aeName, aePhone, aeQQ)
+        VALUES (#{loginUser.loginUserID},#{agency.agencyID},#{aeName},#{aePhone},#{aeQQ})
+    </insert>
 </mapper>

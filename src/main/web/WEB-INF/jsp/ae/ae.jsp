@@ -21,6 +21,12 @@
             pagination:true,
             striped:true,
             method:"get",
+            toolbar:[
+                {
+                    text:"新增校区员工",
+                    iconCls:"icon-add",
+                },
+            ],
             columns:[[
                 {title:"校区名称",field:"agencyName",formatter:function (value, row, index) {
                     return row.agency.agencyName;

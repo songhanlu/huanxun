@@ -15,4 +15,5 @@ public interface AgencyEmployeeMapper {
     List<AgencyEmployee> findAEByAgencyID(Integer agencyID);
 
     //添加agencyEmployee
+    Integer addAE(AgencyEmployee agencyEmployee);
 }

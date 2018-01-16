@@ -12,4 +12,7 @@ public interface AgencyEmployeeService {
 
     //根据agencyID查询所有该校区员工
     PageInfo<AgencyEmployee> findAEByAgencyID(Integer agencyID, Integer pageNum, Integer pageSize);
+
+    //添加agencyEmployee
+    Integer addAE(AgencyEmployee agencyEmployee);
 }
