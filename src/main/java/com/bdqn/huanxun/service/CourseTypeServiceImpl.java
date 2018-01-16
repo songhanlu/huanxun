@@ -8,7 +8,11 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+<<<<<<< HEAD
  * Created by hp on 2018/1/9.
+=======
+ * Created by wangheng on 2018/1/15.
+>>>>>>> V1.0/wangheng004
  */
 @Service
 public class CourseTypeServiceImpl implements CourseTypeService {
@@ -18,5 +22,8 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     @Override
     public List<CourseType> findAllCourseTypes() {
         return courseTypeMapper.findAllCourseTypes();
+    @Override
+    public List<CourseType> queryCourseTypeToBook() {
+        return courseTypeMapper.queryCourseTypeToBook();
     }
 }

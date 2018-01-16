@@ -2,7 +2,9 @@ package com.bdqn.huanxun.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.bdqn.huanxun.pojo.Book;
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.service.BookService;
+import com.bdqn.huanxun.service.CourseTypeService;
 import com.bdqn.huanxun.tools.Message;
 import com.bdqn.huanxun.tools.PageUtil;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +35,8 @@ import java.util.List;
 public class BookController {
     @Resource
     private BookService bookService;
+    @Resource
+    private CourseTypeService courseTypeService;
 
     //跳页面
     @RequestMapping(value = "/tobook.do")
@@ -121,12 +125,12 @@ public class BookController {
         if(null!=attach && !attach[0].isEmpty()){
             String path = request.getSession().getServletContext().getRealPath("statics/upload");
             String oldFileName = attach[0].getOriginalFilename();//原文件名
-            String prefix = FilenameUtils.getExtension(oldFileName);
+            String prefix = FilenameUtils.getExtension(oldFileName);//文件名后缀
             //判断文件大小。。todo
             //判断文件格式。。todo
-            String fileName = System.currentTimeMillis()+ RandomUtils.nextInt(1000000)+"_product.pdf";
-            File targetFile = new File(path, fileName);
-            if(!targetFile.exists()){
+            String fileName = System.currentTimeMillis()+ RandomUtils.nextInt(1000000)+"_product.pdf";//定义文件名上传格式
+            File targetFile = new File(path, fileName);//传文件路径和文件名
+            if(!targetFile.exists()){      //判断文件时否存在
                 targetFile.mkdirs();
             }
             try {
@@ -135,7 +139,9 @@ public class BookController {
             } catch (IOException e) {
                 e.printStackTrace();
                 //提示文件上传失败。。todo
+
             }
+
         }
 
         int n = bookService.addBook(book);
@@ -144,6 +150,15 @@ public class BookController {
         }
         return JSON.toJSONString(Message.error());
     }
+    //查询教材类型给教材添加时的添加教材的下拉框使用
+    @ResponseBody
+    @RequestMapping(value = "queryCourseTypeToBook",method = RequestMethod.GET,
+            produces = {"application/json;charset=utf-8"})
+    public String queryCourseTypeToBook(){
+        List<CourseType> list=courseTypeService.queryCourseTypeToBook();
+        return JSON.toJSONString(list);
+    }
+
 
 
    /* //添加和上传文件

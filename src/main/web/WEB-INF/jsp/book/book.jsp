@@ -18,7 +18,9 @@
                 pagination:true,
                 rownumbers:true,
                 striped:true,
+              /*  singleSelect:false,*/
                 checkOnSelect:false,
+                ctrlSelect:true,
                 onLoadSuccess:function () {
                     $(".linkbutton").linkbutton();
                     $(this).datagrid("fixRowHeight");
@@ -28,6 +30,16 @@
                         text:'添加',
                         iconCls:'icon-add',
                         handler:function () {
+                            $.get("${pageContext.request.contextPath}/book/queryCourseTypeToBook",function (courseType) {
+                                /*var courseType1=$.parseJSON('{"courseTypeID":-1,"courseTypeName":"--请选择--"}');
+                                courseType.push(courseType1);*/
+                                $("#addCourseName").combobox({
+                                    editable:false,
+                                    valueField:'courseTypeID',
+                                    textField:'courseTypeName',
+                                    data:courseType
+                                });
+                            });
 
                            $("#addBookWindow").window('open');
                         }
@@ -46,7 +58,7 @@
                             $.each(bookCheckBox,function (index, item) {
 
                                 id=id+item.bookID+",";
-                                alert(id);
+
                             });
                             if (confirm("确认要删除吗?")){
                                 $.post("${pageContext.request.contextPath}/book/deleteBookByIdList.do",{"id":id},
@@ -62,7 +74,9 @@
 
                     {field:'ck',checkbox:true},
                     {field:'bookTitle',title:'教材名称',width:150},
-                    {field:'bookAddress',title:'上传地址',width:150},
+                    {field:'bookAddress',title:'上传地址',width:150,formatter:function (value, row, index) {
+                    /*上传路径下载*/    return "<a href='${pageContext.request.contextPath}/statics/upload/"+value+"'>"+value+"</a>"
+                    }},
                     {field:'uploadTime',title:'上传时间',width:120,formatter:function (value, row, index) {
                         var date=new Date(value);
                         var Y=date.getFullYear();//年
@@ -92,14 +106,23 @@
 
         })
     </script>
+
+   <script type="text/javascript">
+       $(function () {
+           $("#addBookByIdTitle").click(function () {
+               var s=$(this).val();
+
+           });
+       })
+   </script>
+    <%--修改保存按钮单击事件--%>
     <script type="text/javascript">
         $(function () {
-            //修改保存按钮单击事件
+
+            //
             $("#saveUpdateBookButton").click(function () {
                 var book=$("#updateBookForm").serialize();
-                alert(book);
                 $.post("${pageContext.request.contextPath}/book/updateBook.do",book,function (data) {
-                    alert("ddd");
                     alert(data.msg);
                     $("#updateBookWindow").window('close');
                     $("#bookDatagrid").datagrid('reload');
@@ -108,10 +131,25 @@
         })
     </script>
     <%--添加--%>
-
     <script type="text/javascript">
         $(function () {
             $("#saveAddBookButton").click(function () {
+                var b=$("#addBookByIdTitle").val();
+                var c=$("#addBookVersion").val();
+                var d=$("#addCourseName").val();
+
+                if (b==null||b==""){
+                    alert("教材名称不能为空");
+                    return;
+                }
+                if (c==null||c==""){
+                    alert("教材版本不能为空");
+                    return;
+                }
+                if (d==null||d==""){
+                    alert("教材类型不能为空");
+                    return;
+                }
                var book=$("#addBookForm");
                //通过传统的from表单
                var formData=new  FormData(book[0]);
@@ -178,7 +216,19 @@
                 function (data) {
                     $("#updateBookByIdTitle").textbox('setValue',data.bookTitle);
                     $("#updateBookVersion").textbox('setValue',data.bookVersion);
-                    $("#updateCourseName").textbox('setValue',data.courseType.courseTypeName);
+                   /* $("#updateCourseName").textbox('setValue',data.courseType.courseTypeName);*/
+                    /*查询所有的教材类型添加到下拉拉框中*/
+                    $.get("${pageContext.request.contextPath}/book/queryCourseTypeToBook",function (courseType) {
+                        $("#updateCourseName").combobox({
+                            editable:false,
+                            valueField:'courseTypeID',
+                            textField:'courseTypeName',
+                            data:courseType,
+                            onLoadSuccess:function () {
+                                $(this).combobox('select',data.courseType.courseTypeID);
+                            }
+                        });
+                    });
                     var date=new Date(data.uploadTime);
                     var Y=date.getFullYear();
                     var M=date.getMonth()+1;
@@ -252,7 +302,7 @@ style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" close
             教材版本:<input class="easyui-textbox" id="updateBookVersion" name="bookVersion">
         </div>
         <div>
-            教材类型:<input class="easyui-textbox" id="updateCourseName" name="courseType.courseTypeName">
+            教材类型:<input class="easyui-textbox" id="updateCourseName" name="courseType.courseTypeID">
         </div>
         <div>
             上传时间:<input class="easyui-textbox" id="updateBookTime" readonly>
@@ -272,7 +322,7 @@ style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" close
             教材版本:<input class="easyui-textbox" id="addBookVersion" name="bookVersion">
         </div>
         <div>
-            教材类型:<input class="easyui-textbox" id="addCourseName" name="courseType.courseTypeName">
+            教材类型:<input class="easyui-textbox" id="addCourseName" name="courseType.courseTypeID">
         </div>
         <div>
             上传教材: <input type="file" name="bookAddress_file" id="bookAddress_file"/>

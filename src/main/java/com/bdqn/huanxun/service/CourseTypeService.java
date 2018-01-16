@@ -10,4 +10,6 @@ import java.util.List;
 public interface CourseTypeService {
     //查询所有CourseType
     List<CourseType> findAllCourseTypes();
+    //查询全部教材类型给教材添加时的下拉框使用
+    List<CourseType> queryCourseTypeToBook();
 }
