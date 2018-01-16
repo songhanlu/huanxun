@@ -2,7 +2,9 @@ package com.bdqn.huanxun.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.bdqn.huanxun.pojo.Book;
+import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.service.BookService;
+import com.bdqn.huanxun.service.CourseTypeService;
 import com.bdqn.huanxun.tools.Message;
 import com.bdqn.huanxun.tools.PageUtil;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +35,8 @@ import java.util.List;
 public class BookController {
     @Resource
     private BookService bookService;
+    @Resource
+    private CourseTypeService courseTypeService;
 
     //跳页面
     @RequestMapping(value = "/tobook.do")
@@ -135,7 +139,9 @@ public class BookController {
             } catch (IOException e) {
                 e.printStackTrace();
                 //提示文件上传失败。。todo
+
             }
+
         }
 
         int n = bookService.addBook(book);
@@ -144,6 +150,15 @@ public class BookController {
         }
         return JSON.toJSONString(Message.error());
     }
+    //查询教材类型给教材添加时的添加教材的下拉框使用
+    @ResponseBody
+    @RequestMapping(value = "queryCourseTypeToBook",method = RequestMethod.GET,
+            produces = {"application/json;charset=utf-8"})
+    public String queryCourseTypeToBook(){
+        List<CourseType> list=courseTypeService.queryCourseTypeToBook();
+        return JSON.toJSONString(list);
+    }
+
 
 
    /* //添加和上传文件

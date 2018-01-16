@@ -28,6 +28,16 @@
                         text:'添加',
                         iconCls:'icon-add',
                         handler:function () {
+                            $.get("${pageContext.request.contextPath}/book/queryCourseTypeToBook",function (courseType) {
+                                var courseType1=$.parseJSON('{"courseTypeID":-1,"courseTypeName":"--请选择--"}');
+                                courseType.push(courseType1);
+                                $("#addCourseName").combobox({
+                                    editable:false,
+                                    valueField:'courseTypeID',
+                                    textField:'courseTypeName',
+                                    data:courseType
+                                });
+                            });
 
                            $("#addBookWindow").window('open');
                         }
@@ -46,7 +56,7 @@
                             $.each(bookCheckBox,function (index, item) {
 
                                 id=id+item.bookID+",";
-                                alert(id);
+
                             });
                             if (confirm("确认要删除吗?")){
                                 $.post("${pageContext.request.contextPath}/book/deleteBookByIdList.do",{"id":id},
@@ -62,7 +72,9 @@
 
                     {field:'ck',checkbox:true},
                     {field:'bookTitle',title:'教材名称',width:150},
-                    {field:'bookAddress',title:'上传地址',width:150},
+                    {field:'bookAddress',title:'上传地址',width:150,formatter:function (value, row, index) {
+                        return "<a href='${pageContext.request.contextPath}/statics/upload/"+value+"'>"+value+"</a>"
+                    }},
                     {field:'uploadTime',title:'上传时间',width:120,formatter:function (value, row, index) {
                         var date=new Date(value);
                         var Y=date.getFullYear();//年
@@ -272,7 +284,7 @@ style="width: 500px;height: 300px;top: 30%;left: 30% ;padding: 60px 120px" close
             教材版本:<input class="easyui-textbox" id="addBookVersion" name="bookVersion">
         </div>
         <div>
-            教材类型:<input class="easyui-textbox" id="addCourseName" name="courseType.courseTypeName">
+            教材类型:<input class="easyui-textbox" id="addCourseName" name="courseType.courseTypeID">
         </div>
         <div>
             上传教材: <input type="file" name="bookAddress_file" id="bookAddress_file"/>
