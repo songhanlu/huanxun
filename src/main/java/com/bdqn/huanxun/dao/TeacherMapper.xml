@@ -6,4 +6,5 @@
     <select id="findTeachersByCareerType" parameterType="string" resultType="Teacher">
         SELECT * from teacher WHERE teacherCareerType =  #{careerType} order by teacherID
     </select>
+
 </mapper>

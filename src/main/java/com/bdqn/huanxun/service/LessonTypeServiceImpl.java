@@ -34,4 +34,9 @@ public class LessonTypeServiceImpl implements LessonTypeService {
     public Integer queryAddLessonType(LessonType lessonType) {
         return lessonTypeMapper.queryAddLessonType(lessonType);
     }
+
+    @Override
+    public List<LessonType> findAllLessonTypes_Data() {
+        return lessonTypeMapper.findAllLessonTypes_Data();
+    }
 }

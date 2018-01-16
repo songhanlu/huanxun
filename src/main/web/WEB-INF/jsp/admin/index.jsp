@@ -50,7 +50,11 @@
                         <li>&nbsp;</li>
                      </ul>
                 </div>
-                <div title="教材模块"></div>
+                <div title="教材模块">
+                    <ul myAttr="indexMenu">
+                        <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/book/tobook.do">教材信息管理</a></li>
+                    </ul>
+                </div>
                 <div title="课表模块">
                     <ul myAttr="indexMenu">
                         <li><a class="easyui-linkbutton" url="${pageContext.request.contextPath}/classArrange/toClassArrange.do">进入课表管理</a></li>
@@ -101,7 +105,7 @@
                 data:[
                     {
                         id:1,
-                        text:"员工",
+                        text:"员工数据统计",
                         children:[
                             {
                                 id:11,
@@ -111,7 +115,7 @@
                     },
                     {
                         id:2,
-                        text:"课程统计",
+                        text:"课程数据统计",
                         children:[
                             {
                                 id:21,
@@ -132,6 +136,30 @@
                                         title:"课程分类统计(按教材)",
                                     }
                                 ],
+                            },
+                            {
+                                id:23,
+                                text:"新报名课程统计",
+                                attribute:[
+                                    {
+                                        url:"${pageContext.request.contextPath}/data/toDataStuCourse_YMQ.do",
+                                        title:"新报名课程统计",
+                                    }
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id:3,
+                        text:"学生数据统计",
+                        children:[
+                            {
+                                id:31,
+                                text:"学生按机构分类统计"
+                            },
+                            {
+                                id:32,
+                                text:"新增学生统计图（按月）"
                             },
                         ],
                     },

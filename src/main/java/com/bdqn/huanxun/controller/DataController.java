@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.LessonType;
 import com.bdqn.huanxun.service.CourseTypeService;
+import com.bdqn.huanxun.service.DataStuCourseService;
 import com.bdqn.huanxun.service.LessonTypeService;
 import com.bdqn.huanxun.service.StudentCourseService;
 import com.bdqn.huanxun.tools.DataPieUtil;
@@ -30,10 +31,17 @@ public class DataController {
     private LessonTypeService lessonTypeService;
     @Resource
     private CourseTypeService courseTypeService;
+    @Resource
+    private DataStuCourseService dataStuCourseService;
 
     @RequestMapping(value = "/toDataStuCourse.do",method = RequestMethod.GET)
     private String toData(){
         return "/data/dataStuCourse";
+    }
+
+    @RequestMapping(value = "/toDataStuCourse_YMQ.do",method = RequestMethod.GET)
+    private String dataStuCourse_YMQ(){
+        return "/data/dataStuCourse_YMQ";
     }
 
     @RequestMapping(value = "/toDataStuCourse1.do",method = RequestMethod.GET)
@@ -45,7 +53,7 @@ public class DataController {
                     produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String countStuCourseNumberByLessonTypeID(){
-        List<LessonType> lessonTypes = lessonTypeService.findAllLessonTypes();
+        List<LessonType> lessonTypes = lessonTypeService.findAllLessonTypes_Data();
         List<Map<String, Object>> list = new ArrayList<>();
         if(null != lessonTypes){
             for (LessonType lessonType : lessonTypes) {
@@ -75,5 +83,16 @@ public class DataController {
         }
         return JSON.toJSONString(list);
     }
+
+    @RequestMapping(value = "/countStuCourseNumberByTimeType.do", method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String countStuCourseNumberByTimeType(String timeType) {
+        Map<String, Object> map = new HashMap<>();
+        map = dataStuCourseService.findNumberByTimeType(timeType);
+        return JSON.toJSONString(map);
+    }
+
+
 
 }

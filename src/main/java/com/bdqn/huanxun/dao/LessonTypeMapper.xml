@@ -60,4 +60,8 @@
       </if>
       1,#{lessonDesc})
     </insert>
+
+    <select id="findAllLessonTypes_Data" resultType="LessonType">
+        SELECT * from lessontype
+    </select>
 </mapper>

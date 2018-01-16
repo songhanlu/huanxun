@@ -42,7 +42,8 @@
                     {field:'agencyID',title:'操作列',formatter:function (value,row,index) {
                         var queryAgencyById="<button onclick='queryAgencyById("+value+")'>详情</button>";
                         var updateAgency="<button onclick='updateAgency("+value+")'>修改</button>";
-                        return queryAgencyById+" "+updateAgency;
+                        return queryAgencyById+" "+updateAgency+" "+
+                            "<button onclick='toAEManage("+value+")'>管理该校区的员工</button>";
                     }}
                 ]]
             });
@@ -71,6 +72,11 @@
                 })
             })
         })
+
+        function toAEManage(id) {
+            window.location.href = "${pageContext.request.contextPath}/ae/toAE?agencyID="+id;
+        }
+
         function queryAgencyById(id) {
             $.get("${pageContext.request.contextPath}/agency/queryAgencyById.do",
                 {"id":id},function (data) {

@@ -6,4 +6,19 @@
     <select id="countStuCourseByLessonTypeID" parameterType="integer" resultType="integer">
         SELECT count(1) FROM data_stucourse where
     </select>
+    <select id="findStuCourseByYear" resultType="map">
+        SELECT DATE_FORMAT(`createTime`,'%Y') AS `value`, COUNT(1) AS total
+        FROM `studentcourse`
+        GROUP BY DATE_FORMAT(`createTime`,'%Y')
+    </select>
+    <select id="findStuCourseByMonth" resultType="map">
+        SELECT DATE_FORMAT(`createTime`,'%Y-%m') AS `value`, COUNT(1) AS total
+        FROM `studentcourse`
+        GROUP BY DATE_FORMAT(`createTime`,'%Y-%m')
+    </select>
+    <select id="findStuCourseByQuaterYear" resultType="map">
+        SELECT CONCAT(DATE_FORMAT(`createTime`, '%Y年'),FLOOR((DATE_FORMAT(`createTime`, '%m')+2)/3),'季度') AS `value`,COUNT(1) AS total
+        FROM `studentcourse`
+        GROUP BY CONCAT(DATE_FORMAT(`createTime`, '%Y'),FLOOR((DATE_FORMAT(`createTime`, '%m')+2)/3))
+    </select>
 </mapper>

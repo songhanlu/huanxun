@@ -22,4 +22,7 @@ public interface LessonTypeMapper {
     //添加课程
     public Integer queryAddLessonType(LessonType lessonType);
 
+    //查询所有课程
+    List<LessonType> findAllLessonTypes_Data();
+
 }

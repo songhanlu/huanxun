@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.huanxun.dao.data.DataStuMapper">
+    <select id="findRegNumberByYear" resultType="map">
+        SELECT DATE_FORMAT(registerTime,'%Y年') AS 'value',COUNT(1) AS 'total'
+        FROM student
+        GROUP BY DATE_FORMAT(registerTime,'%Y')
+        ORDER BY registerTime
+    </select>
+
+    <select id="findRegNumberByMonth" resultType="map">
+        SELECT DATE_FORMAT(registerTime,'%Y年%m月') AS 'value',COUNT(1) AS 'total'
+        FROM student
+        GROUP BY DATE_FORMAT(registerTime,'%Y年%m月')
+        ORDER BY registerTime
+    </select>
+
+    <select id="findRegNumberByQuaterYear" resultType="map">
+        SELECT concat(DATE_FORMAT(registerTime,'%Y年'),FLOOR((DATE_FORMAT(`registerTime`, '%m')+2)/3),'季度') AS 'value',COUNT(1) AS 'total'
+        FROM student
+        GROUP BY concat(DATE_FORMAT(registerTime,'%Y'),FLOOR((DATE_FORMAT(`registerTime`, '%m')+2)/3))
+        ORDER BY registerTime
+    </select>
+</mapper>

@@ -1,5 +1,7 @@
 package com.bdqn.huanxun.pojo;
 
+import java.util.Date;
+
 /**
  * Created by hp on 2018/1/6.
  */
@@ -14,7 +16,16 @@ public class Student {
     private String stuQQ;
     private StudentGrade studentGrade;
     private Agency agency;
+    private Date registerTime;
     private Integer visible;
+
+    public Date getRegisterTime() {
+        return registerTime;
+    }
+
+    public void setRegisterTime(Date registerTime) {
+        this.registerTime = registerTime;
+    }
 
     public Integer getStuID() {
         return stuID;
@@ -117,6 +128,7 @@ public class Student {
                 ", stuQQ='" + stuQQ + '\'' +
                 ", studentGrade=" + studentGrade +
                 ", agency=" + agency +
+                ", registerTime=" + registerTime +
                 ", visible=" + visible +
                 '}';
     }

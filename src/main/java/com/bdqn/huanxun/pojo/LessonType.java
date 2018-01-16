@@ -20,16 +20,6 @@ public class LessonType {
         this.lessonDesc = lessonDesc;
     }
 
-    private String lessonDesc;
-
-    public String getLessonDesc() {
-        return lessonDesc;
-    }
-
-    public void setLessonDesc(String lessonDesc) {
-        this.lessonDesc = lessonDesc;
-    }
-
     public Integer getLessonTypeID() {
         return lessonTypeID;
     }

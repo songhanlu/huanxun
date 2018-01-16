@@ -3,6 +3,8 @@ package com.bdqn.huanxun.service;
 import com.bdqn.huanxun.pojo.LessonType;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * Created by lenovo on 2018/1/9.
  */
@@ -20,4 +22,6 @@ public interface LessonTypeService {
     public Integer updateLessonDescAndLessonPriceAndTimePerLessonById(LessonType lessonType);
     //添加课程
     public Integer queryAddLessonType(LessonType lessonType);
+    //数据统计
+    List<LessonType> findAllLessonTypes_Data();
 }

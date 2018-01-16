@@ -19,6 +19,47 @@ public class Teacher {
     private String teacherCareerType;
     private Integer loginUserID;
     private Integer visible;
+    private LoginUser loginUser;
+    private PartTeacherTime partTeacherTime;
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherID=" + teacherID +
+                ", teacherName='" + teacherName + '\'' +
+                ", teacherPhotoAddress='" + teacherPhotoAddress + '\'' +
+                ", teacherGender='" + teacherGender + '\'' +
+                ", teacherAge=" + teacherAge +
+                ", teacherArea='" + teacherArea + '\'' +
+                ", teacherDesc='" + teacherDesc + '\'' +
+                ", teacherPhone='" + teacherPhone + '\'' +
+                ", teacherEmail='" + teacherEmail + '\'' +
+                ", teacherQQ='" + teacherQQ + '\'' +
+                ", teacherLevel='" + teacherLevel + '\'' +
+                ", teacherScore=" + teacherScore +
+                ", teacherCareerType='" + teacherCareerType + '\'' +
+                ", loginUserID=" + loginUserID +
+                ", visible=" + visible +
+                ", loginUser=" + loginUser +
+                ", partTeacherTime=" + partTeacherTime +
+                '}';
+    }
+
+    public LoginUser getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
+    }
+
+    public PartTeacherTime getPartTeacherTime() {
+        return partTeacherTime;
+    }
+
+    public void setPartTeacherTime(PartTeacherTime partTeacherTime) {
+        this.partTeacherTime = partTeacherTime;
+    }
 
     public Integer getTeacherID() {
         return teacherID;
