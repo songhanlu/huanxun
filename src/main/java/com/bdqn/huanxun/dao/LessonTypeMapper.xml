@@ -1,7 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bdqn.huanxun.dao.LessonTypeMapper">
-    <select id="findAllLessonTypes" resultType="LessonType">
-        SELECT * from lessontype order by lessonTypeID
+    <resultMap id="LessonTypeMap" type="LessonType">
+        <id property="lessonTypeID" column="lessonTypeID"></id>
+        <result property="timePerLesson" column="timePerLesson"></result>
+        <result property="lessonArea" column="lessonArea"></result>
+        <result property="lessonPrice" column="lessonPrice"></result>
+        <result property="isTry" column="isTry"></result>
+        <result property="visible" column="visible"></result>
+        <result property="lessonDesc" column="lessonDesc"></result>
+    </resultMap>
+    <select id="queryLessonTypeById" parameterType="Integer" resultMap="LessonTypeMap">
+          SELECT * FROM lessontype WHERE lessonTypeID = #{lessonTypeID}
     </select>
+    <select id="queryAllLessonTypeByLessonType"  resultMap="LessonTypeMap">
+        SELECT * FROM  lessontype
+        　　<trim prefix="WHERE" prefixOverrides="AND|OR">
+
+            <if test="lessonArea!=null and lessonArea!=''">
+               AND lessonArea = #{lessonArea}
+            </if>
+            <if test="timePerLesson!=null and timePerLesson!=''">
+              AND  timePerLesson = #{timePerLesson}
+            </if>
+            <if test="lessonPrice1!=null and lessonPrice1!='' ">
+              AND lessonPrice >= #{lessonPrice1}
+            </if>
+            <if test="lessonPrice2!=null and lessonPrice2!='' ">
+              AND lessonPrice &lt;= #{lessonPrice2}
+            </if>
+            <if test="lessonDesc!=null and lessonDesc!=''">
+                AND lessonDesc like concat('%',#{lessonDesc},'%')
+            </if>
+        </trim>
+
+    </select>
+    <update id="updateLessonDescAndLessonPriceAndTimePerLessonById" parameterType="LessonType">
+         UPDATE lessontype
+         <trim prefix="set" suffixOverrides="," suffix="where lessonTypeID = #{lessonTypeID}">
+             <if test="lessonDesc!=null">
+                 lessonDesc = #{lessonDesc},
+             </if>
+             <if test="lessonPrice!=null">
+                 lessonPrice = #{lessonPrice},
+             </if>
+             <if test="timePerLesson!=null">
+                 timePerLesson = #{timePerLesson},
+             </if>
+         </trim>
+    </update>
+
+    <insert id="queryAddLessonType" parameterType="LessonType">
+      INSERT INTO lessontype VALUES (NULl,#{timePerLesson},#{lessonArea},#{lessonPrice},
+      <if test="lessonPrice != 0">
+          0,
+      </if>
+      <if test="lessonPrice == 0">
+          1,
+      </if>
+      1,#{lessonDesc})
+    </insert>
 </mapper>
