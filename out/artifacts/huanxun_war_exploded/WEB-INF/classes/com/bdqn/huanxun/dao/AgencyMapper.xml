@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bdqn.huanxun.dao.AgencyMapper">
+
+    <resultMap id="agencyMap" type="Agency">
+        <id property="agencyID" column="agencyID"></id>
+    </resultMap>
+
+    <select id="findAgencyById" resultMap="agencyMap" parameterType="Integer">
+        select * from `agency` where agencyID = #{agencyId} and visible = 1
+    </select>
+
+    <select id="findAll" resultMap="agencyMap">
+        SELECT `agencyID`,
+          `agencyName`,
+          `contactName`,
+          `contactPhone`,
+          `contactEmail`,
+          `contactQQ`,
+          `stuNumber`
+          FROM `agency` WHERE `visible` = 1 ORDER BY `agencyID` DESC
+    </select>
+
+    <select id="findAgencyByLikeAgencyName" resultMap="agencyMap">
+  SELECT
+          a.`agencyID`,
+          a.`agencyName`,
+          a.`contactName`,
+          a.`contactPhone`,
+          a.`contactEmail`,
+          a.`contactQQ`,
+          a.`stuNumber`
+        FROM
+          `agency` a
+        WHERE
+         a.`visible` = 1
+          <if test="agencyName!=null and agencyName!=''">
+              AND a.`agencyName` LIKE CONCAT('%',#{agencyName},'%')
+          </if>
+        ORDER BY a.`agencyID` DESC
+    </select>
+
+    <select id="queryAgencyById" resultMap="agencyMap" parameterType="Integer">
+        SELECT
+          a.`agencyID`,
+          a.`agencyName`,
+          a.`contactName`,
+          a.`contactPhone`,
+          a.`contactEmail`,
+          a.`contactQQ`,
+          a.`stuNumber`
+        FROM
+          `agency` a
+        WHERE
+         a.`agencyID` = #{agencyId}
+          AND a.`visible` = 1
+    </select>
+
+    <insert id="addAgency" parameterType="Agency">
+        INSERT INTO `agency`
+        VALUES (NULL,
+                #{agencyName},
+                #{contactPhone},
+                #{contactEmail},
+                #{contactQQ},
+                #{stuNumber},
+                1,
+                #{contactName})
+    </insert>
+
+    <update id="updateAgency" parameterType="Agency">
+        update `agency`
+        set `agencyName` = #{agencyName},
+          `contactPhone` = #{contactPhone},
+          `contactEmail` = #{contactEmail},
+          `contactQQ` = #{contactQQ},
+          `stuNumber` = #{stuNumber},
+          `visible` = 1,
+          `contactName` = #{contactName}
+        where `agencyID` = #{agencyID};
+    </update>
     <update id="updateAgencyByStuNumber" >
          UPDATE `agency`
         SET
@@ -21,8 +99,5 @@
     </update>
     <select id="queryAgency" resultType="Agency">
         SELECT * FROM `agency`WHERE `visible` = 1
-    </select>
-    <select id="queryAgencyById" resultType="Agency" parameterType="Integer">
-        select * from `agency` where agencyID = #{agencyId} and visible = 1
     </select>
 </mapper>

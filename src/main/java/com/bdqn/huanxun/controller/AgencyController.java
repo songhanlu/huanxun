@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * Created by 大聪 on 2018/1/9.
@@ -71,4 +72,16 @@ public class AgencyController {
         }
         return JSON.toJSONString(Message.error());
     }
+
+    /**
+     * 查询全部校区
+     */
+    @ResponseBody
+    @RequestMapping(value = "queryAgency",method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    public String queryAgency() {
+        List<Agency> list = agencyService.queryAgency();
+        return JSON.toJSONString(list);
+    }
+
 }

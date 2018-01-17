@@ -20,6 +20,7 @@ public class AgencyServiceImpl implements AgencyService {
     private AgencyMapper agencyMapper;
     @Resource
     private LoginUserMapper loginUserMapper;
+
     @Override
     public Agency findAgencyById(Integer agencyId) {
         return agencyMapper.findAgencyById(agencyId);

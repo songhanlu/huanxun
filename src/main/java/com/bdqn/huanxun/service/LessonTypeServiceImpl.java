@@ -39,4 +39,17 @@ public class LessonTypeServiceImpl implements LessonTypeService {
     public List<LessonType> findAllLessonTypes_Data() {
         return lessonTypeMapper.findAllLessonTypes_Data();
     }
+
+    @Override
+    public List<LessonType> querylessonDescBylessonArea(String lessonArea) {
+        return lessonTypeMapper.querylessonDescBylessonArea(lessonArea);
+    }
+    @Override
+    public Integer deleteLessonTypeById(Integer lessonTypeID){
+        return lessonTypeMapper.deleteLessonTypeById(lessonTypeID);
+    }
+    @Override
+    public Integer deleteLessonTypeByIdList(List<Integer> IdList){
+        return lessonTypeMapper.deleteLessonTypeByIdList(IdList);
+    }
 }

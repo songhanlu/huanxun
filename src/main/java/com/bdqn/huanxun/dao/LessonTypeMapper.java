@@ -22,7 +22,15 @@ public interface LessonTypeMapper {
     //添加课程
     public Integer queryAddLessonType(LessonType lessonType);
 
+    //ID删除
+    public Integer deleteLessonTypeById(Integer lessonTypeID);
+    //批量删除
+    public Integer deleteLessonTypeByIdList(List<Integer> IdList);
+
+
     //查询所有课程
     List<LessonType> findAllLessonTypes_Data();
+
+    public List<LessonType> querylessonDescBylessonArea(String lessonArea);
 
 }

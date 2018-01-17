@@ -86,6 +86,7 @@
         VALUES (NULL,
                 #{stuName},
                 #{stuAge},
+                '',
                 #{stuGender},
                 #{stuPhone},
                 #{stuEmail},

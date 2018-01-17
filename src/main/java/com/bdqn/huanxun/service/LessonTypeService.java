@@ -11,7 +11,7 @@ import java.util.List;
 public interface LessonTypeService {
     //ID查找
     public LessonType queryLessonTypeById(Integer lessonTypeID);
-        //通过条件查找全部
+    //通过条件查找全部
     public PageInfo<LessonType> queryAllLessonTypeByLessonType(Integer pageNum, Integer pageSize,
                                                                 String lessonArea ,
                                                                 Integer lessonPrice1,
@@ -24,4 +24,11 @@ public interface LessonTypeService {
     public Integer queryAddLessonType(LessonType lessonType);
     //数据统计
     List<LessonType> findAllLessonTypes_Data();
+    //ID删除
+    public Integer deleteLessonTypeById(Integer lessonTypeID);
+    //批量删除
+    public Integer deleteLessonTypeByIdList(List<Integer> IdList);
+    List<LessonType> querylessonDescBylessonArea(String lessonArea);
+
+
 }

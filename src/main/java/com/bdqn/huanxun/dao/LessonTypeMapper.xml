@@ -61,7 +61,26 @@
       1,#{lessonDesc})
     </insert>
 
+
+    <delete id="deleteLessonTypeById" parameterType="Integer">
+        DELETE FROM lessontype WHERE lessonTypeID = #{lessonTypeID}
+    </delete>
+
+
+    <delete id="deleteLessonTypeByIdList" parameterType="list">
+        delete from lessontype where lessonTypeID in
+        <foreach collection="list" open="(" separator="," close=")" item="IdList">
+            #{IdList}
+        </foreach>
+    </delete>
+
+
     <select id="findAllLessonTypes_Data" resultType="LessonType">
         SELECT * from lessontype
     </select>
+
+    <select id="querylessonDescBylessonArea" parameterType="String" resultMap="LessonTypeMap">
+    select lessontype.lessonDesc from lessontype  WHERE lessontype.lessonArea = #{lessonArea}
+    </select>
+
 </mapper>

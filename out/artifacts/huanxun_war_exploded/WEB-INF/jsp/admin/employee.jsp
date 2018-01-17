@@ -73,7 +73,7 @@
                     }}
                 ]]
             });
-            //查询所有的用户角色信息
+            //查询所有的用户角色信息 //
             $.get("${pageContext.request.contextPath}/userRole/queryUserRole.do",function (userRole) {
                 var userRole1 = $.parseJSON('{"userRoleID":-1,"userRoleName":"--请选择--"}');
                 userRole.push(userRole1);

@@ -100,7 +100,4 @@
     <select id="queryAgency" resultType="Agency">
         SELECT * FROM `agency`WHERE `visible` = 1
     </select>
-    <select id="queryAgencyById" resultType="Agency" parameterType="Integer">
-        select * from `agency` where agencyID = #{agencyId} and visible = 1
-    </select>
 </mapper>
