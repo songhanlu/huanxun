@@ -74,7 +74,7 @@
 <script type="text/javascript">
     $(function () {
         //页面加载时显示学生年级及学生二级联动选项
-        $.get("${pageContext.request.contextPath}/stuGrade/findAllStudentGrade.do",function (studentGrades) {
+        $.get("${pageContext.request.contextPath}/studentGrade/findAllStudentGrade.do",function (studentGrades) {
             var sgfo = $.parseJSON('{"stuGradeID":-1,"stuGradeName":"==请选择=="}');
             studentGrades.push(sgfo);
             //console.log(sgfo);
@@ -88,7 +88,7 @@
                 },
                 onSelect:function (stuGrade) {
                     var stuGradeID = stuGrade.stuGradeID;
-                    $.get("${pageContext.request.contextPath}/student/findStuByGradeID",{"stuGradeID":stuGradeID},function (students) {
+                    $.get("${pageContext.request.contextPath}/student/findStuByGradeID.do",{"stuGradeID":stuGradeID},function (students) {
                         var stufo = $.parseJSON('{"stuID":-1,"stuName":"==请选择=="}');
                         students.push(stufo);
                         $("#studentID").combobox({
@@ -121,7 +121,7 @@
         });
 
         //加载页面时显示所有课程类型
-        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType",function (lessonTypes) {
+        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType.do",function (lessonTypes) {
             var ptfo = $.parseJSON('{"lessonTypeID":-1,"lessonDesc":"==请选择=="}');
             lessonTypes.push(ptfo);
             $("#lessonTypeID").combobox({

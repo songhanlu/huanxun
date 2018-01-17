@@ -16,8 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.List;
-
 /**
  * Created by hp on 2018/1/5.
  */
@@ -111,6 +109,13 @@ public class StudentController {
         PageInfo<Student> pageInfo = studentService.queryStudentByNameAndAgencyAndAge(page, row, stuName, agencyName, stuAgeMin, stuAgeMax);
         PageUtil<Student> pageUtil = new PageUtil<>(pageInfo);
         return JSON.toJSONString(pageUtil);
+    }
+
+    @RequestMapping(value = "/findStuByGradeID.do",method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String findStuByGradeID(Integer stuGradeID) {
+        return JSON.toJSONString(studentService.findfStudentSByGradeID(stuGradeID));
     }
 
 }

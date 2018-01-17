@@ -85,8 +85,8 @@
     
     <!--新增学生课程-->
     <insert id="addStudentCourse" parameterType="StudentCourse">
-        insert into studentcourse (stuID, lessonTypeID, courseTypeID,teacherID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
-        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{teacherID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
+        insert into studentcourse (stuID, lessonTypeID, courseTypeID,teacherID, lessonTotalNumber, lessonRestNumber, discount, isArranged, createTime)
+        VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{teacherID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0,now())
     </insert>
 
     <!--修改学生课程-->

@@ -83,4 +83,6 @@
     select lessontype.lessonDesc from lessontype  WHERE lessontype.lessonArea = #{lessonArea}
     </select>
 
+
+
 </mapper>

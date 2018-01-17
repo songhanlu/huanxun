@@ -33,4 +33,5 @@ public interface LessonTypeMapper {
 
     public List<LessonType> querylessonDescBylessonArea(String lessonArea);
 
+
 }

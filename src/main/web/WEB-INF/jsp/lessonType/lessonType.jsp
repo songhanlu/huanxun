@@ -78,7 +78,6 @@
                 var lessonType = $("#updatelessonTypeForm").serialize();
 
                 var timePerLesson = $("#updatekechengshichang").val();
-                alert(timePerLesson);
                 if(timePerLesson==null || timePerLesson==''){
                     alert("课时（分钟）不能为空");
                     return;

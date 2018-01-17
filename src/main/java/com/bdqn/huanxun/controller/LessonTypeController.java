@@ -20,7 +20,7 @@ import java.util.List;
  * Created by lenovo on 2018/1/9.
  */
 @Controller
-@RequestMapping(value = "lessonType")
+@RequestMapping(value = "/lessonType")
 public class LessonTypeController {
     @Resource
     private LessonTypeService lessonTypeService;
@@ -167,6 +167,13 @@ public class LessonTypeController {
             return JSON.toJSONString(Message.success());
         }
         return JSON.toJSONString(Message.failed());
+    }
+
+    @RequestMapping(value = "/findAllLessonType.do",method = RequestMethod.GET,
+                    produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String findAllLessonType(){
+        return JSON.toJSONString(lessonTypeService.findAllLessonTypes_Data());
     }
 
 

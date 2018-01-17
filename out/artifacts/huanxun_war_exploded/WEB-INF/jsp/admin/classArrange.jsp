@@ -49,7 +49,7 @@
                 }
             });
         });
-        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType",function (lessons) {
+        $.get("${pageContext.request.contextPath}/lessonType/findAllLessonType.do",function (lessons) {
             var lfo = $.parseJSON('{"lessonTypeID":-1,"lessonDesc":"==请选择=="}');
             lessons.push(lfo);
             $("#lessonTypeCombobox").combobox({

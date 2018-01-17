@@ -135,7 +135,7 @@
                                     $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
                                         "<td>"+item.bookTitle+"</td>" +
                                         "<td>"+item.bookVersion+"</td>" +
-                                        "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
+                                        "<td><a href='${pageContext.request.contextPath}/statics/upload/"+item.bookAddress+"'>下载附件</a></td>"+
                                         "<td><button onclick='delBook("+item.bookID+","+stuArrangeID+")'>删除教材</button></td></tr>");
                                 });
                             });
