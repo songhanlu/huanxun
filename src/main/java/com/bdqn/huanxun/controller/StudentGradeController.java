@@ -15,7 +15,7 @@ import java.util.List;
  * Created by hp on 2018/1/8.
  */
 @Controller
-@RequestMapping("/stuGrade")
+@RequestMapping("studentGrade")
 public class StudentGradeController {
     @Resource
     private StudentGradeService studentGradeService;
@@ -28,4 +28,12 @@ public class StudentGradeController {
         List<StudentGrade> studentGrades = studentGradeService.findAllStudentGrade();
         return JSON.toJSONString(studentGrades);
     }
+    @ResponseBody
+    @RequestMapping(value = "queryStudentGrade",method = RequestMethod.GET,
+    produces = {"application/json;charset=UTF-8"})
+    public String queryStudentGrade() {
+        List<StudentGrade> list = studentGradeService.queryStuGrade();
+        return JSON.toJSONString(list);
+    }
+
 }

@@ -6,4 +6,7 @@
     <select id="findAllStudentGrade" resultType="StudentGrade">
         SELECT * FROM studentgrade order by stuGradeID
     </select>
+    <select id="queryStuGrade" resultType="StudentGrade">
+        SELECT * FROM `studentgrade`
+    </select>
 </mapper>

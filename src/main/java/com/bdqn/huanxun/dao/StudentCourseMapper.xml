@@ -122,4 +122,5 @@
         where sc.courseTypeID = ct.courseTypeID
         and sc.stuCourseID = #{stuCourseID}
     </select>
+
 </mapper>

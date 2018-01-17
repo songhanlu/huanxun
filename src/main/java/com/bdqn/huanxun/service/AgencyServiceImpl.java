@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by 大聪 on 2018/1/8.
+ * Created by 佳 on 2018/1/13.
  */
 @Service
 public class AgencyServiceImpl implements AgencyService {
@@ -38,6 +39,21 @@ public class AgencyServiceImpl implements AgencyService {
         return new PageInfo<Agency>(list);
     }
 
+
+    @Override
+    public Integer updateAgencyByStuNumber(Integer stuNumber, Integer agencyID) {
+        return agencyMapper.updateAgencyByStuNumber(stuNumber, agencyID);
+    }
+
+    @Override
+    public Integer updateAgencyByStuNumberList(Integer stuNumber, List<Integer> list) {
+        return agencyMapper.updateAgencyByStuNumberList(stuNumber, list);
+    }
+
+    @Override
+    public List<Agency> queryAgency() {
+        return agencyMapper.queryAgency();
+    }
 
     @Override
     public Agency queryAgencyById(Integer agencyId) {

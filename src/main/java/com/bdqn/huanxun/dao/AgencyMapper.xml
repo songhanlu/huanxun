@@ -79,4 +79,28 @@
           `contactName` = #{contactName}
         where `agencyID` = #{agencyID};
     </update>
+    <update id="updateAgencyByStuNumber" >
+         UPDATE `agency`
+        SET
+          `stuNumber` = #{stuNumber}
+
+        WHERE `agencyID` = #{agencyID}
+         and visible = 1
+    </update>
+    <update id="updateAgencyByStuNumberList">
+        UPDATE `agency`
+        SET
+          `stuNumber` = #{stuNumber}
+
+        WHERE `agencyID` IN
+        <foreach collection="list" item="agencyId" open="(" separator="," close=")">
+            #{agencyId}
+        </foreach>
+    </update>
+    <select id="queryAgency" resultType="Agency">
+        SELECT * FROM `agency`WHERE `visible` = 1
+    </select>
+    <select id="queryAgencyById" resultType="Agency" parameterType="Integer">
+        select * from `agency` where agencyID = #{agencyId} and visible = 1
+    </select>
 </mapper>

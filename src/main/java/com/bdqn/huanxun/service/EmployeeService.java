@@ -44,7 +44,7 @@ public interface EmployeeService {
 
     /**
      * 单条删除员工
-     * @param employeeId
+     * @param
      * @return
      */
     Integer deleteEmployeeById(Integer employeeId);
@@ -70,4 +70,7 @@ public interface EmployeeService {
      * @return
      */
     Integer updateEmployee(Employee employee,Integer loginUserId,String loginUserName, String loginUserPassword);
+
+    //ajax判断用户名是否存在
+    Employee queryLoginName(String loginName);
 }

@@ -10,4 +10,9 @@ import java.util.List;
 public interface StudentGradeMapper {
     //查询所有学生年级
     List<StudentGrade> findAllStudentGrade();
+    /**
+     * 查询所有的年级
+     * @return
+     */
+    public List<StudentGrade> queryStuGrade();
 }

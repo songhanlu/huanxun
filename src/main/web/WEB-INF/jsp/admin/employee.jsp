@@ -12,6 +12,7 @@
                 rownumbers:true,
                 striped:true,
                 checkOnSelect:false,
+                ctrlSelect:true,
                 toolbar:[
                     {
                         text:'添加',
@@ -34,9 +35,13 @@
                             $.each(checkEmployee,function (index, item) {
                                 idStr = idStr + item.employeeID + ",";
                             })
+                            var str = "";
+                            $.each(checkEmployee,function (index, item) {
+                                str = str + item.loginUser.loginUserID + ",";
+                            })
                             if(confirm("确定要删除吗？")){
                                 $.post("${pageContext.request.contextPath}/employee/deleteEmployeeByIds.do",
-                                    {"employeeIds":idStr},function (data) {
+                                    {"employeeIds":idStr,"loginUserIds":str},function (data) {
                                         alert(data.msg);
                                         $("#employeeDataGrid").datagrid('reload');
                                     })
@@ -68,7 +73,7 @@
                     }}
                 ]]
             });
-            //查询所有的用户角色信息
+            //查询所有的用户角色信息 //
             $.get("${pageContext.request.contextPath}/userRole/queryUserRole.do",function (userRole) {
                 var userRole1 = $.parseJSON('{"userRoleID":-1,"userRoleName":"--请选择--"}');
                 userRole.push(userRole1);
@@ -118,14 +123,76 @@
             //添加
             $("#saveAddEmployeeButton").click(function () {
 
-                var employee = $("#addEmployeeForm").serialize();
-                $.post("${pageContext.request.contextPath}/employee/addEmployee.do",employee,
-                function (data) {
-                    alert(data.msg);
-                    $("#employeeDataGrid").datagrid('reload');
-                    $("#addEmployeeWindow").window('close');
-                })
-            })
+                var employee = true;
+
+                var addEmployeeName = $("#addEmployeeName").val();
+                if(addEmployeeName==null || addEmployeeName==''){
+                    alert("姓名不能为空");
+                    employee = false;
+                    return;
+                }
+                var addEmployeeLoginName=$("#addEmployeeLoginName").val();
+                if(addEmployeeLoginName==null || addEmployeeLoginName==''){
+                    alert("登录名不能为空");
+                    employee = false;
+                    return;
+                }else {
+
+                }
+                var addEmployeeLoginPassword=$("#addEmployeeLoginPassword").val();
+                if(addEmployeeLoginPassword==null || addEmployeeLoginPassword==''){
+                    alert("密码不能为空");
+                    employee = false;
+                    return;
+                }
+                var addEmployeeAge=$("#addEmployeeAge").val();
+                if(addEmployeeAge==null || addEmployeeAge==''){
+                    alert("年龄不能为空");
+                    employee = false;
+                    return;
+                }
+                var addEmployeeEmail=$("#addEmployeeEmail").val();
+                if(addEmployeeEmail==null || addEmployeeEmail==''){
+                    alert("邮箱不能为空");
+                    employee = false;
+                    return;
+                }
+                var addEmployeePhone=$("#addEmployeePhone").val();
+                if(addEmployeePhone==null || addEmployeePhone==''){
+                    alert("手机不能为空");
+                    employee = false;
+                    return;
+                }
+                var addEmployeeQQ=$("#addEmployeeQQ").val();
+                if(addEmployeeQQ==null || addEmployeeQQ==''){
+                    alert("QQ不能为空");
+                    employee = false;
+                    return;
+                }
+                $.ajax({
+                    url:"${pageContext.request.contextPath}/employee/deExists.do",
+                    type:"GET",
+                    data:{"loginName":addEmployeeLoginName},
+                    dataType:"text",
+                    success:function (data) {
+                        if(data=="success"){
+                            alert("用户名已被使用！");
+                        }else{
+                            if(employee){
+                                var employee1 = $("#addEmployeeForm").serialize();
+                                $.post("${pageContext.request.contextPath}/employee/addEmployee.do",employee1,
+                                    function (data) {
+                                        alert(data.msg);
+                                        $("#employeeDataGrid").datagrid('reload');
+                                        $("#addEmployeeWindow").window('close');
+                                    })
+                            }
+                        }
+                    }
+                    })
+
+            });
+
             //修改
             $("#saveUpdateEmployeeButton").click(function () {
                 var employee = $("#updateEmployeeForm").serialize();
@@ -178,6 +245,7 @@
             }
 
         }
+
     </script>
 </head>
 <body>
@@ -191,7 +259,7 @@
     <table id="employeeDataGrid"></table>
     <%--详情--%>
     <div class="easyui-window" id="queryEmployeeByIdWindow"
-         style="width: 600px;height: 500px; padding: 60px 120px;top: 10px;left:20px;"
+         style="top: 10%; left: 20%;width: 600px;height: 450px; padding: 60px 120px;"
          title="员工详情" closed="true">
         <form>
             <table>

@@ -27,14 +27,34 @@
                         text:'添加',
                         iconCls:'icon-add',
                         handler:function () {
-                            alert("添加");
+                            $("#addlessonTypeForm").form("clear");
+                            $("#addlessonTypeWindow").window('open');
                         }
                     },
                     {
                         text:'删除',
                         iconCls:'icon-remove',
                         handler:function () {
-                            alert("删除");
+                            var lessonTypeId=$("#lessonTypeShow").datagrid('getChecked');
+                            if(null==lessonTypeId||lessonTypeId.length<=0){
+                                alert("请选择要删除的项");
+                                return;
+                            }
+
+                            if(confirm("确定要删除吗？")){
+                                var IdList="";
+                                $.each(lessonTypeId,function (index,item) {
+                                    IdList=IdList+item.lessonTypeID+",";
+                                })
+
+
+                                $.post("${pageContext.request.contextPath}/lessonType/deletelessonTypeList.do",
+                                    {"IdList":IdList},function (data) {
+                                        alert(data.msg);
+                                        $("#lessonTypeShow").datagrid('reload');
+                                    })
+                            }
+
                         }
                     }
                 ],
@@ -53,18 +73,86 @@
 
                 ]]
             })
+            /*修改课程*/
             $("#updatelessonTypeButton").click(function () {
                 var lessonType = $("#updatelessonTypeForm").serialize();
-                if(lessonType.visible == "在线课程"){
-                    var visible =1;
+
+                var timePerLesson = $("#updatekechengshichang").val();
+                alert(timePerLesson);
+                if(timePerLesson==null || timePerLesson==''){
+                    alert("课时（分钟）不能为空");
+                    return;
                 }
-                if(lessonType.visible=="下线课程"){
-                    var visible =0;
+                var lessonPrice=$("#updatedanjiefeiyong").val();
+                if(lessonPrice==null || lessonPrice==''){
+                    alert("资费金额（RMB）不能为空");
+                    return;
                 }
-                lessonType.set(visible);
-                $.post("${pageContext.request.contextPath}/lessonType/updatelessonType.do",{"lessonType":lessonType},function (lessonType) {
-                    alert(lessonType.msg);
+                var lessonDesc=$("#updatekechengmingcheng").val();
+                if(lessonDesc==null || lessonDesc==''){
+                    alert("课程名称不能为空");
+                    return;
+                }
+
+
+                $.post("${pageContext.request.contextPath}/lessonType/updatelessonType.do",
+                    lessonType,function (data) {
+                        alert(data.msg);
+                        $("#updatelessonTypeWindow").window('close');
+                        $("#lessonTypeShow").datagrid('reload');
                 });
+
+
+
+
+
+            })
+            /*添加课程*/
+            $("#addlessonTypeButton").click(function () {
+                var lessonType = $("#addlessonTypeForm").serialize();
+
+
+                var timePerLesson = $("#addkechengshichang").val();
+                if(timePerLesson==null || timePerLesson==''){
+                    alert("课时（分钟）不能为空");
+                    return;
+                }
+                var lessonPrice=$("#adddanjiefeiyong").val();
+                if(lessonPrice==null || lessonPrice==''){
+                    alert("资费金额（RMB）不能为空");
+                    return;
+                }
+                var lessonDesc=$("#addkechengmingcheng").val();
+                if(lessonDesc==null || lessonDesc==''){
+                    alert("课程名称不能为空");
+                    return;
+                }
+                var lessonArea=$("#addwaijiaodiqv").val();
+                if(lessonArea==null || lessonArea==''){
+                    alert("外教地区（机构）不能为空");
+                    return;
+                }
+
+                $.ajax({
+                    url:"${pageContext.request.contextPath}/lessonType/querylessonDescBylessonArea.do",
+                    type:"GET",
+                    data:{"lessonArea":lessonArea,"lessonDesc":lessonDesc},
+                    dataType:"text",
+                    success:function (data) {
+                        if(data=="success"){
+                            alert("该地区（机构）已经拥有该课程！");
+                        }else{
+                            $.post("${pageContext.request.contextPath}/lessonType/addlessonType.do",
+                                lessonType,function (data) {
+                                    alert(data.msg);
+                                    $("#addlessonTypeWindow").window('close');
+                                    $("#lessonTypeShow").datagrid('reload');
+                                }
+                            )
+                        }
+                    }
+                });
+
             })
         })
 
@@ -92,6 +180,7 @@
                 $("#updatewaijiaodiqv").textbox('setValue',lessonType.lessonArea);
                 $("#updatedanjiefeiyong").textbox('setValue',lessonType.lessonPrice);
                 $("#updatekechengmingcheng").textbox('setValue',lessonType.lessonDesc);
+                $("#updateLessonTypeID").val(lessonType.lessonTypeID);
                 if(lessonType.visible==1){
                     $("#updatekechengzhuangti").textbox('setValue',"在线课程")
                 }
@@ -104,7 +193,12 @@
         }
 
         function deleteScore(value) {
-            alert(value);
+                $.post("${pageContext.request.contextPath}/lessonType/deletelessonType.do",{"lessonTypeID":value},function (data) {
+                    alert(data.msg);
+                    $("#lessonTypeShow").datagrid('reload');
+
+
+            })
         }
 
     </script>
@@ -112,7 +206,7 @@
 </head>
 <body>
 <div>
-    搜索：<input id="lessonDesc" type="text" name="lessonDesc" class="easyui-textbox"/>
+    搜索：<input id="lessonDesc" type="text" name="lessonDesc" prompt="课程名称搜索" class="easyui-textbox"/>
     <button  class="easyui-linkbutton" iconCls="icon-search" id="queryAllByLessonDescButton">搜索</button>
 </div>
 <br/>
@@ -155,7 +249,7 @@
 </div>
 <br/>
 <table id="lessonTypeShow"></table>
-<div id="lessonTypeWindow" title="课程详情" class="easyui-window" style="width: 600px;height: 300px;padding: 60px 120px" closed="true">
+<div id="lessonTypeWindow" title="课程详情" class="easyui-window" style="width: 650px;height: 400px;padding: 60px 120px" closed="true">
     <table>
         <tr>
             <td>课程时长(分钟)</td>
@@ -179,32 +273,62 @@
         </tr>
     </table>
 </div>
-<div id="updatelessonTypeWindow" title="课程修改" class="easyui-window" style="width: 600px;height: 300px;padding: 60px 120px" closed="true">
+<div id="updatelessonTypeWindow" title="课程修改" class="easyui-window" style="width: 650px;height: 400px;padding: 60px 120px" closed="true">
     <form id="updatelessonTypeForm">
         <table>
             <tr>
-                <td>课程时长(分钟)</td>
-                <td><input id="updatekechengshichang" name="timePerLesson" class="easyui-textbox" /></td>
-            </tr>
-            <tr>
-                <td>外教地区</td>
-                <td><input id="updatewaijiaodiqv" name="lessonArea" class="easyui-textbox" /></td>
+                <td>课程时长（分钟）</td>
+                <td><input id="updatekechengshichang" name="timePerLesson" class="easyui-textbox" />可修改
+                    <input type="hidden" name="lessonTypeID" id="updateLessonTypeID"/></td>
             </tr>
             <tr>
                 <td>单节费用（RMB）</td>
-                <td><input id="updatedanjiefeiyong" name="lessonPrice"  class="easyui-textbox"/></td>
+                <td><input id="updatedanjiefeiyong" name="lessonPrice"  class="easyui-textbox"/>可修改</td>
             </tr>
             <tr>
                 <td>课程名称</td>
-                <td><input id="updatekechengmingcheng" name="lessonDesc" class="easyui-textbox"/></td>
+                <td><input id="updatekechengmingcheng" name="lessonDesc" class="easyui-textbox" />可修改</td>
+            </tr>
+            <tr>
+                <td>外教地区（机构）</td>
+                <td><input id="updatewaijiaodiqv" class="easyui-textbox"readonly /></td>
             </tr>
             <tr>
                 <td>课程状态</td>
-                <td><input id="updatekechengzhuangti" name="visible" class="easyui-textbox"/></td>
+                <td><input id="updatekechengzhuangti"  class="easyui-textbox" readonly/></td>
             </tr>
         </table>
     </form>
-    <button id="updatelessonTypeButton" class="easyui-linkButton">保 &nbsp;&nbsp;存</button>
+    <div align="center">
+        <button id="updatelessonTypeButton" class="easyui-linkButton">&nbsp;&nbsp; &nbsp;&nbsp;保 &nbsp;&nbsp; &nbsp;&nbsp;存&nbsp;&nbsp; &nbsp;&nbsp;</button>
+    </div>
+</div>
+
+<div id="addlessonTypeWindow" title="课程添加" class="easyui-window" style="width: 650px;height: 400px;padding: 60px 120px" closed="true">
+    <form id="addlessonTypeForm">
+        <table>
+            <tr>
+                <td>课程时长(分钟)</td>
+                <td><input id="addkechengshichang" name="timePerLesson" class="easyui-textbox" /></td>
+            </tr>
+            <tr>
+                <td>单节费用（RMB）</td>
+                <td><input id="adddanjiefeiyong" name="lessonPrice"  class="easyui-textbox"/></td>
+            </tr>
+            <tr>
+                <td>课程名称</td>
+                <td><input id="addkechengmingcheng" name="lessonDesc" class="easyui-textbox" /></td>
+            </tr>
+            <tr>
+                <td>外教地区（机构）</td>
+                <td><input id="addwaijiaodiqv" name="lessonArea" class="easyui-textbox" /></td>
+            </tr>
+
+        </table>
+    </form>
+   <div align="center">
+       <button id="addlessonTypeButton" class="easyui-linkButton">&nbsp;&nbsp; &nbsp;&nbsp;保 &nbsp;&nbsp; &nbsp;&nbsp;存&nbsp;&nbsp; &nbsp;&nbsp;</button>
+   </div>
 </div>
 </body>
 </html>

@@ -42,4 +42,6 @@ public interface StudentCourseMapper {
 
     //根据stuCourseID查询学生课程查询LessonType
     CourseType findCourseTypeByStuCourseID(Integer stuCourseID);
+
+
 }

@@ -30,6 +30,7 @@
         WHERE em.`loginUserID` = l.`loginUserID`
         AND
         l.`userRoleID` = ur.`userRoleID`
+        AND em.`visible` = 1
     </select>
     <select id="queryEmployeeByUserRoleId" resultMap="employeeMap">
         SELECT
@@ -121,4 +122,13 @@
         WHERE `employeeID` = #{employeeID};
     </update>
 
+    <select id="queryLoginName" resultMap="employeeMap" parameterType="String">
+        SELECT
+          *
+        FROM
+          `employee` e,
+          `loginuser` l
+        WHERE e.loginUserID = l.loginUserID
+          AND l.loginName = #{loginName}
+    </select>
 </mapper>

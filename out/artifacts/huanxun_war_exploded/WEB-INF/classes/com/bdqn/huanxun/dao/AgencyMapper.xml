@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdqn.huanxun.dao.AgencyMapper">
+    <update id="updateAgencyByStuNumber" >
+         UPDATE `agency`
+        SET
+          `stuNumber` = #{stuNumber}
+
+        WHERE `agencyID` = #{agencyID}
+         and visible = 1
+    </update>
+    <update id="updateAgencyByStuNumberList">
+        UPDATE `agency`
+        SET
+          `stuNumber` = #{stuNumber}
+
+        WHERE `agencyID` IN
+        <foreach collection="list" item="agencyId" open="(" separator="," close=")">
+            #{agencyId}
+        </foreach>
+    </update>
+    <select id="queryAgency" resultType="Agency">
+        SELECT * FROM `agency`WHERE `visible` = 1
+    </select>
+    <select id="queryAgencyById" resultType="Agency" parameterType="Integer">
+        select * from `agency` where agencyID = #{agencyId} and visible = 1
+    </select>
+</mapper>

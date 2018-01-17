@@ -10,4 +10,6 @@ import java.util.List;
 public interface StudentGradeService {
     //查询所有学生年级
     List<StudentGrade> findAllStudentGrade();
+
+    public List<StudentGrade> queryStuGrade();
 }

@@ -35,4 +35,19 @@
           `userRoleID` = #{userRole.userRoleID}
         WHERE `loginUserID` = #{loginUserID}
     </update>
+    <delete id="deleteLoginUser" parameterType="Integer">
+               UPDATE `loginuser`
+                SET
+                  `visible` = 0
+                WHERE `loginUserID` = #{loginUserID}
+    </delete>
+    <delete id="deleteLoginUserByIds">
+            UPDATE `loginuser`
+                SET
+                  `visible` = 0
+                WHERE `loginUserID` IN
+                <foreach collection="list" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+    </delete>
 </mapper>

@@ -30,7 +30,7 @@
         s.`stuGradeID` = sg.`stuGradeID`
         AND
         s.`visible` = 1
-         ORDER BY `stuID` DESC
+          ORDER BY `registerTime` DESC
     </select>
   
     <select id="queryStudentByNameAndAgencyAndAge" resultMap="studentMap">
@@ -80,5 +80,75 @@
         where s.stuGradeID = sg.stuGradeID
         and s.stuGradeID = #{stuGradeID}
 
+    </select>
+    <insert id="addStudent" parameterType="Student">
+        INSERT INTO `student`
+        VALUES (NULL,
+                #{stuName},
+                #{stuAge},
+                #{stuGender},
+                #{stuPhone},
+                #{stuEmail},
+                #{stuQQ},
+                #{studentGrade.stuGradeID},
+                #{agency.agencyID},
+                NOW(),
+                1);
+    </insert>
+    <update id="updateStudent" parameterType="Student">
+                 UPDATE `student`
+                SET
+                  `stuName` = #{stuName},
+                  `stuAge` = #{stuAge},
+                  `stuGender` = #{stuGender},
+                  `stuPhone` = #{stuPhone},
+                  `stuEmail` = #{stuEmail},
+                  `stuQQ` = #{stuQQ},
+                  `stuGradeID` = #{studentGrade.stuGradeID}
+                WHERE `stuID` = #{stuID}
+    </update>
+    <select id="queryStudentByStuId" parameterType="Integer" resultMap="studentMap">
+               SELECT
+                  *
+                FROM
+                  `student` s,
+                  `agency` a,
+                  `studentgrade` sg
+                WHERE s.`agencyID` = a.`agencyID`
+                AND
+                s.`stuGradeID` = sg.`stuGradeID`
+                AND
+                 `stuID` = #{stuId}
+    </select>
+    <delete id="deleteStudentById" parameterType="Integer">
+        UPDATE `student`
+        SET
+        `visible` = 0
+        WHERE `stuID` = #{stuId}
+    </delete>
+    <delete id="deleteStudentByList">
+        UPDATE `student`
+        SET
+        `visible` = 0
+        WHERE `stuID` IN
+        <foreach collection="list" item="stuId" open="(" separator="," close=")">
+            #{stuId}
+        </foreach>
+    </delete>
+    <select id="queryStudentByStuIdList" resultMap="studentMap">
+             SELECT
+                  *
+                FROM
+                  `student` s,
+                  `agency` a,
+                  `studentgrade` sg
+                WHERE s.`agencyID` = a.`agencyID`
+                AND
+                s.`stuGradeID` = sg.`stuGradeID`
+                AND
+                 `stuID` IN
+                 <foreach collection="list" item="stuIds" open="(" separator="," close=")">
+                     #{stuIds}
+                 </foreach>
     </select>
 </mapper>
