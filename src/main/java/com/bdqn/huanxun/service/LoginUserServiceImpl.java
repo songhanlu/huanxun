@@ -5,6 +5,7 @@ import com.bdqn.huanxun.pojo.LoginUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by hp on 2018/1/4.
@@ -28,4 +29,15 @@ public class LoginUserServiceImpl implements LoginUserService {
     public Integer updateLoginUser(LoginUser loginUser) {
         return loginUserMapper.updateLoginUser(loginUser);
     }
+
+    @Override
+    public Integer deleteLoginUser(Integer loginUserID) {
+        return loginUserMapper.deleteLoginUser(loginUserID);
+    }
+
+    @Override
+    public Integer deleteLoginUserByIds(List<Integer> list) {
+        return loginUserMapper.deleteLoginUserByIds(list);
+    }
+    
 }

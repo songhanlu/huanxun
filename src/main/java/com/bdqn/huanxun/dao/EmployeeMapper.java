@@ -69,4 +69,6 @@ public interface EmployeeMapper {
      */
     Integer updateEmployee(Employee employee);
 
+    //ajax判断用户名是否存在
+    Employee queryLoginName(String loginName);
 }

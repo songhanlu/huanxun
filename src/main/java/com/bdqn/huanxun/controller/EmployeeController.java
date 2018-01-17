@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +80,15 @@ public class EmployeeController {
     @ResponseBody
     @RequestMapping(value = "deleteEmployeeByIds.do",method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
-    public String deleteEmployeeByIds(String employeeIds) {
+    public String deleteEmployeeByIds(String employeeIds,String loginUserIds) {
+        String[] loginUserIdArray = loginUserIds.split(",");
         String[] employeeIdArray = employeeIds.split(",");
         List<Integer> list = new ArrayList<>();
+        if (loginUserIdArray != null && loginUserIdArray.length > 0) {
+            for (String s : loginUserIdArray) {
+                list.add(Integer.parseInt(s));
+            }
+        }
         if (employeeIdArray != null && employeeIdArray.length > 0) {
             for (String s : employeeIdArray) {
                 list.add(Integer.parseInt(s));
@@ -118,4 +125,17 @@ public class EmployeeController {
         return JSON.toJSONString(Message.error());
     }
 
+    @ResponseBody
+    @RequestMapping(value = "deExists.do",method = RequestMethod.GET,
+                    produces = "application/json;charset=UTF-8")
+    public String deExists(String loginName) throws UnsupportedEncodingException {
+        if (loginName!=null){
+            loginName = new String(loginName.getBytes("ISO8859-1"), "UTF-8");
+        }
+        Employee employee = employeeService.queryLoginName(loginName);
+        if(employee!=null){
+            return "success";
+        }
+        return "error";
+    }
 }

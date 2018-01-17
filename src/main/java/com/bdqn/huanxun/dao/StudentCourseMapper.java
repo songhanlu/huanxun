@@ -16,4 +16,6 @@ public interface StudentCourseMapper {
 
     //新增学生课程
     Integer addStudentCourse(StudentCourse studentCourse);
+
+
 }

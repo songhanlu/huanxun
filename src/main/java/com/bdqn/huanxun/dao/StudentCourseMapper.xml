@@ -81,4 +81,5 @@
         insert into studentcourse (stuID, lessonTypeID, courseTypeID, lessonTotalNumber, lessonRestNumber, discount, isArranged)
         VALUES (#{student.stuID},#{lessonType.lessonTypeID},#{courseType.courseTypeID},#{lessonTotalNumber},#{lessonRestNumber},#{discount},0)
     </insert>
+
 </mapper>

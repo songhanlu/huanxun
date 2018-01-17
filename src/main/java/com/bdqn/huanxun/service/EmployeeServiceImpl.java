@@ -56,12 +56,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Integer deleteEmployeeById(Integer employeeId) {
+        Employee employee = employeeMapper.queryEmployeeByEmployeeId(employeeId);
+        loginUserMapper.deleteLoginUser(employee.getLoginUserID());
         return employeeMapper.deleteEmployeeById(employeeId);
     }
 
     @Override
     public Integer deleteEmployeeByIds(List<Integer> list) {
-        return employeeMapper.deleteEmployeeByIds(list);//1
+        loginUserMapper.deleteLoginUserByIds(list);
+        return employeeMapper.deleteEmployeeByIds(list);
     }
 
     @Override
@@ -101,6 +104,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setLoginUserID(loginUserID);
         //添加员工
         return employeeMapper.updateEmployee(employee);
+    }
+
+    @Override
+    public Employee queryLoginName(String loginName) {
+        return employeeMapper.queryLoginName(loginName);
     }
 
 }
