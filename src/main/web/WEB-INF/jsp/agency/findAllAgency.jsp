@@ -199,7 +199,7 @@
         </form>
     </div>
     <table id="dg"></table>
-    <!--详情window框-->
+    <!--详情window框  -->
     <div id="queryAgencyByIdWindow" class="easyui-window"
          style="width: 600px;height: 400px;padding: 60px 120px;top: 10%;left: 20%;"
          title="校区详情" closed="true">
