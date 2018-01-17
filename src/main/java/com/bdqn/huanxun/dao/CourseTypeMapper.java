@@ -11,7 +11,6 @@ public interface CourseTypeMapper {
     //查询所有CourseType
     List<CourseType> findAllCourseTypes();
 
-    public interface CourseTypeMapper {
     //查询全部教材类型给教材添加时的下拉框使用
     List<CourseType> queryCourseTypeToBook();
 }

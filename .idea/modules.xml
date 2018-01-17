@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../TransferOnline/TransferOnline.iml" filepath="$PROJECT_DIR$/../TransferOnline/TransferOnline.iml" />
+      <module fileurl="file://G:\ideaEEE\TransferOnline\TransferOnline.iml" filepath="G:\ideaEEE\TransferOnline\TransferOnline.iml" />
       <module fileurl="file://$PROJECT_DIR$/huanxun.iml" filepath="$PROJECT_DIR$/huanxun.iml" />
     </modules>
   </component>

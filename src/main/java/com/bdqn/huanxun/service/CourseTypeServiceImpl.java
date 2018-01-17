@@ -22,6 +22,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     @Override
     public List<CourseType> findAllCourseTypes() {
         return courseTypeMapper.findAllCourseTypes();
+    }
     @Override
     public List<CourseType> queryCourseTypeToBook() {
         return courseTypeMapper.queryCourseTypeToBook();

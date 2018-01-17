@@ -1,11 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: hp
-  Date: 2018/1/7
-  Time: 21:10
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -117,8 +110,6 @@
                 return;
             }
             if(confirm("确定上传该教材？")){
-
-
                 var stuArrangeID = $("#stuClassArrangeID").val();
                 var bookID = $("#book").combobox("getValue");
                 var isError = false;
