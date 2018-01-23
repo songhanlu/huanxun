@@ -4,4 +4,31 @@
     <select id="findPTTime" parameterType="integer" resultType="PartTeacherTime">
         SELECT * from partteachertime where teacherID = #{teacherID} order by partTeacherTimeID
     </select>
+
+
+    <resultMap id="partTeacherTimeMap" type="PartTeacherTime">
+        <id property="partTeacherTimeID" column="partTeacherTimeID"/>
+        <association property="teacher" resultMap="teacherMap"></association>
+    </resultMap>
+    <resultMap id="teacherMap" type="Teacher">
+        <id property="teacherID" column="teacherID"></id>
+    </resultMap>
+    <update id="deleteTeacherTime" parameterType="integer">
+        UPDATE `partteachertime`SET visible=0 WHERE partTeacherTimeID=#{partTeacherTimeID}
+    </update>
+    <update id="deleteTeacherTimeList" parameterType="integer">
+        UPDATE `partteachertime` SET visible=0 WHERE partTeacherTimeID IN
+        <foreach collection="list" item="partTeacherTimeIDs" open="(" separator="," close=")">
+            #{partTeacherTimeIDs}
+        </foreach>
+    </update>
+    <insert id="addTeacherTime" parameterType="PartTeacherTime">
+        INSERT INTO partteachertime VALUES(NULL,#{weekDay},#{ptStartTime},#{ptEndTime},1)
+    </insert>
+    <select id="queryPartTeacherTimeByTeacherID"  resultMap="partTeacherTimeMap" parameterType="integer">
+        SELECT t.*,p.ptStartTime,p.ptEndTime,p.`weekDay`
+        FROM teacher t,partteachertime p WHERE
+        t.`teacherID`=p.`teacherID`
+        AND p.teacherID=#{teacherID}
+    </select>
 </mapper>

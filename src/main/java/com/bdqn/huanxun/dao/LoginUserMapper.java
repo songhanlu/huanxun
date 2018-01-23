@@ -21,4 +21,14 @@ public interface LoginUserMapper {
     Integer deleteLoginUser(Integer loginUserID);
     //批量删除登录
     Integer deleteLoginUserByIds(List<Integer> list);
+
+
+    Integer updateLoginUser_cf(LoginUser loginUser);
+
+    Integer deleteLoginUser_cf(Integer loginUserID);
+    Integer deleteLoginUserList_cf(List<Integer> loginUserIDs);
+
+    Integer addLoginUser_cf(LoginUser loginUser);
 }
+
+

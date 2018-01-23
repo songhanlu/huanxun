@@ -18,7 +18,6 @@
                 pagination:true,
                 rownumbers:true,
                 striped:true,
-              /*  singleSelect:false,*/
                 checkOnSelect:false,
                 ctrlSelect:true,
                 onLoadSuccess:function () {

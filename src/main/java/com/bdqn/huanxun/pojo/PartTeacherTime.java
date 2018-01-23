@@ -11,6 +11,15 @@ public class PartTeacherTime {
     private Integer weekDay;
     private Time ptStartTime;
     private Time ptEndTime;
+    private Teacher teacher;
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     public Integer getPartTeacherTimeID() {
         return partTeacherTimeID;

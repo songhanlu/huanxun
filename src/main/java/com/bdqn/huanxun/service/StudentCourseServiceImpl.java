@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,26 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Override
     public CourseType findLessonTypeByStuCourseID(Integer stuCourseID) {
         return studentCourseMapper.findCourseTypeByStuCourseID(stuCourseID);
+    }
+
+    @Override
+    public Integer updateStuCourseStatusToFinished(String IDs) {
+        String[] ids = IDs.split(",");
+        List<Integer> iii = new ArrayList<>();
+        for (String id : ids) {
+            iii.add(Integer.parseInt(id));
+        }
+        return studentCourseMapper.upadateStuCourseStatusToFinished(iii);
+    }
+
+    @Override
+    public Integer updateStuCourseStatusToActive(String IDs) {
+        String[] ids = IDs.split(",");
+        List<Integer> iii = new ArrayList<>();
+        for (String id : ids) {
+            iii.add(Integer.parseInt(id));
+        }
+        return studentCourseMapper.upadateStuCourseStatusToActive(iii);
     }
 
 }

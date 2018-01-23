@@ -12,6 +12,15 @@ public class StudentClassArrange {
     private Date endTime;
     private Integer lessonNumber;
     private Teacher teacher;
+    private StudentClassResultType studentClassResultType;
+
+    public StudentClassResultType getStudentClassResultType() {
+        return studentClassResultType;
+    }
+
+    public void setStudentClassResultType(StudentClassResultType studentClassResultType) {
+        this.studentClassResultType = studentClassResultType;
+    }
 
     public Integer getStuClassArrangeID() {
         return stuClassArrangeID;

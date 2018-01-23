@@ -15,6 +15,15 @@ public class StudentCourse {
     private Integer isArranged;
     private Integer teacherID;
     private Integer agencyID;
+    private String stuCourseStatus;
+
+    public String getStuCourseStatus() {
+        return stuCourseStatus;
+    }
+
+    public void setStuCourseStatus(String stuCourseStatus) {
+        this.stuCourseStatus = stuCourseStatus;
+    }
 
     @Override
     public String toString() {

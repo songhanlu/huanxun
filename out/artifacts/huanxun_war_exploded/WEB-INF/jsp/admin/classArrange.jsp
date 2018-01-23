@@ -7,6 +7,19 @@
     <jsp:include page="../common.jsp"/>
 </head>
 <body>
+
+    <%--为课表上传教材窗口--%>
+    <div id="uploadBookForArrange" class="easyui-window" title="上传教材" style="width: 700px;height: 400px;top:50px;left:50px;padding: 20px;" data-options="{closed:true}">
+        <button id="addUploadBook" data-options="{iconCls:'icon-add'}">添加教材</button>
+        <form style="display: inline" id="classBookForm">
+            <input id="book" name="book.bookID" class="easyui-combobox"/>
+            <input type="hidden" id="stuClassArrangeID" name="stuClassArrangeID"/>
+        </form>
+        <table id="haveBooksTable" border="1"></table>
+    </div>
+
+
+
     <div>
         <form id="studentCourseForm" style="margin:0;">
             <table border="1">
@@ -105,8 +118,47 @@
                         window.location.href = "${pageContext.request.contextPath}/classArrange/toAddStuCourse.do";
                     }
                 },
+                {
+                    text:"标记为‘已完成’",
+                    iconCls:"icon-edit",
+                    handler:function () {
+                        var checked = $("#classArrangeDatagrid").datagrid("getChecked");
+                        if(null==checked || checked.length==0){
+                            alert('请选择！');
+                            return;
+                        }
+                        var IDs = "";
+                        $.each(checked,function (index, item) {
+                            IDs = IDs + item.stuCourseID+",";
+                        });
+                        $.post("${pageContext.request.contextPath}/studentCourse/updateStuCourseFinished.do",{"IDs":IDs},function (result) {
+                            alert(result.msg);
+                            $("#classArrangeDatagrid").datagrid("reload");
+                        });
+                    }
+                },
+                {
+                    text:"标记为‘进行中’",
+                    iconCls:"icon-edit",
+                    handler:function () {
+                        var checked = $("#classArrangeDatagrid").datagrid("getChecked");
+                        if(null==checked || checked.length==0){
+                            alert('请选择！');
+                            return;
+                        }
+                        var IDs = "";
+                        $.each(checked,function (index, item) {
+                            IDs = IDs + item.stuCourseID+",";
+                        });
+                        $.post("${pageContext.request.contextPath}/studentCourse/updateStuCourseActived.do",{"IDs":IDs},function (result) {
+                            alert(result.msg);
+                            $("#classArrangeDatagrid").datagrid("reload");
+                        });
+                    }
+                },
             ],
             columns:[[
+                {field:"ck",checkbox:true},
                 {field:"student",title:"学生姓名",formatter:function (value, row, index) {
                     return row.student.stuName;
                 }},
@@ -145,13 +197,47 @@
                     }
                     return flag;
                 }},
+                {field:"stuCourseStatus",title:"当前状态"},
                 {field:"stuCourseID",title:"操作",width:200,formatter:function (value, row, index) {
 
-                    return "<button onclick='arrangeClass("+value+")' <c:if test="${sessionScope.loginUser.userRole.userRoleID eq 5}">disabled</c:if>>我要排课</button>";
+                    return "<button onclick='arrangeClass("+value+")' <c:if test="${sessionScope.loginUser.userRole.userRoleID eq 5}">disabled</c:if>>我要排课</button>"+
+                        "    <button onclick='toUploadBook("+value+");'>上传教材</button>";
                 }},
             ]],
         });
-    })
+    });
+    function toUploadBook(stuCourseID) {
+        window.location.href = "${pageContext.request.contextPath}/studentCourse/toUploadBook.do?stuCourseID=" + stuCourseID;
+    }
+    /*//点击上传教材按钮方法
+    function uploadBook(id) {
+        $("#stuClassArrangeID").val(id);
+        $("#haveBooksTable").text("");
+        $("#haveBooksTable").append("<tr><td>序号</td><td>教材名称</td><td>教材版本</td><td>下载附件</td><td>操作</td></tr>");
+        $.get("${pageContext.request.contextPath}/classArrange/findBooksByArrangeID.do",{"arrangeID":id},function (books) {
+            $.each(books,function (index, item) {
+                $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
+                    "<td>"+item.bookTitle+"</td>" +
+                    "<td>"+item.bookVersion+"</td>" +
+                    "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
+                    "<td><button onclick='delBook("+item.bookID+","+id+")'>删除教材</button></td></tr>");
+            });
+            $.get("${pageContext.request.contextPath}/classArrange/findBooksByCourseTypeID.do",{"courseTypeID":${studentCourse.courseType.courseTypeID}},function (books) {
+                var bfo = $.parseJSON('{"id":-1,"text":"==请选择=="}');
+                books.push(bfo);
+                $("#book").combobox({
+                    editable:false,
+                    valueField:"id",
+                    textField:"text",
+                    data:books,
+                    onLoadSuccess:function () {
+                        $(this).combobox("select", -1);
+                    }
+                });
+            });
+        });
+        $("#uploadBookForArrange").window("open");
+    }*/
 </script>
 <script type="text/javascript">
     function arrangeClass(stuCourseID) {

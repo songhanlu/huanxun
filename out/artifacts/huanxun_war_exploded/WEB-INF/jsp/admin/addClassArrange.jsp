@@ -62,7 +62,7 @@
                 </div>
                 <div>
                     <br/>
-                    本次要排课：<input name="lessonNumber" class="easyui-numberbox" data-options="{min:1,value:1,required:true}"/>节
+                    <input type="hidden" name="lessonNumber" value="1" readonly/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     是否启用自动排课:<input id="autoArrangeButton" type="checkbox"/>
                     自动排课<input type="text" id="times" name="times" style="width: 50px;" class="easyui-textbox" readonly/>节
@@ -89,15 +89,7 @@
             <button id="updateNewClassArrangeButton" class="easyui-linkbutton" data-options="{iconCls:'icon-save'}">确定排课</button>
         </div>
 
-        <%--为课表上传教材窗口--%>
-        <div id="uploadBookForArrange" class="easyui-window" title="上传教材" style="width: 700px;height: 400px;top:50px;left:50px;padding: 20px;" data-options="{closed:true}">
-            <button id="addUploadBook" data-options="{iconCls:'icon-add'}">添加教材</button>
-            <form style="display: inline" id="classBookForm">
-                <input id="book" name="book.bookID" class="easyui-combobox"/>
-                <input type="hidden" id="stuClassArrangeID" name="stuClassArrangeID"/>
-            </form>
-            <table id="haveBooksTable" border="1"></table>
-        </div>
+
     </div>
 </body>
 <%--添加上传教材有关的事件--%>
@@ -272,7 +264,14 @@
                         });
 
                     }
-                }
+                },
+                {
+                    text:"修改课程状态",
+                    iconCls:"icon-edit",
+                    handler:function () {
+
+                    }
+                },
             ],
             columns:[[
                 {field:"",checkbox:true},
@@ -297,11 +296,13 @@
                     var mm = date.getMinutes();
                     return yyyy+"年"+MM+"月"+dd+"日 "+HH+":"+mm;
                 }},
-                {title:"排课节数",field:"lessonNumber"},
+                /*{title:"排课节数",field:"lessonNumber"},*/
+                {title:"当前状态",field:"status",formatter:function (value, row, index) {
+                    return row.studentClassResultType.stuClassResultTypeName;
+                }},
                 {title:"操作",field:"stuClassArrangeID",formatter:function (value, row, index) {
                     return "<button onclick='updateStuClassArrange("+value+");'>修改</button>"+
-                        "<button onclick='deleteStuClassArrange("+value+");'>删除</button>"+
-                        "<button onclick='uploadBook("+value+");'>上传教材</button>";
+                        "<button onclick='deleteStuClassArrange("+value+");'>删除</button>";
                 }}
             ]],
         });
@@ -314,7 +315,7 @@
         $("#saveNewClassArrangeButton").click(function () {
 
             var studentClassArrange = $("#addClassArrangeForm").serialize();
-            //console.log(studentClassArrange);
+            console.log(studentClassArrange);
             $.post("${pageContext.request.contextPath}/classArrange/addArrange.do",studentClassArrange,function (result) {
                 alert(result.msg);
                 $("#classArrangeDatagrid").datagrid("reload");
@@ -379,35 +380,7 @@
             });
         }
     }
-    //点击上传教材按钮方法
-    function uploadBook(id) {
-        $("#stuClassArrangeID").val(id);
-        $("#haveBooksTable").text("");
-        $("#haveBooksTable").append("<tr><td>序号</td><td>教材名称</td><td>教材版本</td><td>下载附件</td><td>操作</td></tr>");
-        $.get("${pageContext.request.contextPath}/classArrange/findBooksByArrangeID.do",{"arrangeID":id},function (books) {
-            $.each(books,function (index, item) {
-                $("#haveBooksTable").append("<tr><td>"+(index+1)+"</td>" +
-                    "<td>"+item.bookTitle+"</td>" +
-                    "<td>"+item.bookVersion+"</td>" +
-                    "<td><a href='${pageContext.request.contextPath}/"+item.bookAddress+"'>下载附件</a></td>"+
-                    "<td><button onclick='delBook("+item.bookID+","+id+")'>删除教材</button></td></tr>");
-            });
-            $.get("${pageContext.request.contextPath}/classArrange/findBooksByCourseTypeID.do",{"courseTypeID":${studentCourse.courseType.courseTypeID}},function (books) {
-                var bfo = $.parseJSON('{"id":-1,"text":"==请选择=="}');
-                books.push(bfo);
-                $("#book").combobox({
-                    editable:false,
-                    valueField:"id",
-                    textField:"text",
-                    data:books,
-                    onLoadSuccess:function () {
-                        $(this).combobox("select", -1);
-                    }
-                });
-            });
-        });
-        $("#uploadBookForArrange").window("open");
-    }
+
     //删除教材
     function delBook(id,arrangeID) {
         if(confirm("确定删除？")){

@@ -35,4 +35,10 @@ public interface StudentCourseService {
 
     //根据stuCourseID查询学生课程查询LessonType集合
     CourseType findLessonTypeByStuCourseID(Integer stuCourseID);
+
+    //改变课程状态（进行中-->已完成）
+    Integer updateStuCourseStatusToFinished(String IDs);
+
+    //改变课程状态（进行中-->进行中）
+    Integer updateStuCourseStatusToActive(String IDs);
 }

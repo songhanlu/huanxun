@@ -50,4 +50,22 @@
                     #{id}
                 </foreach>
     </delete>
+
+
+
+    <update id="updateLoginUser_cf" parameterType="LoginUser">
+        UPDATE `loginuser` SET loginName=#{loginName} ,loginPassword=#{loginPassword} WHERE loginUserID=#{loginUserID}
+    </update>
+    <update id="deleteLoginUser_cf" parameterType="integer">
+        UPDATE `loginuser` SET visible=0 WHERE loginUserID=#{loginUserID}
+    </update>
+    <update id="deleteLoginUserList_cf" parameterType="integer">
+        UPDATE `loginuser` SET visible=0 WHERE loginUserID IN
+        <foreach collection="list" item="loginUserIDs" open="(" separator="," close=")">
+            #{loginUserIDs}
+        </foreach>
+    </update>
+    <insert id="addLoginUser_cf" keyProperty="loginUserID" useGeneratedKeys="true" parameterType="LoginUser">
+        INSERT INTO loginuser VALUES(NULL,#{loginName},#{loginPassword},5,1)
+    </insert>
 </mapper>

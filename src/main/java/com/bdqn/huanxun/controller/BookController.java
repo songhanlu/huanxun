@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.lang.model.type.ErrorType;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,8 @@ public class BookController {
     public String tobook(){
         return "book/book";
     }
-//    //分页
+
+    //分页
     @ResponseBody
     @RequestMapping(value = "/queryAll.do",method = RequestMethod.GET,
     produces = {"application/json;charset=utf-8"})

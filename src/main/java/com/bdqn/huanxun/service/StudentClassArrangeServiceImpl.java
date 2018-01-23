@@ -104,4 +104,9 @@ public class StudentClassArrangeServiceImpl implements StudentClassArrangeServic
         List<Book> books = classBookMapper.findBooksByCourseTypeID(courseType.getCourseTypeID());
         return books;
     }
+
+    @Override
+    public Integer updateStuClassArrangeStatus(StudentClassArrange arrange) {
+        return studentClassArrangeMapper.updateStuClassArrangeStatus(arrange);
+    }
 }

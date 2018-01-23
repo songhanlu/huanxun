@@ -34,4 +34,7 @@ public interface StudentClassArrangeService {
 
     //根据stuClassArrangeID查询该课程下可选的教材列表(为课表上传教材时使用！！)
     List<Book> findBooksCanChooseByArrangeID(Integer arrangeID);
+
+    //修改课程结果状态
+    Integer updateStuClassArrangeStatus(StudentClassArrange arrange);
 }

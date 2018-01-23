@@ -1,12 +1,9 @@
 package com.bdqn.huanxun.dao;
 
 
-import com.bdqn.huanxun.pojo.StudentCourse;
-
 import com.bdqn.huanxun.pojo.CourseType;
 import com.bdqn.huanxun.pojo.StudentCourse;
 import org.apache.ibatis.annotations.Param;
-
 
 import java.util.List;
 
@@ -43,5 +40,8 @@ public interface StudentCourseMapper {
     //根据stuCourseID查询学生课程查询LessonType
     CourseType findCourseTypeByStuCourseID(Integer stuCourseID);
 
-
+    //改变课程状态（进行中-->已完成）
+    Integer upadateStuCourseStatusToFinished(List<Integer> stuCourseID);
+    //改变课程状态（进行中-->进行中）
+    Integer upadateStuCourseStatusToActive(List<Integer> stuCourseID);
 }

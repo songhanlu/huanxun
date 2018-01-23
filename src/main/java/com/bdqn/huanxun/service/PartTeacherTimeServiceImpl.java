@@ -19,4 +19,24 @@ public class PartTeacherTimeServiceImpl implements PartTeacherTimeService {
     public List<PartTeacherTime> findPTTime(Integer teacherID) {
         return partTeacherTimeMapper.findPTTime(teacherID);
     }
+
+    @Override
+    public Integer deleteTeacherTime(Integer partTeacherTimeID) {
+        return partTeacherTimeMapper.deleteTeacherTime(partTeacherTimeID);
+    }
+
+    @Override
+    public Integer deleteTeacherTimeList(List<Integer> partTeacherTimeIDs) {
+        return partTeacherTimeMapper.deleteTeacherTimeList(partTeacherTimeIDs);
+    }
+
+    @Override
+    public Integer addTeacherTime(PartTeacherTime partTeacherTime) {
+        return partTeacherTimeMapper.addTeacherTime(partTeacherTime);
+    }
+
+    @Override
+    public List<PartTeacherTime> queryPartTeacherTimeByTeacherID(Integer teacherID) {
+        return partTeacherTimeMapper.queryPartTeacherTimeByTeacherID(teacherID);
+    }
 }

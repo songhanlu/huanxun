@@ -4,14 +4,19 @@
     <resultMap id="teacherMap" type="Teacher">
         <id property="teacherID" column="teacherID"/>
     </resultMap>
+    <resultMap id="classResultRecordTypeMap" type="StudentClassResultType">
+        <id property="stuClassResultTypeID" column="stuClassResultTypeID"/>
+    </resultMap>
     <resultMap id="classArrangeMap" type="StudentClassArrange">
         <id property="stuClassArrangeID" column="stuClassArrangeID"/>
         <association property="teacher" resultMap="teacherMap"/>
+        <association property="studentClassResultType" resultMap="classResultRecordTypeMap"/>
     </resultMap>
     <select id="findstuClassArranges" resultMap="classArrangeMap">
-        SELECT cr.*, t.teacherID, t.teacherName
-        from studentclassarrange cr, teacher t
+        SELECT cr.*, t.teacherID, t.teacherName,sr.stuClassResultTypeID,sr.stuClassResultTypeName
+        from studentclassarrange cr, teacher t,studentclassresulttype sr
         where cr.teacherID = t.teacherID
+        and cr.stuClassResultTypeID = sr.stuClassResultTypeID
         <if test="stuCourseID!=null">
             and stuCourseID = #{stuCourseID}
         </if>
@@ -51,4 +56,10 @@
         FROM studentclassarrange a
         where a.stuClassArrangeID = #{stuClassArrangeID}
     </select>
+
+    <update id="updateStuClassArrangeStatus" parameterType="StudentClassArrange">
+        UPDATE studentclassarrange
+        SET stuClassResultTypeID = #{arrange.studentClassResultType.stuClassResultTypeID}
+        where stuClassArrangeID = #{arrange.stuClassArrangeID}
+    </update>
 </mapper>

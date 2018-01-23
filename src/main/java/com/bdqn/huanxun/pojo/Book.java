@@ -1,6 +1,5 @@
 package com.bdqn.huanxun.pojo;
 
-import java.net.PortUnreachableException;
 import java.util.Date;
 
 /**
@@ -14,7 +13,16 @@ public class Book {
     private String bookVersion;
     private CourseType courseType;  //教材表里面嵌套一个课程类型courseTypeId,作为外键
     //教材版本
-    private Integer visible;//工具列
+    private Integer visible;
+    private Integer bookNoInHisType;
+
+    public Integer getBookNoInHisType() {
+        return bookNoInHisType;
+    }
+
+    public void setBookNoInHisType(Integer bookNoInHisType) {
+        this.bookNoInHisType = bookNoInHisType;
+    }
 
     @Override
     public String toString() {
@@ -26,6 +34,7 @@ public class Book {
                 ", bookVersion='" + bookVersion + '\'' +
                 ", courseType=" + courseType +
                 ", visible=" + visible +
+                ", bookNoInHisType=" + bookNoInHisType +
                 '}';
     }
 

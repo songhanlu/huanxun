@@ -123,4 +123,20 @@
         and sc.stuCourseID = #{stuCourseID}
     </select>
 
+    <update id="upadateStuCourseStatusToFinished" parameterType="list">
+        update studentcourse set stuCourseStatus = '已完成'
+        where stuCourseID IN
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="upadateStuCourseStatusToActive" parameterType="list">
+        update studentcourse set stuCourseStatus = '进行中'
+        where stuCourseID IN
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </update>
+
 </mapper>

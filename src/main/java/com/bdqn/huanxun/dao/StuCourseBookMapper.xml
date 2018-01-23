@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.huanxun.dao.StuCourseBookMapper">
+    <resultMap id="courseTypeMap" type="CourseType">
+        <id property="courseTypeID" column="courseTypeID"/>
+    </resultMap>
+    <resultMap id="bookMap" type="Book">
+        <id property="bookID" column="bookID"/>
+        <association property="courseType" resultMap="courseTypeMap"/>
+    </resultMap>
+    <resultMap id="stuCourseMap" type="StudentCourse">
+        <id property="stuCourseID" column="stuCourseID"/>
+        <association property="courseType" resultMap="courseTypeMap"/>
+    </resultMap>
+    <resultMap id="stuCourseBookMap" type="StuCourseBook">
+        <id property="stuCourseBookID" column="stuCourseBookID"/>
+        <association property="book" resultMap="bookMap"/>
+        <association property="studentCourse" resultMap="stuCourseMap"/>
+    </resultMap>
+
+    <insert id="addStuCourseBook" parameterType="StuCourseBook">
+        INSERT into stucoursebook (stuCourseID, bookID)
+        VALUES (#{studentCourse.stuCourseID},#{book.bookID})
+    </insert>
+    <select id="findStuCourseBooks" parameterType="integer" resultMap="stuCourseBookMap">
+        SELECT *
+        FROM stucoursebook scb, studentcourse sc, book b, coursetype ct
+        where scb.stuCourseID = sc.stuCourseID
+        and scb.bookID = b.bookID
+        and sc.courseTypeID = ct.courseTypeID
+        and sc.stuCourseID = #{stuCourseID}
+        order by b.bookNoInHisType
+    </select>
+
+    <select id="findBooksByStuCourseID" parameterType="Integer" resultMap="bookMap">
+        select *
+        from book b, coursetype ct
+        where b.courseTypeID = ct.courseTypeID
+        and b.courseTypeID = #{courseTypeID}
+    </select>
+
+    <select id="findBookByCourseTypeIDAndBookNoInType" resultMap="bookMap">
+        SELECT *
+        from book b
+        where b.courseTypeID = #{courseTypeID}
+        and b.bookNoInHisType=#{bnhy}
+    </select>
+
+    <delete id="deleteUploadBookByIDs" parameterType="list">
+        delete from stucoursebook
+        where stuCourseBookID IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

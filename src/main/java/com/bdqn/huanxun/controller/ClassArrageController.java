@@ -1,9 +1,6 @@
 package com.bdqn.huanxun.controller;
 
 import com.alibaba.fastjson.JSON;
-
-import com.bdqn.huanxun.pojo.StudentCourse;
-import com.bdqn.huanxun.service.StudentCourseService;
 import com.bdqn.huanxun.pojo.*;
 import com.bdqn.huanxun.service.ClassBookService;
 import com.bdqn.huanxun.service.StudentClassArrangeService;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,6 +98,7 @@ public class ClassArrageController {
                              String endTime,
                              Integer lessonNumber,
                              Integer teacherID) throws ParseException {
+        lessonNumber = 1;
         Teacher teacher = new Teacher();
         teacher.setTeacherID(teacherID);
         Date sTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startTime);
@@ -293,6 +290,19 @@ public class ClassArrageController {
     public String findClassBookByArrangeID(Integer arrangeID){
         List<Book> books = classBookService.findBooksByArrangeID(arrangeID);
         return JSON.toJSONString(books);
+    }
+
+
+    //更新课表的状态
+    @RequestMapping(value = "/updateArrangeStatus.do", method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String updateArrangeStatus(StudentClassArrange arrange){
+        int result = studentClassArrangeService.updateArrange(arrange);
+        if(result>0){
+            return JSON.toJSONString(Message.success());
+        }
+        return JSON.toJSONString(Message.failed());
     }
 
 }

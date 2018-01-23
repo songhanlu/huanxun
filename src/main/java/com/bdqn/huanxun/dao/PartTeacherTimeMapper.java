@@ -10,4 +10,10 @@ import java.util.List;
 public interface PartTeacherTimeMapper {
     //根据teacherID查询兼职教师表
     List<PartTeacherTime> findPTTime(Integer teacherID);
+
+    List<PartTeacherTime> queryPartTeacherTimeByTeacherID(Integer teacherID);
+    Integer deleteTeacherTime(Integer partTeacherTimeID);
+    Integer deleteTeacherTimeList(List<Integer> partTeacherTimeIDs);
+
+    Integer addTeacherTime(PartTeacherTime partTeacherTime);
 }

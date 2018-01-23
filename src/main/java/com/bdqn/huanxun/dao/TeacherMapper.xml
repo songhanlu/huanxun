@@ -7,4 +7,60 @@
         SELECT * from teacher WHERE teacherCareerType =  #{careerType} order by teacherID
     </select>
 
+
+    <resultMap id="teacherMap" type="Teacher">
+        <id column="teacherID" property="teacherID"></id>
+        <association property="loginUser" resultMap="loginUserMap"/>
+    </resultMap>
+    <resultMap id="loginUserMap" type="LoginUser">
+        <id property="loginUserID" column="loginUserID"></id>
+    </resultMap>
+    <select id="queryAllTeacher" resultMap="teacherMap">
+        SELECT * FROM teacher t,loginuser l WHERE  t.`loginUserID`=l.`loginUserID` AND t.visible=1
+    </select>
+    <select id="queryTeacherById" parameterType="Integer" resultMap="teacherMap">
+        SELECT * FROM teacher t,loginuser l WHERE t.`loginUserID`=l.`loginUserID` AND t.visible=1 AND teacherID=#{teacherID}
+    </select>
+    <update id="deleteTeacherById" parameterType="Integer">
+        UPDATE teacher SET visible=0 WHERE teacherID=#{teacherID}
+    </update>
+    <update id="deleteTeacherList" parameterType="integer">
+        UPDATE teacher SET visible=0 WHERE teacherID IN
+        <foreach collection="list" item="teacherIDs" open="(" separator="," close=")">
+            #{teacherIDs}
+        </foreach>
+    </update>
+    <select id="queryTeacherAll" resultMap="teacherMap">
+        SELECT *FROM teacher
+    </select>
+    <update id="updateTeacher" parameterType="Teacher">
+        UPDATE teacher SET teacherName=#{teacherName} ,
+        teacherDesc=#{teacherDesc},teacherEmail=#{teacherEmail},
+        teacherCareerType=#{teacherCareerType},teacherAge=#{teacherAge},
+        teacherGender=#{teacherGender},
+        teacherLevel=#{teacherLevel},teacherQQ=#{teacherQQ},
+        teacherArea=#{teacherArea},teacherScore=#{teacherScore},teacherPhotoAddress=#{teacherPhotoAddress} WHERE teacherID=#{teacherID}
+    </update>
+    <insert id="addTeacher" parameterType="Teacher">
+        INSERT INTO teacher VALUES(NULL,#{teacherName},#{teacherPhotoAddress},
+        #{teacherGender},#{teacherAge},#{teacherArea},#{teacherDesc},#{teacherPhone},#{teacherEmail},#{teacherQQ},
+        #{teacherLevel},#{teacherScore},#{teacherCareerType},#{loginUser.loginUserID},1)
+    </insert>
+    <select id="queryTeacherByUserNameAndGender" resultMap="teacherMap">
+        SELECT *
+        FROM teacher t,loginuser l WHERE
+        t.`loginUserID`=l.`loginUserID`
+        AND t.visible=1
+        <if test="teacherName!=null and teacherName!=''">
+            AND teacherName LIKE CONCAT ('%',#{teacherName},'%')
+        </if>
+        <if test="loginName!=null and loginName!=''">
+            AND loginName LIKE CONCAT ('%',#{loginName},'%')
+        </if>
+    </select>
+    <select id="queryPhoto"  resultType="java.lang.String">
+        SELECT t.`teacherPhotoAddress` FROM teacher t
+    </select>
+
+
 </mapper>

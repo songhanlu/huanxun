@@ -28,4 +28,7 @@ public interface StudentClassArrangeMapper {
     //根据stuClassArrangeID查询stuCourseID
     Integer findStuCourseIDByArrangeID(Integer stuClassArrangeID);
 
+    //修改课程结果状态
+    Integer updateStuClassArrangeStatus(StudentClassArrange arrange);
+
 }

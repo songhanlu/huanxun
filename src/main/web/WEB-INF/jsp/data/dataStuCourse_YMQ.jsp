@@ -39,7 +39,6 @@
                 $(this).combobox("select", "year");
             },
             onSelect:function (item) {
-
                 var timeType = item.id;
                 console.log(timeType);
                 $.get("${pageContext.request.contextPath}/data/countStuCourseNumberByTimeType.do?timeType="+timeType,function (data) {

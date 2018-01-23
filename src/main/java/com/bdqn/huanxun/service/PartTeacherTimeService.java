@@ -10,4 +10,10 @@ import java.util.List;
 public interface PartTeacherTimeService {
     //根据teacherID查询兼职教师表
     List<PartTeacherTime> findPTTime(Integer teacherID);
+
+
+    Integer deleteTeacherTime(Integer partTeacherTimeID);
+    Integer deleteTeacherTimeList(List<Integer> partTeacherTimeIDs);
+    Integer addTeacherTime(PartTeacherTime partTeacherTime);
+    List<PartTeacherTime> queryPartTeacherTimeByTeacherID(Integer teacherID);
 }
